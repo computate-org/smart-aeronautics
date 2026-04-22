@@ -36,9 +36,6 @@ import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
 import org.computate.smartaeronautics.config.ConfigKeys;
 import org.computate.smartaeronautics.request.SiteRequest;
-import org.computate.smartaeronautics.model.fiware.airport.Airport;
-import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSApiServiceImpl;
-import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSGenApiService;
 import org.computate.smartaeronautics.timezone.TimeZone;
 import org.computate.smartaeronautics.timezone.TimeZoneEnUSApiServiceImpl;
 import org.computate.smartaeronautics.timezone.TimeZoneEnUSGenApiService;
@@ -48,6 +45,18 @@ import org.computate.smartaeronautics.page.SitePageEnUSGenApiService;
 import org.computate.smartaeronautics.model.MapModel;
 import org.computate.smartaeronautics.model.MapModelEnUSApiServiceImpl;
 import org.computate.smartaeronautics.model.MapModelEnUSGenApiService;
+import org.computate.smartaeronautics.model.fiware.airport.Airport;
+import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSGenApiService;
+import org.computate.smartaeronautics.model.fiware.airline.Airline;
+import org.computate.smartaeronautics.model.fiware.airline.AirlineEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.fiware.airline.AirlineEnUSGenApiService;
+import org.computate.smartaeronautics.model.fiware.aircraft.Aircraft;
+import org.computate.smartaeronautics.model.fiware.aircraft.AircraftEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.fiware.aircraft.AircraftEnUSGenApiService;
+import org.computate.smartaeronautics.model.contract.Contract;
+import org.computate.smartaeronautics.model.contract.ContractEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.contract.ContractEnUSGenApiService;
 import org.computate.vertx.api.ApiCounter;
 import org.computate.vertx.api.ApiRequest;
 import org.computate.vertx.config.ComputateConfigKeys;
@@ -420,18 +429,30 @@ public class WorkerVerticle extends WorkerVerticleGen<AbstractVerticle> {
       siteRequest.addScopes("GET");
       String templatePath = config().getString(ComputateConfigKeys.TEMPLATE_PATH);
 
-      AirportEnUSApiServiceImpl apiAirport = new AirportEnUSApiServiceImpl();
-      initializeApiService(apiAirport);
       TimeZoneEnUSApiServiceImpl apiTimeZone = new TimeZoneEnUSApiServiceImpl();
       initializeApiService(apiTimeZone);
       SitePageEnUSApiServiceImpl apiSitePage = new SitePageEnUSApiServiceImpl();
       initializeApiService(apiSitePage);
+      AirportEnUSApiServiceImpl apiAirport = new AirportEnUSApiServiceImpl();
+      initializeApiService(apiAirport);
+      AirlineEnUSApiServiceImpl apiAirline = new AirlineEnUSApiServiceImpl();
+      initializeApiService(apiAirline);
+      AircraftEnUSApiServiceImpl apiAircraft = new AircraftEnUSApiServiceImpl();
+      initializeApiService(apiAircraft);
+      ContractEnUSApiServiceImpl apiContract = new ContractEnUSApiServiceImpl();
+      initializeApiService(apiContract);
 
-      apiAirport.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, Airport.CLASS_CANONICAL_NAME, Airport.CLASS_SIMPLE_NAME, Airport.CLASS_API_ADDRESS_Airport, Airport.CLASS_AUTH_RESOURCE, "entityShortId", "userPage", "download").onSuccess(q1 -> {
-        apiTimeZone.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, TimeZone.CLASS_CANONICAL_NAME, TimeZone.CLASS_SIMPLE_NAME, TimeZone.CLASS_API_ADDRESS_TimeZone, TimeZone.CLASS_AUTH_RESOURCE, "id", "userPage", "download").onSuccess(q2 -> {
-          apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, SitePage.CLASS_AUTH_RESOURCE, "pageId", "userPage", "download").onSuccess(q3 -> {
-            LOG.info("data import complete");
-            promise.complete();
+      apiTimeZone.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, TimeZone.CLASS_CANONICAL_NAME, TimeZone.CLASS_SIMPLE_NAME, TimeZone.CLASS_API_ADDRESS_TimeZone, TimeZone.CLASS_AUTH_RESOURCE, "id", "userPage", "download").onSuccess(q1 -> {
+        apiSitePage.importTimer(Paths.get(templatePath, "/en-us/view/article"), vertx, siteRequest, SitePage.CLASS_CANONICAL_NAME, SitePage.CLASS_SIMPLE_NAME, SitePage.CLASS_API_ADDRESS_SitePage, SitePage.CLASS_AUTH_RESOURCE, "pageId", "userPage", "download").onSuccess(q2 -> {
+          apiAirport.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, Airport.CLASS_CANONICAL_NAME, Airport.CLASS_SIMPLE_NAME, Airport.CLASS_API_ADDRESS_Airport, Airport.CLASS_AUTH_RESOURCE, "entityShortId", "userPage", "download").onSuccess(q3 -> {
+            apiAirline.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, Airline.CLASS_CANONICAL_NAME, Airline.CLASS_SIMPLE_NAME, Airline.CLASS_API_ADDRESS_Airline, Airline.CLASS_AUTH_RESOURCE, "entityShortId", "userPage", "download").onSuccess(q4 -> {
+              apiAircraft.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, Aircraft.CLASS_CANONICAL_NAME, Aircraft.CLASS_SIMPLE_NAME, Aircraft.CLASS_API_ADDRESS_Aircraft, Aircraft.CLASS_AUTH_RESOURCE, "entityShortId", "userPage", "download").onSuccess(q5 -> {
+                apiContract.importTimer(Paths.get(templatePath, "TODO"), vertx, siteRequest, Contract.CLASS_CANONICAL_NAME, Contract.CLASS_SIMPLE_NAME, Contract.CLASS_API_ADDRESS_Contract, Contract.CLASS_AUTH_RESOURCE, "contractId", "userPage", "download").onSuccess(q6 -> {
+                  LOG.info("data import complete");
+                  promise.complete();
+                }).onFailure(ex -> promise.fail(ex));
+              }).onFailure(ex -> promise.fail(ex));
+            }).onFailure(ex -> promise.fail(ex));
           }).onFailure(ex -> promise.fail(ex));
         }).onFailure(ex -> promise.fail(ex));
       }).onFailure(ex -> promise.fail(ex));

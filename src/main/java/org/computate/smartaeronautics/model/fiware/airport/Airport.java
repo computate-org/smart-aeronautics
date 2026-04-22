@@ -20,7 +20,7 @@ import io.vertx.pgclient.data.Polygon;
  * SmartDataModel: Airport - Aeronautics - SmartAeronautics
  * Fiware: true
  *
- * Order: 1
+ * Order: 5
  * Description: A description of a generic airport
  * AName: an Airport
  * Icon: <i class="fa-duotone fa-regular  fa-conveyor-belt"></i>

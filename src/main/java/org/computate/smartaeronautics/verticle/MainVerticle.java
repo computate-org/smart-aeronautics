@@ -173,9 +173,6 @@ import org.computate.smartaeronautics.user.SiteUserEnUSGenApiService;
 import org.computate.smartaeronautics.user.SiteUserEnUSApiServiceImpl;
 import org.computate.smartaeronautics.result.BaseResult;
 import org.computate.smartaeronautics.model.BaseModel;
-import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSGenApiService;
-import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSApiServiceImpl;
-import org.computate.smartaeronautics.model.fiware.airport.Airport;
 import org.computate.smartaeronautics.timezone.TimeZoneEnUSGenApiService;
 import org.computate.smartaeronautics.timezone.TimeZoneEnUSApiServiceImpl;
 import org.computate.smartaeronautics.timezone.TimeZone;
@@ -185,6 +182,18 @@ import org.computate.smartaeronautics.page.SitePage;
 import org.computate.smartaeronautics.model.MapModelEnUSGenApiService;
 import org.computate.smartaeronautics.model.MapModelEnUSApiServiceImpl;
 import org.computate.smartaeronautics.model.MapModel;
+import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSGenApiService;
+import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.fiware.airport.Airport;
+import org.computate.smartaeronautics.model.fiware.airline.AirlineEnUSGenApiService;
+import org.computate.smartaeronautics.model.fiware.airline.AirlineEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.fiware.airline.Airline;
+import org.computate.smartaeronautics.model.fiware.aircraft.AircraftEnUSGenApiService;
+import org.computate.smartaeronautics.model.fiware.aircraft.AircraftEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.fiware.aircraft.Aircraft;
+import org.computate.smartaeronautics.model.contract.ContractEnUSGenApiService;
+import org.computate.smartaeronautics.model.contract.ContractEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.contract.Contract;
 
 
 /**
@@ -321,10 +330,6 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
       apiSiteUser.setVertx(vertx);
       apiSiteUser.setConfig(config);
       apiSiteUser.setWebClient(webClient);
-      AirportEnUSApiServiceImpl apiAirport = new AirportEnUSApiServiceImpl();
-      apiAirport.setVertx(vertx);
-      apiAirport.setConfig(config);
-      apiAirport.setWebClient(webClient);
       TimeZoneEnUSApiServiceImpl apiTimeZone = new TimeZoneEnUSApiServiceImpl();
       apiTimeZone.setVertx(vertx);
       apiTimeZone.setConfig(config);
@@ -337,22 +342,56 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
       apiMapModel.setVertx(vertx);
       apiMapModel.setConfig(config);
       apiMapModel.setWebClient(webClient);
+      AirportEnUSApiServiceImpl apiAirport = new AirportEnUSApiServiceImpl();
+      apiAirport.setVertx(vertx);
+      apiAirport.setConfig(config);
+      apiAirport.setWebClient(webClient);
+      AirlineEnUSApiServiceImpl apiAirline = new AirlineEnUSApiServiceImpl();
+      apiAirline.setVertx(vertx);
+      apiAirline.setConfig(config);
+      apiAirline.setWebClient(webClient);
+      AircraftEnUSApiServiceImpl apiAircraft = new AircraftEnUSApiServiceImpl();
+      apiAircraft.setVertx(vertx);
+      apiAircraft.setConfig(config);
+      apiAircraft.setWebClient(webClient);
+      ContractEnUSApiServiceImpl apiContract = new ContractEnUSApiServiceImpl();
+      apiContract.setVertx(vertx);
+      apiContract.setConfig(config);
+      apiContract.setWebClient(webClient);
       apiSiteUser.createAuthorizationScopes(new String[] { "GET", "DELETE", "PATCH", "POST", "SuperAdmin", "Admin", "PUT", "GETManager" }).onSuccess(authToken -> {
-          apiAirport.authorizeGroupData(authToken, Airport.CLASS_AUTH_RESOURCE, "AirportViewer", new String[] { "GET" })
-              .compose(q2 -> apiAirport.authorizeGroupData(authToken, Airport.CLASS_AUTH_RESOURCE, "AirportEditor", new String[] { "GET", "POST", "PATCH" }))
-              .compose(q2 -> apiAirport.authorizeGroupData(authToken, Airport.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "SuperAdmin", "Admin" }))
-              .compose(q2 -> apiAirport.authorizeGroupData(authToken, Airport.CLASS_AUTH_RESOURCE, "Admin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "Admin" }))
+          apiTimeZone.authorizeGroupData(authToken, TimeZone.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" })
               .onSuccess(q2 -> {
-            apiTimeZone.authorizeGroupData(authToken, TimeZone.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" })
+            apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_AUTH_RESOURCE, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
+                .compose(q3 -> apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
                 .onSuccess(q3 -> {
-              apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_AUTH_RESOURCE, "Admin", new String[] { "POST", "PATCH", "GET", "DELETE", "Admin" })
-                  .compose(q4 -> apiSitePage.authorizeGroupData(authToken, SitePage.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "DELETE", "SuperAdmin" }))
+              apiMapModel.authorizeGroupData(authToken, MapModel.CLASS_AUTH_RESOURCE, "MapModelViewer", new String[] { "GET" })
+                  .compose(q4 -> apiMapModel.authorizeGroupData(authToken, MapModel.CLASS_AUTH_RESOURCE, "Admin", new String[] { "GET" }))
                   .onSuccess(q4 -> {
-                apiMapModel.authorizeGroupData(authToken, MapModel.CLASS_AUTH_RESOURCE, "MapModelViewer", new String[] { "GET" })
-                    .compose(q5 -> apiMapModel.authorizeGroupData(authToken, MapModel.CLASS_AUTH_RESOURCE, "Admin", new String[] { "GET" }))
+                apiAirport.authorizeGroupData(authToken, Airport.CLASS_AUTH_RESOURCE, "AirportViewer", new String[] { "GET" })
+                    .compose(q5 -> apiAirport.authorizeGroupData(authToken, Airport.CLASS_AUTH_RESOURCE, "AirportEditor", new String[] { "GET", "POST", "PATCH" }))
+                    .compose(q5 -> apiAirport.authorizeGroupData(authToken, Airport.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "SuperAdmin", "Admin" }))
+                    .compose(q5 -> apiAirport.authorizeGroupData(authToken, Airport.CLASS_AUTH_RESOURCE, "Admin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "Admin" }))
                     .onSuccess(q5 -> {
-                  LOG.info("authorize data complete");
-                  promise.complete();
+                  apiAirline.authorizeGroupData(authToken, Airline.CLASS_AUTH_RESOURCE, "AirlineViewer", new String[] { "GET" })
+                      .compose(q6 -> apiAirline.authorizeGroupData(authToken, Airline.CLASS_AUTH_RESOURCE, "AirlineEditor", new String[] { "GET", "POST", "PATCH" }))
+                      .compose(q6 -> apiAirline.authorizeGroupData(authToken, Airline.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "SuperAdmin", "Admin" }))
+                      .compose(q6 -> apiAirline.authorizeGroupData(authToken, Airline.CLASS_AUTH_RESOURCE, "Admin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "Admin" }))
+                      .onSuccess(q6 -> {
+                    apiAircraft.authorizeGroupData(authToken, Aircraft.CLASS_AUTH_RESOURCE, "AircraftViewer", new String[] { "GET" })
+                        .compose(q7 -> apiAircraft.authorizeGroupData(authToken, Aircraft.CLASS_AUTH_RESOURCE, "AircraftEditor", new String[] { "GET", "POST", "PATCH" }))
+                        .compose(q7 -> apiAircraft.authorizeGroupData(authToken, Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "SuperAdmin", "Admin" }))
+                        .compose(q7 -> apiAircraft.authorizeGroupData(authToken, Aircraft.CLASS_AUTH_RESOURCE, "Admin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "Admin" }))
+                        .onSuccess(q7 -> {
+                      apiContract.authorizeGroupData(authToken, Contract.CLASS_AUTH_RESOURCE, "ContractViewer", new String[] { "GET" })
+                          .compose(q8 -> apiContract.authorizeGroupData(authToken, Contract.CLASS_AUTH_RESOURCE, "ContractEditor", new String[] { "GET", "POST", "PATCH" }))
+                          .compose(q8 -> apiContract.authorizeGroupData(authToken, Contract.CLASS_AUTH_RESOURCE, "SuperAdmin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "SuperAdmin", "Admin" }))
+                          .compose(q8 -> apiContract.authorizeGroupData(authToken, Contract.CLASS_AUTH_RESOURCE, "Admin", new String[] { "POST", "PATCH", "GET", "PUT", "DELETE", "Admin" }))
+                          .onSuccess(q8 -> {
+                        LOG.info("authorize data complete");
+                        promise.complete();
+                    }).onFailure(ex -> promise.fail(ex));
+                  }).onFailure(ex -> promise.fail(ex));
+                }).onFailure(ex -> promise.fail(ex));
               }).onFailure(ex -> promise.fail(ex));
             }).onFailure(ex -> promise.fail(ex));
           }).onFailure(ex -> promise.fail(ex));
@@ -1358,18 +1397,14 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
     Promise<Void> promise = Promise.promise();
     try {
       List<Future<?>> futures = new ArrayList<>();
-      List<String> authClassSimpleNames = Arrays.asList("Airport","SitePage","MapModel");
-      List<String> authResources = Arrays.asList("AIRPORT","SITEPAGE","MAPMODEL");
+      List<String> authClassSimpleNames = Arrays.asList("SitePage","MapModel","Airport","Airline","Aircraft","Contract");
+      List<String> authResources = Arrays.asList("SITEPAGE","MAPMODEL","AIRPORT","AIRLINE","AIRCRAFT","CONTRACT");
       List<String> publicClassSimpleNames = Arrays.asList("SitePage");
       SiteUserEnUSApiServiceImpl apiSiteUser = new SiteUserEnUSApiServiceImpl();
       initializeApiService(apiSiteUser);
       registerApiService(SiteUserEnUSGenApiService.class, apiSiteUser, SiteUser.getClassApiAddress());
       apiSiteUser.configureUserSearchApi(config().getString(ComputateConfigKeys.USER_SEARCH_URI), router, SiteRequest.class, SiteUser.class, SiteUser.CLASS_API_ADDRESS_SiteUser, config(), webClient, authResources, authClassSimpleNames);
       apiSiteUser.configurePublicSearchApi(config().getString(ComputateConfigKeys.PUBLIC_SEARCH_URI), router, SiteRequest.class, config(), webClient, publicClassSimpleNames);
-
-      AirportEnUSApiServiceImpl apiAirport = new AirportEnUSApiServiceImpl();
-      initializeApiService(apiAirport);
-      registerApiService(AirportEnUSGenApiService.class, apiAirport, Airport.getClassApiAddress());
 
       TimeZoneEnUSApiServiceImpl apiTimeZone = new TimeZoneEnUSApiServiceImpl();
       initializeApiService(apiTimeZone);
@@ -1382,6 +1417,22 @@ public class MainVerticle extends MainVerticleGen<AbstractVerticle> {
       MapModelEnUSApiServiceImpl apiMapModel = new MapModelEnUSApiServiceImpl();
       initializeApiService(apiMapModel);
       registerApiService(MapModelEnUSGenApiService.class, apiMapModel, MapModel.getClassApiAddress());
+
+      AirportEnUSApiServiceImpl apiAirport = new AirportEnUSApiServiceImpl();
+      initializeApiService(apiAirport);
+      registerApiService(AirportEnUSGenApiService.class, apiAirport, Airport.getClassApiAddress());
+
+      AirlineEnUSApiServiceImpl apiAirline = new AirlineEnUSApiServiceImpl();
+      initializeApiService(apiAirline);
+      registerApiService(AirlineEnUSGenApiService.class, apiAirline, Airline.getClassApiAddress());
+
+      AircraftEnUSApiServiceImpl apiAircraft = new AircraftEnUSApiServiceImpl();
+      initializeApiService(apiAircraft);
+      registerApiService(AircraftEnUSGenApiService.class, apiAircraft, Aircraft.getClassApiAddress());
+
+      ContractEnUSApiServiceImpl apiContract = new ContractEnUSApiServiceImpl();
+      initializeApiService(apiContract);
+      registerApiService(ContractEnUSGenApiService.class, apiContract, Contract.getClassApiAddress());
 
       Future.all(futures).onSuccess( a -> {
         LOG.info("The API was configured properly.");

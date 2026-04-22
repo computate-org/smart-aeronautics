@@ -1,4 +1,4 @@
-package org.computate.smartaeronautics.model.fiware.airport;
+package org.computate.smartaeronautics.model.contract;
 
 import org.computate.smartaeronautics.request.SiteRequest;
 import org.computate.smartaeronautics.user.SiteUser;
@@ -104,41 +104,41 @@ import java.util.Base64;
 import java.time.ZonedDateTime;
 import org.apache.commons.lang3.BooleanUtils;
 import org.computate.vertx.search.list.SearchList;
-import org.computate.smartaeronautics.model.fiware.airport.AirportPage;
+import org.computate.smartaeronautics.model.contract.ContractPage;
 
 
 /**
  * Translate: false
  * Generated: true
  **/
-public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements AirportEnUSGenApiService {
+public class ContractEnUSGenApiServiceImpl extends BaseApiServiceImpl implements ContractEnUSGenApiService {
 
-  protected static final Logger LOG = LoggerFactory.getLogger(AirportEnUSGenApiServiceImpl.class);
+  protected static final Logger LOG = LoggerFactory.getLogger(ContractEnUSGenApiServiceImpl.class);
 
   // Search //
 
   @Override
-  public void searchAirport(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void searchContract(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "GET"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -152,30 +152,30 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, false, "GET").onSuccess(listAirport -> {
-                response200SearchAirport(listAirport).onSuccess(response -> {
+              searchContractList(siteRequest, false, true, false, "GET").onSuccess(listContract -> {
+                response200SearchContract(listContract).onSuccess(response -> {
                   eventHandler.handle(Future.succeededFuture(response));
-                  LOG.debug(String.format("searchAirport succeeded. "));
+                  LOG.debug(String.format("searchContract succeeded. "));
                 }).onFailure(ex -> {
-                  LOG.error(String.format("searchAirport failed. "), ex);
+                  LOG.error(String.format("searchContract failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("searchAirport failed. "), ex);
+                LOG.error(String.format("searchContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("searchAirport failed. "), ex);
+            LOG.error(String.format("searchContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("searchAirport failed. "), ex);
+        LOG.error(String.format("searchContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -183,7 +183,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("searchAirport failed. ", ex2));
+          LOG.error(String.format("searchContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -198,28 +198,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("searchAirport failed. "), ex);
+        LOG.error(String.format("searchContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<ServiceResponse> response200SearchAirport(SearchList<Airport> listAirport) {
+  public Future<ServiceResponse> response200SearchContract(SearchList<Contract> listContract) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-      List<String> fls = listAirport.getRequest().getFields();
+      SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
+      List<String> fls = listContract.getRequest().getFields();
       JsonObject json = new JsonObject();
       JsonArray l = new JsonArray();
       List<String> scopes = siteRequest.getScopes();
-      listAirport.getList().stream().forEach(o -> {
+      listContract.getList().stream().forEach(o -> {
         JsonObject json2 = JsonObject.mapFrom(o);
         if(fls.size() > 0) {
           Set<String> fieldNames = new HashSet<String>();
           for(String fieldName : json2.fieldNames()) {
-            String v = Airport.varIndexedAirport(fieldName);
+            String v = Contract.varIndexedContract(fieldName);
             if(v != null)
-              fieldNames.add(Airport.varIndexedAirport(fieldName));
+              fieldNames.add(Contract.varIndexedContract(fieldName));
           }
           if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves_docvalues_strings")) {
             fieldNames.removeAll(Optional.ofNullable(json2.getJsonArray("saves_docvalues_strings")).orElse(new JsonArray()).stream().map(s -> s.toString()).collect(Collectors.toList()));
@@ -237,15 +237,15 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         l.add(json2);
       });
       json.put("list", l);
-      response200Search(listAirport.getRequest(), listAirport.getResponse(), json);
+      response200Search(listContract.getRequest(), listContract.getResponse(), json);
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200SearchAirport failed. "), ex);
+      LOG.error(String.format("response200SearchContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
-  public void responsePivotSearchAirport(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+  public void responsePivotSearchContract(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
     if(pivots != null) {
       for(SolrResponse.Pivot pivotField : pivots) {
         String entityIndexed = pivotField.getField();
@@ -274,7 +274,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         if(pivotFields2 != null) {
           JsonArray pivotArray2 = new JsonArray();
           pivotJson.put("pivot", pivotArray2);
-          responsePivotSearchAirport(pivotFields2, pivotArray2);
+          responsePivotSearchContract(pivotFields2, pivotArray2);
         }
       }
     }
@@ -283,27 +283,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // GET //
 
   @Override
-  public void getAirport(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void getContract(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "GET"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -317,30 +317,30 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, false, "GET").onSuccess(listAirport -> {
-                response200GETAirport(listAirport).onSuccess(response -> {
+              searchContractList(siteRequest, false, true, false, "GET").onSuccess(listContract -> {
+                response200GETContract(listContract).onSuccess(response -> {
                   eventHandler.handle(Future.succeededFuture(response));
-                  LOG.debug(String.format("getAirport succeeded. "));
+                  LOG.debug(String.format("getContract succeeded. "));
                 }).onFailure(ex -> {
-                  LOG.error(String.format("getAirport failed. "), ex);
+                  LOG.error(String.format("getContract failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("getAirport failed. "), ex);
+                LOG.error(String.format("getContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("getAirport failed. "), ex);
+            LOG.error(String.format("getContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("getAirport failed. "), ex);
+        LOG.error(String.format("getContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -348,7 +348,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("getAirport failed. ", ex2));
+          LOG.error(String.format("getContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -363,20 +363,20 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("getAirport failed. "), ex);
+        LOG.error(String.format("getContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<ServiceResponse> response200GETAirport(SearchList<Airport> listAirport) {
+  public Future<ServiceResponse> response200GETContract(SearchList<Contract> listContract) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-      JsonObject json = JsonObject.mapFrom(listAirport.getList().stream().findFirst().orElse(null));
+      SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
+      JsonObject json = JsonObject.mapFrom(listContract.getList().stream().findFirst().orElse(null));
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200GETAirport failed. "), ex);
+      LOG.error(String.format("response200GETContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -385,28 +385,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // PATCH //
 
   @Override
-  public void patchAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("patchAirport started. "));
+  public void patchContract(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("patchContract started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "PATCH"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -420,7 +420,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("PATCH")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -436,48 +436,48 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             } else {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, true, "PATCH").onSuccess(listAirport -> {
+              searchContractList(siteRequest, false, true, true, "PATCH").onSuccess(listContract -> {
                 try {
                   ApiRequest apiRequest = new ApiRequest();
-                  apiRequest.setRows(listAirport.getRequest().getRows());
-                  apiRequest.setNumFound(listAirport.getResponse().getResponse().getNumFound());
+                  apiRequest.setRows(listContract.getRequest().getRows());
+                  apiRequest.setNumFound(listContract.getResponse().getResponse().getNumFound());
                   apiRequest.setNumPATCH(0L);
                   apiRequest.initDeepApiRequest(siteRequest);
                   siteRequest.setApiRequest_(apiRequest);
                   if(apiRequest.getNumFound() == 1L)
-                    apiRequest.setOriginal(listAirport.first());
-                  apiRequest.setId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
-                  apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-                  eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                    apiRequest.setOriginal(listContract.first());
+                  apiRequest.setId(Optional.ofNullable(listContract.first()).map(o2 -> o2.getContractId().toString()).orElse(null));
+                  apiRequest.setSolrId(Optional.ofNullable(listContract.first()).map(o2 -> o2.getSolrId()).orElse(null));
+                  eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
 
-                  listPATCHAirport(apiRequest, listAirport).onSuccess(e -> {
-                    response200PATCHAirport(siteRequest).onSuccess(response -> {
-                      LOG.debug(String.format("patchAirport succeeded. "));
+                  listPATCHContract(apiRequest, listContract).onSuccess(e -> {
+                    response200PATCHContract(siteRequest).onSuccess(response -> {
+                      LOG.debug(String.format("patchContract succeeded. "));
                       eventHandler.handle(Future.succeededFuture(response));
                     }).onFailure(ex -> {
-                      LOG.error(String.format("patchAirport failed. "), ex);
+                      LOG.error(String.format("patchContract failed. "), ex);
                       error(siteRequest, eventHandler, ex);
                     });
                   }).onFailure(ex -> {
-                    LOG.error(String.format("patchAirport failed. "), ex);
+                    LOG.error(String.format("patchContract failed. "), ex);
                     error(siteRequest, eventHandler, ex);
                   });
                 } catch(Exception ex) {
-                  LOG.error(String.format("patchAirport failed. "), ex);
+                  LOG.error(String.format("patchContract failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 }
               }).onFailure(ex -> {
-                LOG.error(String.format("patchAirport failed. "), ex);
+                LOG.error(String.format("patchContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("patchAirport failed. "), ex);
+            LOG.error(String.format("patchContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("patchAirport failed. "), ex);
+        LOG.error(String.format("patchContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -485,7 +485,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("patchAirport failed. ", ex2));
+          LOG.error(String.format("patchContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -500,58 +500,58 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("patchAirport failed. "), ex);
+        LOG.error(String.format("patchContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Void> listPATCHAirport(ApiRequest apiRequest, SearchList<Airport> listAirport) {
+  public Future<Void> listPATCHContract(ApiRequest apiRequest, SearchList<Contract> listContract) {
     Promise<Void> promise = Promise.promise();
     List<Future> futures = new ArrayList<>();
-    SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-    listAirport.getList().forEach(o -> {
+    SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
+    listContract.getList().forEach(o -> {
       SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
       siteRequest2.setScopes(siteRequest.getScopes());
       o.setSiteRequest_(siteRequest2);
       siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
       JsonObject jsonObject = JsonObject.mapFrom(o);
-      Airport o2 = jsonObject.mapTo(Airport.class);
+      Contract o2 = jsonObject.mapTo(Contract.class);
       o2.setSiteRequest_(siteRequest2);
       futures.add(Future.future(promise1 -> {
-        patchAirportFuture(o2, false).onSuccess(a -> {
+        patchContractFuture(o2, false).onSuccess(a -> {
           promise1.complete();
         }).onFailure(ex -> {
-          LOG.error(String.format("listPATCHAirport failed. "), ex);
+          LOG.error(String.format("listPATCHContract failed. "), ex);
           promise1.tryFail(ex);
         });
       }));
     });
     CompositeFuture.all(futures).onSuccess( a -> {
-      listAirport.next().onSuccess(next -> {
+      listContract.next().onSuccess(next -> {
         if(next) {
-          listPATCHAirport(apiRequest, listAirport).onSuccess(b -> {
+          listPATCHContract(apiRequest, listContract).onSuccess(b -> {
             promise.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("listPATCHAirport failed. "), ex);
+            LOG.error(String.format("listPATCHContract failed. "), ex);
             promise.tryFail(ex);
           });
         } else {
           promise.complete();
         }
       }).onFailure(ex -> {
-        LOG.error(String.format("listPATCHAirport failed. "), ex);
+        LOG.error(String.format("listPATCHContract failed. "), ex);
         promise.tryFail(ex);
       });
     }).onFailure(ex -> {
-      LOG.error(String.format("listPATCHAirport failed. "), ex);
+      LOG.error(String.format("listPATCHContract failed. "), ex);
       promise.tryFail(ex);
     });
     return promise.future();
   }
 
   @Override
-  public void patchAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void patchContractFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -563,9 +563,9 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             siteRequest.addScopes(scope);
           });
         });
-        searchAirportList(siteRequest, false, true, true, "PATCH").onSuccess(listAirport -> {
+        searchContractList(siteRequest, false, true, true, "PATCH").onSuccess(listContract -> {
           try {
-            Airport o = listAirport.first();
+            Contract o = listContract.first();
             ApiRequest apiRequest = new ApiRequest();
             apiRequest.setRows(1L);
             apiRequest.setNumFound(1L);
@@ -575,114 +575,65 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
               siteRequest.getRequestVars().put( "refresh", "false" );
             }
-            Airport o2;
+            Contract o2;
             if(o != null) {
               if(apiRequest.getNumFound() == 1L)
                 apiRequest.setOriginal(o);
-              apiRequest.setId(Optional.ofNullable(listAirport.first()).map(o3 -> o3.getEntityShortId().toString()).orElse(null));
-              apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o3 -> o3.getSolrId()).orElse(null));
+              apiRequest.setId(Optional.ofNullable(listContract.first()).map(o3 -> o3.getContractId().toString()).orElse(null));
+              apiRequest.setSolrId(Optional.ofNullable(listContract.first()).map(o3 -> o3.getSolrId()).orElse(null));
               JsonObject jsonObject = JsonObject.mapFrom(o);
-              o2 = jsonObject.mapTo(Airport.class);
+              o2 = jsonObject.mapTo(Contract.class);
               o2.setSiteRequest_(siteRequest);
-              patchAirportFuture(o2, false).onSuccess(o3 -> {
+              patchContractFuture(o2, false).onSuccess(o3 -> {
                 eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
               }).onFailure(ex -> {
                 eventHandler.handle(Future.failedFuture(ex));
               });
             } else {
-              String m = String.format("%s %s not found", "Airport", null);
+              String m = String.format("%s %s not found", "contract", null);
               eventHandler.handle(Future.failedFuture(m));
             }
           } catch(Exception ex) {
-            LOG.error(String.format("patchAirport failed. "), ex);
+            LOG.error(String.format("patchContract failed. "), ex);
             error(siteRequest, eventHandler, ex);
           }
         }).onFailure(ex -> {
-          LOG.error(String.format("patchAirport failed. "), ex);
+          LOG.error(String.format("patchContract failed. "), ex);
           error(siteRequest, eventHandler, ex);
         });
       } catch(Exception ex) {
-        LOG.error(String.format("patchAirport failed. "), ex);
+        LOG.error(String.format("patchContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
-      LOG.error(String.format("patchAirport failed. "), ex);
+      LOG.error(String.format("patchContract failed. "), ex);
       error(null, eventHandler, ex);
     });
   }
 
-  public Future<Airport> patchAirportFuture(Airport o, Boolean inheritPrimaryKey) {
+  public Future<Contract> patchContractFuture(Contract o, Boolean inheritPrimaryKey) {
     SiteRequest siteRequest = o.getSiteRequest_();
-    Promise<Airport> promise = Promise.promise();
+    Promise<Contract> promise = Promise.promise();
 
     try {
       ApiRequest apiRequest = siteRequest.getApiRequest_();
-      Promise<Airport> promise1 = Promise.promise();
+      Promise<Contract> promise1 = Promise.promise();
       pgPool.withTransaction(sqlConnection -> {
         siteRequest.setSqlConnection(sqlConnection);
-        varsAirport(siteRequest).onSuccess(a -> {
-          JsonObject jsonObject = o.getSiteRequest_().getJsonObject();
-          if(config.getBoolean(ComputateConfigKeys.ENABLE_CONTEXT_BROKER_SEND)) {
-            ngsildGetEntity(o).compose(ngsildData -> {
-              Promise<JsonObject> promise2 = Promise.promise();
-              if(ngsildData == null) {
-                promise2.complete(jsonObject);
-              } else {
-                String setNgsildData = String.format("set%s",StringUtils.capitalize(Airport.VAR_ngsildData));
-                jsonObject.put(setNgsildData, ngsildData);
-                promise2.complete(jsonObject);
-              }
-              return promise2.future();
-            }).compose(ngsildData -> {
-              Promise<Airport> promise2 = Promise.promise();
-              sqlPATCHAirport(o, inheritPrimaryKey).onSuccess(airport -> {
-                persistAirport(airport, true).onSuccess(c -> {
-                  relateAirport(airport).onSuccess(d -> {
-                    indexAirport(airport).onSuccess(o2 -> {
-                      if(apiRequest != null) {
-                        apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-                        if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-                          o2.apiRequestAirport();
-                          if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
-                            eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
-                        }
-                      }
-                      promise2.complete(airport);
-                    }).onFailure(ex -> {
-                      promise2.tryFail(ex);
-                    });
-                  }).onFailure(ex -> {
-                    promise2.tryFail(ex);
-                  });
-                }).onFailure(ex -> {
-                  promise2.tryFail(ex);
-                });
-              }).onFailure(ex -> {
-                promise2.tryFail(ex);
-              });
-              return promise2.future();
-            }).onSuccess(o2 -> {
-              promise1.complete(o2);
-            }).onFailure(ex -> {
-              promise1.tryFail(ex);
-            });
-          } else {
-            sqlPATCHAirport(o, inheritPrimaryKey).onSuccess(airport -> {
-              persistAirport(airport, true).onSuccess(c -> {
-                relateAirport(airport).onSuccess(d -> {
-                  indexAirport(airport).onSuccess(o2 -> {
-                    if(apiRequest != null) {
-                      apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-                      if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-                        o2.apiRequestAirport();
-                        if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
-                          eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
-                      }
+        varsContract(siteRequest).onSuccess(a -> {
+          sqlPATCHContract(o, inheritPrimaryKey).onSuccess(contract -> {
+            persistContract(contract, true).onSuccess(c -> {
+              relateContract(contract).onSuccess(d -> {
+                indexContract(contract).onSuccess(o2 -> {
+                  if(apiRequest != null) {
+                    apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
+                    if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
+                      o2.apiRequestContract();
+                      if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
+                        eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
                     }
-                    promise1.complete(airport);
-                  }).onFailure(ex -> {
-                    promise1.tryFail(ex);
-                  });
+                  }
+                  promise1.complete(contract);
                 }).onFailure(ex -> {
                   promise1.tryFail(ex);
                 });
@@ -692,7 +643,9 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             }).onFailure(ex -> {
               promise1.tryFail(ex);
             });
-          }
+          }).onFailure(ex -> {
+            promise1.tryFail(ex);
+          });
         }).onFailure(ex -> {
           promise1.tryFail(ex);
         });
@@ -702,28 +655,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       }).onFailure(ex -> {
         siteRequest.setSqlConnection(null);
         promise.tryFail(ex);
-      }).compose(airport -> {
-        Promise<Airport> promise2 = Promise.promise();
-        refreshAirport(airport).onSuccess(a -> {
-          promise2.complete(airport);
+      }).compose(contract -> {
+        Promise<Contract> promise2 = Promise.promise();
+        refreshContract(contract).onSuccess(a -> {
+          promise2.complete(contract);
         }).onFailure(ex -> {
           promise2.tryFail(ex);
         });
         return promise2.future();
-      }).onSuccess(airport -> {
-        promise.complete(airport);
+      }).onSuccess(contract -> {
+        promise.complete(contract);
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("patchAirportFuture failed. "), ex);
+      LOG.error(String.format("patchContractFuture failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Airport> sqlPATCHAirport(Airport o, Boolean inheritPrimaryKey) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Contract> sqlPATCHContract(Contract o, Boolean inheritPrimaryKey) {
+    Promise<Contract> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -731,255 +684,215 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Integer num = 1;
-      StringBuilder bSql = new StringBuilder("UPDATE Airport SET ");
+      StringBuilder bSql = new StringBuilder("UPDATE Contract SET ");
       List<Object> bParams = new ArrayList<Object>();
       Long pk = o.getPk();
       JsonObject jsonObject = siteRequest.getJsonObject();
       Set<String> methodNames = jsonObject.fieldNames();
-      Airport o2 = new Airport();
+      Contract o2 = new Contract();
       o2.setSiteRequest_(siteRequest);
       List<Future> futures1 = new ArrayList<>();
       List<Future> futures2 = new ArrayList<>();
 
       for(String entityVar : methodNames) {
         switch(entityVar) {
+          case "setRegion":
+              o2.setRegion(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_region + "=$" + num);
+              num++;
+              bParams.add(o2.sqlRegion());
+            break;
           case "setName":
               o2.setName(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_name + "=$" + num);
+              bSql.append(Contract.VAR_name + "=$" + num);
               num++;
               bParams.add(o2.sqlName());
-            break;
-          case "setAddress":
-              o2.setAddress(jsonObject.getJsonObject(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_address + "=$" + num);
-              num++;
-              bParams.add(o2.sqlAddress());
-            break;
-          case "setDescription":
-              o2.setDescription(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_description + "=$" + num);
-              num++;
-              bParams.add(o2.sqlDescription());
-            break;
-          case "setAlternateName":
-              o2.setAlternateName(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_alternateName + "=$" + num);
-              num++;
-              bParams.add(o2.sqlAlternateName());
-            break;
-          case "setLocation":
-              o2.setLocation(jsonObject.getJsonObject(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_location + "=$" + num);
-              num++;
-              bParams.add(o2.sqlLocation());
             break;
           case "setCreated":
               o2.setCreated(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_created + "=$" + num);
+              bSql.append(Contract.VAR_created + "=$" + num);
               num++;
               bParams.add(o2.sqlCreated());
             break;
-          case "setCodeIATA":
-              o2.setCodeIATA(jsonObject.getString(entityVar));
+          case "setAbbreviation":
+              o2.setAbbreviation(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_codeIATA + "=$" + num);
+              bSql.append(Contract.VAR_abbreviation + "=$" + num);
               num++;
-              bParams.add(o2.sqlCodeIATA());
+              bParams.add(o2.sqlAbbreviation());
             break;
-          case "setId":
-              o2.setId(jsonObject.getString(entityVar));
+          case "setDisplayName":
+              o2.setDisplayName(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_id + "=$" + num);
+              bSql.append(Contract.VAR_displayName + "=$" + num);
               num++;
-              bParams.add(o2.sqlId());
-            break;
-          case "setCodeICAO":
-              o2.setCodeICAO(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_codeICAO + "=$" + num);
-              num++;
-              bParams.add(o2.sqlCodeICAO());
-            break;
-          case "setEntityShortId":
-              o2.setEntityShortId(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_entityShortId + "=$" + num);
-              num++;
-              bParams.add(o2.sqlEntityShortId());
+              bParams.add(o2.sqlDisplayName());
             break;
           case "setArchived":
               o2.setArchived(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_archived + "=$" + num);
+              bSql.append(Contract.VAR_archived + "=$" + num);
               num++;
               bParams.add(o2.sqlArchived());
             break;
-          case "setDataProvider":
-              o2.setDataProvider(jsonObject.getString(entityVar));
+          case "setContractId":
+              o2.setContractId(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_dataProvider + "=$" + num);
+              bSql.append(Contract.VAR_contractId + "=$" + num);
               num++;
-              bParams.add(o2.sqlDataProvider());
+              bParams.add(o2.sqlContractId());
             break;
-          case "setNgsildTenant":
-              o2.setNgsildTenant(jsonObject.getString(entityVar));
+          case "setStartDate":
+              o2.setStartDate(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_ngsildTenant + "=$" + num);
+              bSql.append(Contract.VAR_startDate + "=$" + num);
               num++;
-              bParams.add(o2.sqlNgsildTenant());
+              bParams.add(o2.sqlStartDate());
             break;
-          case "setDateCreated":
-              o2.setDateCreated(jsonObject.getString(entityVar));
+          case "setInvestmentYearsTotal":
+              o2.setInvestmentYearsTotal(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_dateCreated + "=$" + num);
+              bSql.append(Contract.VAR_investmentYearsTotal + "=$" + num);
               num++;
-              bParams.add(o2.sqlDateCreated());
+              bParams.add(o2.sqlInvestmentYearsTotal());
             break;
-          case "setNgsildPath":
-              o2.setNgsildPath(jsonObject.getString(entityVar));
+          case "setInvestmentYears":
+              o2.setInvestmentYears(jsonObject.getJsonArray(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_ngsildPath + "=$" + num);
+              bSql.append(Contract.VAR_investmentYears + "=$" + num);
               num++;
-              bParams.add(o2.sqlNgsildPath());
-            break;
-          case "setDateModified":
-              o2.setDateModified(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_dateModified + "=$" + num);
-              num++;
-              bParams.add(o2.sqlDateModified());
-            break;
-          case "setNgsildContext":
-              o2.setNgsildContext(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_ngsildContext + "=$" + num);
-              num++;
-              bParams.add(o2.sqlNgsildContext());
-            break;
-          case "setOwner":
-              o2.setOwner(jsonObject.getJsonObject(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_owner + "=$" + num);
-              num++;
-              bParams.add(o2.sqlOwner());
-            break;
-          case "setNgsildData":
-              o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_ngsildData + "=$" + num);
-              num++;
-              bParams.add(o2.sqlNgsildData());
+              bParams.add(o2.sqlInvestmentYears());
             break;
           case "setSessionId":
               o2.setSessionId(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_sessionId + "=$" + num);
+              bSql.append(Contract.VAR_sessionId + "=$" + num);
               num++;
               bParams.add(o2.sqlSessionId());
             break;
-          case "setSeeAlso":
-              o2.setSeeAlso(jsonObject.getString(entityVar));
+          case "setInvestmentsPerYear":
+              o2.setInvestmentsPerYear(jsonObject.getJsonArray(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_seeAlso + "=$" + num);
+              bSql.append(Contract.VAR_investmentsPerYear + "=$" + num);
               num++;
-              bParams.add(o2.sqlSeeAlso());
-            break;
-          case "setColor":
-              o2.setColor(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_color + "=$" + num);
-              num++;
-              bParams.add(o2.sqlColor());
+              bParams.add(o2.sqlInvestmentsPerYear());
             break;
           case "setUserKey":
               o2.setUserKey(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_userKey + "=$" + num);
+              bSql.append(Contract.VAR_userKey + "=$" + num);
               num++;
               bParams.add(o2.sqlUserKey());
             break;
-          case "setSource":
-              o2.setSource(jsonObject.getString(entityVar));
+          case "setInvestmentsPerYearCumulative":
+              o2.setInvestmentsPerYearCumulative(jsonObject.getJsonArray(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_source + "=$" + num);
+              bSql.append(Contract.VAR_investmentsPerYearCumulative + "=$" + num);
               num++;
-              bParams.add(o2.sqlSource());
+              bParams.add(o2.sqlInvestmentsPerYearCumulative());
+            break;
+          case "setAssetClasses":
+              o2.setAssetClasses(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_assetClasses + "=$" + num);
+              num++;
+              bParams.add(o2.sqlAssetClasses());
+            break;
+          case "setAssetClassesTargetIrr":
+              o2.setAssetClassesTargetIrr(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_assetClassesTargetIrr + "=$" + num);
+              num++;
+              bParams.add(o2.sqlAssetClassesTargetIrr());
             break;
           case "setObjectTitle":
               o2.setObjectTitle(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_objectTitle + "=$" + num);
+              bSql.append(Contract.VAR_objectTitle + "=$" + num);
               num++;
               bParams.add(o2.sqlObjectTitle());
+            break;
+          case "setRevenueStreams":
+              o2.setRevenueStreams(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_revenueStreams + "=$" + num);
+              num++;
+              bParams.add(o2.sqlRevenueStreams());
             break;
           case "setDisplayPage":
               o2.setDisplayPage(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_displayPage + "=$" + num);
+              bSql.append(Contract.VAR_displayPage + "=$" + num);
               num++;
               bParams.add(o2.sqlDisplayPage());
             break;
-          case "setAreaServed":
-              o2.setAreaServed(jsonObject.getJsonObject(entityVar));
+          case "setEconomicOutputProjections":
+              o2.setEconomicOutputProjections(jsonObject.getJsonArray(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(String.format("%s=ST_GeomFromGeoJSON($%s)", Airport.VAR_areaServed, num));
+              bSql.append(Contract.VAR_economicOutputProjections + "=$" + num);
               num++;
-              bParams.add(o2.sqlAreaServed());
+              bParams.add(o2.sqlEconomicOutputProjections());
             break;
           case "setEditPage":
               o2.setEditPage(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_editPage + "=$" + num);
+              bSql.append(Contract.VAR_editPage + "=$" + num);
               num++;
               bParams.add(o2.sqlEditPage());
+            break;
+          case "setTotalGdpImpact":
+              o2.setTotalGdpImpact(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_totalGdpImpact + "=$" + num);
+              num++;
+              bParams.add(o2.sqlTotalGdpImpact());
             break;
           case "setUserPage":
               o2.setUserPage(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_userPage + "=$" + num);
+              bSql.append(Contract.VAR_userPage + "=$" + num);
               num++;
               bParams.add(o2.sqlUserPage());
+            break;
+          case "setEconomicOutputProjectionsDataset":
+              o2.setEconomicOutputProjectionsDataset(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_economicOutputProjectionsDataset + "=$" + num);
+              num++;
+              bParams.add(o2.sqlEconomicOutputProjectionsDataset());
             break;
           case "setDownload":
               o2.setDownload(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_download + "=$" + num);
+              bSql.append(Contract.VAR_download + "=$" + num);
               num++;
               bParams.add(o2.sqlDownload());
             break;
@@ -995,40 +908,40 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               ).onSuccess(b -> {
             a.handle(Future.succeededFuture());
           }).onFailure(ex -> {
-            RuntimeException ex2 = new RuntimeException("value Airport failed", ex);
-            LOG.error(String.format("relateAirport failed. "), ex2);
+            RuntimeException ex2 = new RuntimeException("value Contract failed", ex);
+            LOG.error(String.format("relateContract failed. "), ex2);
             a.handle(Future.failedFuture(ex2));
           });
         }));
       }
       CompositeFuture.all(futures1).onSuccess(a -> {
         CompositeFuture.all(futures2).onSuccess(b -> {
-          Airport o3 = new Airport();
+          Contract o3 = new Contract();
           o3.setSiteRequest_(o.getSiteRequest_());
           o3.setPk(pk);
           promise.complete(o3);
         }).onFailure(ex -> {
-          LOG.error(String.format("sqlPATCHAirport failed. "), ex);
+          LOG.error(String.format("sqlPATCHContract failed. "), ex);
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("sqlPATCHAirport failed. "), ex);
+        LOG.error(String.format("sqlPATCHContract failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("sqlPATCHAirport failed. "), ex);
+      LOG.error(String.format("sqlPATCHContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<ServiceResponse> response200PATCHAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> response200PATCHContract(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       JsonObject json = new JsonObject();
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200PATCHAirport failed. "), ex);
+      LOG.error(String.format("response200PATCHContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -1037,28 +950,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // POST //
 
   @Override
-  public void postAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("postAirport started. "));
+  public void postContract(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("postContract started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "POST"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1072,7 +985,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("POST")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -1094,7 +1007,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               apiRequest.setNumPATCH(0L);
               apiRequest.initDeepApiRequest(siteRequest);
               siteRequest.setApiRequest_(apiRequest);
-              eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+              eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
               JsonObject params = new JsonObject();
               params.put("body", siteRequest.getJsonObject());
               params.put("path", new JsonObject());
@@ -1114,24 +1027,24 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               params.put("query", query);
               JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
               JsonObject json = new JsonObject().put("context", context);
-              eventBus.request(Airport.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAirportFuture")).onSuccess(a -> {
+              eventBus.request(Contract.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postContractFuture")).onSuccess(a -> {
                 JsonObject responseMessage = (JsonObject)a.body();
                 JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-                apiRequest.setSolrId(responseBody.getString(Airport.VAR_solrId));
+                apiRequest.setSolrId(responseBody.getString(Contract.VAR_solrId));
                 eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
-                LOG.debug(String.format("postAirport succeeded. "));
+                LOG.debug(String.format("postContract succeeded. "));
               }).onFailure(ex -> {
-                LOG.error(String.format("postAirport failed. "), ex);
+                LOG.error(String.format("postContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("postAirport failed. "), ex);
+            LOG.error(String.format("postContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("postAirport failed. "), ex);
+        LOG.error(String.format("postContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -1139,7 +1052,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("postAirport failed. ", ex2));
+          LOG.error(String.format("postContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1154,14 +1067,14 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("postAirport failed. "), ex);
+        LOG.error(String.format("postContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
   @Override
-  public void postAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void postContractFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -1180,13 +1093,13 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
           siteRequest.getRequestVars().put( "refresh", "false" );
         }
-        postAirportFuture(siteRequest, false).onSuccess(o -> {
+        postContractFuture(siteRequest, false).onSuccess(o -> {
           eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
         }).onFailure(ex -> {
           eventHandler.handle(Future.failedFuture(ex));
         });
       } catch(Throwable ex) {
-        LOG.error(String.format("postAirport failed. "), ex);
+        LOG.error(String.format("postContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -1194,7 +1107,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("postAirport failed. ", ex2));
+          LOG.error(String.format("postContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1209,26 +1122,26 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("postAirport failed. "), ex);
+        LOG.error(String.format("postContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Airport> postAirportFuture(SiteRequest siteRequest, Boolean entityShortId) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Contract> postContractFuture(SiteRequest siteRequest, Boolean contractId) {
+    Promise<Contract> promise = Promise.promise();
 
     try {
       pgPool.withTransaction(sqlConnection -> {
-        Promise<Airport> promise1 = Promise.promise();
+        Promise<Contract> promise1 = Promise.promise();
         siteRequest.setSqlConnection(sqlConnection);
-        varsAirport(siteRequest).onSuccess(a -> {
-          createAirport(siteRequest).onSuccess(airport -> {
-            sqlPOSTAirport(airport, entityShortId).onSuccess(b -> {
-              persistAirport(airport, false).onSuccess(c -> {
-                relateAirport(airport).onSuccess(d -> {
-                  indexAirport(airport).onSuccess(o2 -> {
-                    promise1.complete(airport);
+        varsContract(siteRequest).onSuccess(a -> {
+          createContract(siteRequest).onSuccess(contract -> {
+            sqlPOSTContract(contract, contractId).onSuccess(b -> {
+              persistContract(contract, false).onSuccess(c -> {
+                relateContract(contract).onSuccess(d -> {
+                  indexContract(contract).onSuccess(o2 -> {
+                    promise1.complete(contract);
                   }).onFailure(ex -> {
                     promise1.tryFail(ex);
                   });
@@ -1253,50 +1166,50 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       }).onFailure(ex -> {
         siteRequest.setSqlConnection(null);
         promise.tryFail(ex);
-      }).compose(airport -> {
-        Promise<Airport> promise2 = Promise.promise();
-        refreshAirport(airport).onSuccess(a -> {
+      }).compose(contract -> {
+        Promise<Contract> promise2 = Promise.promise();
+        refreshContract(contract).onSuccess(a -> {
           try {
             ApiRequest apiRequest = siteRequest.getApiRequest_();
             if(apiRequest != null) {
               apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-              airport.apiRequestAirport();
-              eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+              contract.apiRequestContract();
+              eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
             }
-            promise2.complete(airport);
+            promise2.complete(contract);
           } catch(Exception ex) {
-            LOG.error(String.format("postAirportFuture failed. "), ex);
+            LOG.error(String.format("postContractFuture failed. "), ex);
             promise2.tryFail(ex);
           }
         }).onFailure(ex -> {
           promise2.tryFail(ex);
         });
         return promise2.future();
-      }).onSuccess(airport -> {
+      }).onSuccess(contract -> {
         try {
           ApiRequest apiRequest = siteRequest.getApiRequest_();
           if(apiRequest != null) {
             apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-            airport.apiRequestAirport();
-            eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+            contract.apiRequestContract();
+            eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
           }
-          promise.complete(airport);
+          promise.complete(contract);
         } catch(Exception ex) {
-          LOG.error(String.format("postAirportFuture failed. "), ex);
+          LOG.error(String.format("postContractFuture failed. "), ex);
           promise.tryFail(ex);
         }
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("postAirportFuture failed. "), ex);
+      LOG.error(String.format("postContractFuture failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Airport> sqlPOSTAirport(Airport o, Boolean inheritPrimaryKey) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Contract> sqlPOSTContract(Contract o, Boolean inheritPrimaryKey) {
+    Promise<Contract> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1304,11 +1217,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Integer num = 1;
-      StringBuilder bSql = new StringBuilder("UPDATE Airport SET ");
+      StringBuilder bSql = new StringBuilder("UPDATE Contract SET ");
       List<Object> bParams = new ArrayList<Object>();
       Long pk = o.getPk();
       JsonObject jsonObject = siteRequest.getJsonObject();
-      Airport o2 = new Airport();
+      Contract o2 = new Contract();
       o2.setSiteRequest_(siteRequest);
       List<Future> futures1 = new ArrayList<>();
       List<Future> futures2 = new ArrayList<>();
@@ -1334,273 +1247,228 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         Set<String> entityVars = jsonObject.fieldNames();
         for(String entityVar : entityVars) {
           switch(entityVar) {
-          case Airport.VAR_name:
+          case Contract.VAR_region:
+            o2.setRegion(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_region + "=$" + num);
+            num++;
+            bParams.add(o2.sqlRegion());
+            break;
+          case Contract.VAR_name:
             o2.setName(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_name + "=$" + num);
+            bSql.append(Contract.VAR_name + "=$" + num);
             num++;
             bParams.add(o2.sqlName());
             break;
-          case Airport.VAR_address:
-            o2.setAddress(jsonObject.getJsonObject(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_address + "=$" + num);
-            num++;
-            bParams.add(o2.sqlAddress());
-            break;
-          case Airport.VAR_description:
-            o2.setDescription(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_description + "=$" + num);
-            num++;
-            bParams.add(o2.sqlDescription());
-            break;
-          case Airport.VAR_alternateName:
-            o2.setAlternateName(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_alternateName + "=$" + num);
-            num++;
-            bParams.add(o2.sqlAlternateName());
-            break;
-          case Airport.VAR_location:
-            o2.setLocation(jsonObject.getJsonObject(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_location + "=$" + num);
-            num++;
-            bParams.add(o2.sqlLocation());
-            break;
-          case Airport.VAR_created:
+          case Contract.VAR_created:
             o2.setCreated(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_created + "=$" + num);
+            bSql.append(Contract.VAR_created + "=$" + num);
             num++;
             bParams.add(o2.sqlCreated());
             break;
-          case Airport.VAR_codeIATA:
-            o2.setCodeIATA(jsonObject.getString(entityVar));
+          case Contract.VAR_abbreviation:
+            o2.setAbbreviation(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_codeIATA + "=$" + num);
+            bSql.append(Contract.VAR_abbreviation + "=$" + num);
             num++;
-            bParams.add(o2.sqlCodeIATA());
+            bParams.add(o2.sqlAbbreviation());
             break;
-          case Airport.VAR_id:
-            o2.setId(jsonObject.getString(entityVar));
+          case Contract.VAR_displayName:
+            o2.setDisplayName(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_id + "=$" + num);
+            bSql.append(Contract.VAR_displayName + "=$" + num);
             num++;
-            bParams.add(o2.sqlId());
+            bParams.add(o2.sqlDisplayName());
             break;
-          case Airport.VAR_codeICAO:
-            o2.setCodeICAO(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_codeICAO + "=$" + num);
-            num++;
-            bParams.add(o2.sqlCodeICAO());
-            break;
-          case Airport.VAR_entityShortId:
-            o2.setEntityShortId(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_entityShortId + "=$" + num);
-            num++;
-            bParams.add(o2.sqlEntityShortId());
-            break;
-          case Airport.VAR_archived:
+          case Contract.VAR_archived:
             o2.setArchived(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_archived + "=$" + num);
+            bSql.append(Contract.VAR_archived + "=$" + num);
             num++;
             bParams.add(o2.sqlArchived());
             break;
-          case Airport.VAR_dataProvider:
-            o2.setDataProvider(jsonObject.getString(entityVar));
+          case Contract.VAR_contractId:
+            o2.setContractId(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_dataProvider + "=$" + num);
+            bSql.append(Contract.VAR_contractId + "=$" + num);
             num++;
-            bParams.add(o2.sqlDataProvider());
+            bParams.add(o2.sqlContractId());
             break;
-          case Airport.VAR_ngsildTenant:
-            o2.setNgsildTenant(jsonObject.getString(entityVar));
+          case Contract.VAR_startDate:
+            o2.setStartDate(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_ngsildTenant + "=$" + num);
+            bSql.append(Contract.VAR_startDate + "=$" + num);
             num++;
-            bParams.add(o2.sqlNgsildTenant());
+            bParams.add(o2.sqlStartDate());
             break;
-          case Airport.VAR_dateCreated:
-            o2.setDateCreated(jsonObject.getString(entityVar));
+          case Contract.VAR_investmentYearsTotal:
+            o2.setInvestmentYearsTotal(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_dateCreated + "=$" + num);
+            bSql.append(Contract.VAR_investmentYearsTotal + "=$" + num);
             num++;
-            bParams.add(o2.sqlDateCreated());
+            bParams.add(o2.sqlInvestmentYearsTotal());
             break;
-          case Airport.VAR_ngsildPath:
-            o2.setNgsildPath(jsonObject.getString(entityVar));
+          case Contract.VAR_investmentYears:
+            o2.setInvestmentYears(jsonObject.getJsonArray(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_ngsildPath + "=$" + num);
+            bSql.append(Contract.VAR_investmentYears + "=$" + num);
             num++;
-            bParams.add(o2.sqlNgsildPath());
+            bParams.add(o2.sqlInvestmentYears());
             break;
-          case Airport.VAR_dateModified:
-            o2.setDateModified(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_dateModified + "=$" + num);
-            num++;
-            bParams.add(o2.sqlDateModified());
-            break;
-          case Airport.VAR_ngsildContext:
-            o2.setNgsildContext(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_ngsildContext + "=$" + num);
-            num++;
-            bParams.add(o2.sqlNgsildContext());
-            break;
-          case Airport.VAR_owner:
-            o2.setOwner(jsonObject.getJsonObject(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_owner + "=$" + num);
-            num++;
-            bParams.add(o2.sqlOwner());
-            break;
-          case Airport.VAR_ngsildData:
-            o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_ngsildData + "=$" + num);
-            num++;
-            bParams.add(o2.sqlNgsildData());
-            break;
-          case Airport.VAR_sessionId:
+          case Contract.VAR_sessionId:
             o2.setSessionId(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_sessionId + "=$" + num);
+            bSql.append(Contract.VAR_sessionId + "=$" + num);
             num++;
             bParams.add(o2.sqlSessionId());
             break;
-          case Airport.VAR_seeAlso:
-            o2.setSeeAlso(jsonObject.getString(entityVar));
+          case Contract.VAR_investmentsPerYear:
+            o2.setInvestmentsPerYear(jsonObject.getJsonArray(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_seeAlso + "=$" + num);
+            bSql.append(Contract.VAR_investmentsPerYear + "=$" + num);
             num++;
-            bParams.add(o2.sqlSeeAlso());
+            bParams.add(o2.sqlInvestmentsPerYear());
             break;
-          case Airport.VAR_color:
-            o2.setColor(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_color + "=$" + num);
-            num++;
-            bParams.add(o2.sqlColor());
-            break;
-          case Airport.VAR_userKey:
+          case Contract.VAR_userKey:
             o2.setUserKey(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_userKey + "=$" + num);
+            bSql.append(Contract.VAR_userKey + "=$" + num);
             num++;
             bParams.add(o2.sqlUserKey());
             break;
-          case Airport.VAR_source:
-            o2.setSource(jsonObject.getString(entityVar));
+          case Contract.VAR_investmentsPerYearCumulative:
+            o2.setInvestmentsPerYearCumulative(jsonObject.getJsonArray(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_source + "=$" + num);
+            bSql.append(Contract.VAR_investmentsPerYearCumulative + "=$" + num);
             num++;
-            bParams.add(o2.sqlSource());
+            bParams.add(o2.sqlInvestmentsPerYearCumulative());
             break;
-          case Airport.VAR_objectTitle:
+          case Contract.VAR_assetClasses:
+            o2.setAssetClasses(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_assetClasses + "=$" + num);
+            num++;
+            bParams.add(o2.sqlAssetClasses());
+            break;
+          case Contract.VAR_assetClassesTargetIrr:
+            o2.setAssetClassesTargetIrr(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_assetClassesTargetIrr + "=$" + num);
+            num++;
+            bParams.add(o2.sqlAssetClassesTargetIrr());
+            break;
+          case Contract.VAR_objectTitle:
             o2.setObjectTitle(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_objectTitle + "=$" + num);
+            bSql.append(Contract.VAR_objectTitle + "=$" + num);
             num++;
             bParams.add(o2.sqlObjectTitle());
             break;
-          case Airport.VAR_displayPage:
+          case Contract.VAR_revenueStreams:
+            o2.setRevenueStreams(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_revenueStreams + "=$" + num);
+            num++;
+            bParams.add(o2.sqlRevenueStreams());
+            break;
+          case Contract.VAR_displayPage:
             o2.setDisplayPage(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_displayPage + "=$" + num);
+            bSql.append(Contract.VAR_displayPage + "=$" + num);
             num++;
             bParams.add(o2.sqlDisplayPage());
             break;
-          case Airport.VAR_areaServed:
-            o2.setAreaServed(jsonObject.getJsonObject(entityVar));
+          case Contract.VAR_economicOutputProjections:
+            o2.setEconomicOutputProjections(jsonObject.getJsonArray(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_areaServed + "=$" + num);
+            bSql.append(Contract.VAR_economicOutputProjections + "=$" + num);
             num++;
-            bParams.add(o2.sqlAreaServed());
+            bParams.add(o2.sqlEconomicOutputProjections());
             break;
-          case Airport.VAR_editPage:
+          case Contract.VAR_editPage:
             o2.setEditPage(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_editPage + "=$" + num);
+            bSql.append(Contract.VAR_editPage + "=$" + num);
             num++;
             bParams.add(o2.sqlEditPage());
             break;
-          case Airport.VAR_userPage:
+          case Contract.VAR_totalGdpImpact:
+            o2.setTotalGdpImpact(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_totalGdpImpact + "=$" + num);
+            num++;
+            bParams.add(o2.sqlTotalGdpImpact());
+            break;
+          case Contract.VAR_userPage:
             o2.setUserPage(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_userPage + "=$" + num);
+            bSql.append(Contract.VAR_userPage + "=$" + num);
             num++;
             bParams.add(o2.sqlUserPage());
             break;
-          case Airport.VAR_download:
+          case Contract.VAR_economicOutputProjectionsDataset:
+            o2.setEconomicOutputProjectionsDataset(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_economicOutputProjectionsDataset + "=$" + num);
+            num++;
+            bParams.add(o2.sqlEconomicOutputProjectionsDataset());
+            break;
+          case Contract.VAR_download:
             o2.setDownload(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_download + "=$" + num);
+            bSql.append(Contract.VAR_download + "=$" + num);
             num++;
             bParams.add(o2.sqlDownload());
             break;
@@ -1617,8 +1485,8 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               ).onSuccess(b -> {
             a.handle(Future.succeededFuture());
           }).onFailure(ex -> {
-            RuntimeException ex2 = new RuntimeException("value Airport failed", ex);
-            LOG.error(String.format("relateAirport failed. "), ex2);
+            RuntimeException ex2 = new RuntimeException("value Contract failed", ex);
+            LOG.error(String.format("relateContract failed. "), ex2);
             a.handle(Future.failedFuture(ex2));
           });
         }));
@@ -1627,28 +1495,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         CompositeFuture.all(futures2).onSuccess(b -> {
           promise.complete(o2);
         }).onFailure(ex -> {
-          LOG.error(String.format("sqlPOSTAirport failed. "), ex);
+          LOG.error(String.format("sqlPOSTContract failed. "), ex);
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("sqlPOSTAirport failed. "), ex);
+        LOG.error(String.format("sqlPOSTContract failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("sqlPOSTAirport failed. "), ex);
+      LOG.error(String.format("sqlPOSTContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<ServiceResponse> response200POSTAirport(Airport o) {
+  public Future<ServiceResponse> response200POSTContract(Contract o) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       JsonObject json = JsonObject.mapFrom(o);
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200POSTAirport failed. "), ex);
+      LOG.error(String.format("response200POSTContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -1657,28 +1525,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // DELETE //
 
   @Override
-  public void deleteAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("deleteAirport started. "));
+  public void deleteContract(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("deleteContract started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "DELETE"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1692,7 +1560,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("DELETE")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -1708,47 +1576,47 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             } else {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, true, "DELETE").onSuccess(listAirport -> {
+              searchContractList(siteRequest, false, true, true, "DELETE").onSuccess(listContract -> {
                 try {
                   ApiRequest apiRequest = new ApiRequest();
-                  apiRequest.setRows(listAirport.getRequest().getRows());
-                  apiRequest.setNumFound(listAirport.getResponse().getResponse().getNumFound());
+                  apiRequest.setRows(listContract.getRequest().getRows());
+                  apiRequest.setNumFound(listContract.getResponse().getResponse().getNumFound());
                   apiRequest.setNumPATCH(0L);
                   apiRequest.initDeepApiRequest(siteRequest);
                   siteRequest.setApiRequest_(apiRequest);
                   if(apiRequest.getNumFound() == 1L)
-                    apiRequest.setOriginal(listAirport.first());
-                  apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-                  eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                    apiRequest.setOriginal(listContract.first());
+                  apiRequest.setSolrId(Optional.ofNullable(listContract.first()).map(o2 -> o2.getSolrId()).orElse(null));
+                  eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
 
-                  listDELETEAirport(apiRequest, listAirport).onSuccess(e -> {
-                    response200DELETEAirport(siteRequest).onSuccess(response -> {
-                      LOG.debug(String.format("deleteAirport succeeded. "));
+                  listDELETEContract(apiRequest, listContract).onSuccess(e -> {
+                    response200DELETEContract(siteRequest).onSuccess(response -> {
+                      LOG.debug(String.format("deleteContract succeeded. "));
                       eventHandler.handle(Future.succeededFuture(response));
                     }).onFailure(ex -> {
-                      LOG.error(String.format("deleteAirport failed. "), ex);
+                      LOG.error(String.format("deleteContract failed. "), ex);
                       error(siteRequest, eventHandler, ex);
                     });
                   }).onFailure(ex -> {
-                    LOG.error(String.format("deleteAirport failed. "), ex);
+                    LOG.error(String.format("deleteContract failed. "), ex);
                     error(siteRequest, eventHandler, ex);
                   });
                 } catch(Exception ex) {
-                  LOG.error(String.format("deleteAirport failed. "), ex);
+                  LOG.error(String.format("deleteContract failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 }
               }).onFailure(ex -> {
-                LOG.error(String.format("deleteAirport failed. "), ex);
+                LOG.error(String.format("deleteContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("deleteAirport failed. "), ex);
+            LOG.error(String.format("deleteContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("deleteAirport failed. "), ex);
+        LOG.error(String.format("deleteContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -1756,7 +1624,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("deleteAirport failed. ", ex2));
+          LOG.error(String.format("deleteContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1771,58 +1639,58 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("deleteAirport failed. "), ex);
+        LOG.error(String.format("deleteContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Void> listDELETEAirport(ApiRequest apiRequest, SearchList<Airport> listAirport) {
+  public Future<Void> listDELETEContract(ApiRequest apiRequest, SearchList<Contract> listContract) {
     Promise<Void> promise = Promise.promise();
     List<Future> futures = new ArrayList<>();
-    SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-    listAirport.getList().forEach(o -> {
+    SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
+    listContract.getList().forEach(o -> {
       SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
       siteRequest2.setScopes(siteRequest.getScopes());
       o.setSiteRequest_(siteRequest2);
       siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
       JsonObject jsonObject = JsonObject.mapFrom(o);
-      Airport o2 = jsonObject.mapTo(Airport.class);
+      Contract o2 = jsonObject.mapTo(Contract.class);
       o2.setSiteRequest_(siteRequest2);
       futures.add(Future.future(promise1 -> {
-        deleteAirportFuture(o).onSuccess(a -> {
+        deleteContractFuture(o).onSuccess(a -> {
           promise1.complete();
         }).onFailure(ex -> {
-          LOG.error(String.format("listDELETEAirport failed. "), ex);
+          LOG.error(String.format("listDELETEContract failed. "), ex);
           promise1.tryFail(ex);
         });
       }));
     });
     CompositeFuture.all(futures).onSuccess( a -> {
-      listAirport.next().onSuccess(next -> {
+      listContract.next().onSuccess(next -> {
         if(next) {
-          listDELETEAirport(apiRequest, listAirport).onSuccess(b -> {
+          listDELETEContract(apiRequest, listContract).onSuccess(b -> {
             promise.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("listDELETEAirport failed. "), ex);
+            LOG.error(String.format("listDELETEContract failed. "), ex);
             promise.tryFail(ex);
           });
         } else {
           promise.complete();
         }
       }).onFailure(ex -> {
-        LOG.error(String.format("listDELETEAirport failed. "), ex);
+        LOG.error(String.format("listDELETEContract failed. "), ex);
         promise.tryFail(ex);
       });
     }).onFailure(ex -> {
-      LOG.error(String.format("listDELETEAirport failed. "), ex);
+      LOG.error(String.format("listDELETEContract failed. "), ex);
       promise.tryFail(ex);
     });
     return promise.future();
   }
 
   @Override
-  public void deleteAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void deleteContractFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -1834,10 +1702,10 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             siteRequest.addScopes(scope);
           });
         });
-        searchAirportList(siteRequest, false, true, true, "DELETE").onSuccess(listAirport -> {
+        searchContractList(siteRequest, false, true, true, "DELETE").onSuccess(listContract -> {
           try {
-            Airport o = listAirport.first();
-            if(o != null && listAirport.getResponse().getResponse().getNumFound() == 1) {
+            Contract o = listContract.first();
+            if(o != null && listContract.getResponse().getResponse().getNumFound() == 1) {
               ApiRequest apiRequest = new ApiRequest();
               apiRequest.setRows(1L);
               apiRequest.setNumFound(1L);
@@ -1849,9 +1717,9 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               }
               if(apiRequest.getNumFound() == 1L)
                 apiRequest.setOriginal(o);
-              apiRequest.setId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
-              apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-              deleteAirportFuture(o).onSuccess(o2 -> {
+              apiRequest.setId(Optional.ofNullable(listContract.first()).map(o2 -> o2.getContractId().toString()).orElse(null));
+              apiRequest.setSolrId(Optional.ofNullable(listContract.first()).map(o2 -> o2.getSolrId()).orElse(null));
+              deleteContractFuture(o).onSuccess(o2 -> {
                 eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
               }).onFailure(ex -> {
                 eventHandler.handle(Future.failedFuture(ex));
@@ -1860,42 +1728,42 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
             }
           } catch(Exception ex) {
-            LOG.error(String.format("deleteAirport failed. "), ex);
+            LOG.error(String.format("deleteContract failed. "), ex);
             error(siteRequest, eventHandler, ex);
           }
         }).onFailure(ex -> {
-          LOG.error(String.format("deleteAirport failed. "), ex);
+          LOG.error(String.format("deleteContract failed. "), ex);
           error(siteRequest, eventHandler, ex);
         });
       } catch(Exception ex) {
-        LOG.error(String.format("deleteAirport failed. "), ex);
+        LOG.error(String.format("deleteContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
-      LOG.error(String.format("deleteAirport failed. "), ex);
+      LOG.error(String.format("deleteContract failed. "), ex);
       error(null, eventHandler, ex);
     });
   }
 
-  public Future<Airport> deleteAirportFuture(Airport o) {
+  public Future<Contract> deleteContractFuture(Contract o) {
     SiteRequest siteRequest = o.getSiteRequest_();
-    Promise<Airport> promise = Promise.promise();
+    Promise<Contract> promise = Promise.promise();
 
     try {
       ApiRequest apiRequest = siteRequest.getApiRequest_();
-      Promise<Airport> promise1 = Promise.promise();
+      Promise<Contract> promise1 = Promise.promise();
       pgPool.withTransaction(sqlConnection -> {
         siteRequest.setSqlConnection(sqlConnection);
-        varsAirport(siteRequest).onSuccess(a -> {
-          sqlDELETEAirport(o).onSuccess(airport -> {
-            relateAirport(o).onSuccess(d -> {
-              unindexAirport(o).onSuccess(o2 -> {
+        varsContract(siteRequest).onSuccess(a -> {
+          sqlDELETEContract(o).onSuccess(contract -> {
+            relateContract(o).onSuccess(d -> {
+              unindexContract(o).onSuccess(o2 -> {
                 if(apiRequest != null) {
                   apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
                   if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-                    o2.apiRequestAirport();
+                    o2.apiRequestContract();
                     if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
-                      eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                      eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
                   }
                 }
                 promise1.complete();
@@ -1917,27 +1785,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       }).onFailure(ex -> {
         siteRequest.setSqlConnection(null);
         promise.tryFail(ex);
-      }).compose(airport -> {
-        Promise<Airport> promise2 = Promise.promise();
-        refreshAirport(o).onSuccess(a -> {
+      }).compose(contract -> {
+        Promise<Contract> promise2 = Promise.promise();
+        refreshContract(o).onSuccess(a -> {
           promise2.complete(o);
         }).onFailure(ex -> {
           promise2.tryFail(ex);
         });
         return promise2.future();
-      }).onSuccess(airport -> {
-        promise.complete(airport);
+      }).onSuccess(contract -> {
+        promise.complete(contract);
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("deleteAirportFuture failed. "), ex);
+      LOG.error(String.format("deleteContractFuture failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Void> sqlDELETEAirport(Airport o) {
+  public Future<Void> sqlDELETEContract(Contract o) {
     Promise<Void> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
@@ -1946,11 +1814,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Integer num = 1;
-      StringBuilder bSql = new StringBuilder("DELETE FROM Airport ");
+      StringBuilder bSql = new StringBuilder("DELETE FROM Contract ");
       List<Object> bParams = new ArrayList<Object>();
       Long pk = o.getPk();
       JsonObject jsonObject = siteRequest.getJsonObject();
-      Airport o2 = new Airport();
+      Contract o2 = new Contract();
       o2.setSiteRequest_(siteRequest);
       List<Future> futures1 = new ArrayList<>();
       List<Future> futures2 = new ArrayList<>();
@@ -1971,45 +1839,36 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             ).onSuccess(b -> {
           a.handle(Future.succeededFuture());
         }).onFailure(ex -> {
-          RuntimeException ex2 = new RuntimeException("value Airport failed", ex);
-          LOG.error(String.format("unrelateAirport failed. "), ex2);
+          RuntimeException ex2 = new RuntimeException("value Contract failed", ex);
+          LOG.error(String.format("unrelateContract failed. "), ex2);
           a.handle(Future.failedFuture(ex2));
         });
       }));
       CompositeFuture.all(futures1).onSuccess(a -> {
         CompositeFuture.all(futures2).onSuccess(b -> {
-          if(config.getBoolean(ComputateConfigKeys.ENABLE_CONTEXT_BROKER_SEND)) {
-            cbDeleteEntity(o).onSuccess(c -> {
-              promise.complete();
-            }).onFailure(ex -> {
-              LOG.error(String.format("sqlDELETEAirport failed. "), ex);
-              promise.tryFail(ex);
-            });
-          } else {
-            promise.complete();
-          }
+          promise.complete();
         }).onFailure(ex -> {
-          LOG.error(String.format("sqlDELETEAirport failed. "), ex);
+          LOG.error(String.format("sqlDELETEContract failed. "), ex);
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("sqlDELETEAirport failed. "), ex);
+        LOG.error(String.format("sqlDELETEContract failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("sqlDELETEAirport failed. "), ex);
+      LOG.error(String.format("sqlDELETEContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<ServiceResponse> response200DELETEAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> response200DELETEContract(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       JsonObject json = new JsonObject();
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200DELETEAirport failed. "), ex);
+      LOG.error(String.format("response200DELETEContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -2018,28 +1877,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // PUTImport //
 
   @Override
-  public void putimportAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("putimportAirport started. "));
+  public void putimportContract(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("putimportContract started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "PUT"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2053,7 +1912,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("PUT")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -2076,32 +1935,32 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               apiRequest.setNumPATCH(0L);
               apiRequest.initDeepApiRequest(siteRequest);
               siteRequest.setApiRequest_(apiRequest);
-              eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
-              varsAirport(siteRequest).onSuccess(d -> {
-                listPUTImportAirport(apiRequest, siteRequest).onSuccess(e -> {
-                  response200PUTImportAirport(siteRequest).onSuccess(response -> {
-                    LOG.debug(String.format("putimportAirport succeeded. "));
+              eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
+              varsContract(siteRequest).onSuccess(d -> {
+                listPUTImportContract(apiRequest, siteRequest).onSuccess(e -> {
+                  response200PUTImportContract(siteRequest).onSuccess(response -> {
+                    LOG.debug(String.format("putimportContract succeeded. "));
                     eventHandler.handle(Future.succeededFuture(response));
                   }).onFailure(ex -> {
-                    LOG.error(String.format("putimportAirport failed. "), ex);
+                    LOG.error(String.format("putimportContract failed. "), ex);
                     error(siteRequest, eventHandler, ex);
                   });
                 }).onFailure(ex -> {
-                  LOG.error(String.format("putimportAirport failed. "), ex);
+                  LOG.error(String.format("putimportContract failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("putimportAirport failed. "), ex);
+                LOG.error(String.format("putimportContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("putimportAirport failed. "), ex);
+            LOG.error(String.format("putimportContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("putimportAirport failed. "), ex);
+        LOG.error(String.format("putimportContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -2109,7 +1968,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("putimportAirport failed. ", ex2));
+          LOG.error(String.format("putimportContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2124,13 +1983,13 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("putimportAirport failed. "), ex);
+        LOG.error(String.format("putimportContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Void> listPUTImportAirport(ApiRequest apiRequest, SiteRequest siteRequest) {
+  public Future<Void> listPUTImportContract(ApiRequest apiRequest, SiteRequest siteRequest) {
     Promise<Void> promise = Promise.promise();
     List<Future> futures = new ArrayList<>();
     JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -2155,10 +2014,10 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           params.put("query", query);
           JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
           JsonObject json = new JsonObject().put("context", context);
-          eventBus.request(Airport.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportAirportFuture")).onSuccess(a -> {
+          eventBus.request(Contract.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportContractFuture")).onSuccess(a -> {
             promise1.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("listPUTImportAirport failed. "), ex);
+            LOG.error(String.format("listPUTImportContract failed. "), ex);
             promise1.tryFail(ex);
           });
         }));
@@ -2167,18 +2026,18 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
         promise.complete();
       }).onFailure(ex -> {
-        LOG.error(String.format("listPUTImportAirport failed. "), ex);
+        LOG.error(String.format("listPUTImportContract failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("listPUTImportAirport failed. "), ex);
+      LOG.error(String.format("listPUTImportContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
   @Override
-  public void putimportAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void putimportContractFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -2194,19 +2053,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         apiRequest.setNumPATCH(0L);
         apiRequest.initDeepApiRequest(siteRequest);
         siteRequest.setApiRequest_(apiRequest);
-        String entityShortId = Optional.ofNullable(body.getString(Airport.VAR_entityShortId)).orElse(body.getString(Airport.VAR_solrId));
+        String contractId = Optional.ofNullable(body.getString(Contract.VAR_contractId)).orElse(body.getString(Contract.VAR_solrId));
         if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
           siteRequest.getRequestVars().put( "refresh", "false" );
         }
         pgPool.getConnection().onSuccess(sqlConnection -> {
-          String sqlQuery = String.format("select * from %s WHERE entityShortId=$1", Airport.CLASS_SIMPLE_NAME);
+          String sqlQuery = String.format("select * from %s WHERE contractId=$1", Contract.CLASS_SIMPLE_NAME);
           sqlConnection.preparedQuery(sqlQuery)
-              .execute(Tuple.tuple(Arrays.asList(entityShortId))
+              .execute(Tuple.tuple(Arrays.asList(contractId))
               ).onSuccess(result -> {
             sqlConnection.close().onSuccess(a -> {
               try {
                 if(result.size() >= 1) {
-                  Airport o = new Airport();
+                  Contract o = new Contract();
                   o.setSiteRequest_(siteRequest);
                   for(Row definition : result.value()) {
                     for(Integer i = 0; i < definition.size(); i++) {
@@ -2215,11 +2074,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                         Object columnValue = definition.getValue(i);
                         o.persistForClass(columnName, columnValue);
                       } catch(Exception e) {
-                        LOG.error(String.format("persistAirport failed. "), e);
+                        LOG.error(String.format("persistContract failed. "), e);
                       }
                     }
                   }
-                  Airport o2 = new Airport();
+                  Contract o2 = new Contract();
                   o2.setSiteRequest_(siteRequest);
                   JsonObject body2 = new JsonObject();
                   for(String f : body.fieldNames()) {
@@ -2251,56 +2110,56 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                     } else {
                       o2.persistForClass(f, bodyVal);
                       o2.relateForClass(f, bodyVal);
-                      if(!StringUtils.containsAny(f, "entityShortId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+                      if(!StringUtils.containsAny(f, "contractId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
                         body2.put("set" + StringUtils.capitalize(f), bodyVal);
                     }
                   }
                   for(String f : Optional.ofNullable(o.getSaves()).orElse(new ArrayList<>())) {
                     if(!body.fieldNames().contains(f)) {
-                      if(!StringUtils.containsAny(f, "entityShortId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
+                      if(!StringUtils.containsAny(f, "contractId", "created", "setCreated") && !Objects.equals(o.obtainForClass(f), o2.obtainForClass(f)))
                         body2.putNull("set" + StringUtils.capitalize(f));
                     }
                   }
                   if(result.size() >= 1) {
                     apiRequest.setOriginal(o);
-                    apiRequest.setId(Optional.ofNullable(o.getEntityShortId()).map(v -> v.toString()).orElse(null));
+                    apiRequest.setId(Optional.ofNullable(o.getContractId()).map(v -> v.toString()).orElse(null));
                     apiRequest.setSolrId(o.getSolrId());
                   }
                   siteRequest.setJsonObject(body2);
-                  patchAirportFuture(o, true).onSuccess(b -> {
-                    LOG.debug("Import Airport {} succeeded, modified Airport. ", body.getValue(Airport.VAR_entityShortId));
+                  patchContractFuture(o, true).onSuccess(b -> {
+                    LOG.debug("Import Contract {} succeeded, modified Contract. ", body.getValue(Contract.VAR_contractId));
                     eventHandler.handle(Future.succeededFuture());
                   }).onFailure(ex -> {
-                    LOG.error(String.format("putimportAirportFuture failed. "), ex);
+                    LOG.error(String.format("putimportContractFuture failed. "), ex);
                     eventHandler.handle(Future.failedFuture(ex));
                   });
                 } else {
-                  postAirportFuture(siteRequest, true).onSuccess(b -> {
-                    LOG.debug("Import Airport {} succeeded, created new Airport. ", body.getValue(Airport.VAR_entityShortId));
+                  postContractFuture(siteRequest, true).onSuccess(b -> {
+                    LOG.debug("Import Contract {} succeeded, created new Contract. ", body.getValue(Contract.VAR_contractId));
                     eventHandler.handle(Future.succeededFuture());
                   }).onFailure(ex -> {
-                    LOG.error(String.format("putimportAirportFuture failed. "), ex);
+                    LOG.error(String.format("putimportContractFuture failed. "), ex);
                     eventHandler.handle(Future.failedFuture(ex));
                   });
                 }
               } catch(Exception ex) {
-                LOG.error(String.format("putimportAirportFuture failed. "), ex);
+                LOG.error(String.format("putimportContractFuture failed. "), ex);
                 eventHandler.handle(Future.failedFuture(ex));
               }
             }).onFailure(ex -> {
-              LOG.error(String.format("putimportAirportFuture failed. "), ex);
+              LOG.error(String.format("putimportContractFuture failed. "), ex);
               eventHandler.handle(Future.failedFuture(ex));
             });
           }).onFailure(ex -> {
-            LOG.error(String.format("putimportAirportFuture failed. "), ex);
+            LOG.error(String.format("putimportContractFuture failed. "), ex);
             eventHandler.handle(Future.failedFuture(ex));
           });
         }).onFailure(ex -> {
-          LOG.error(String.format("putimportAirportFuture failed. "), ex);
+          LOG.error(String.format("putimportContractFuture failed. "), ex);
           eventHandler.handle(Future.failedFuture(ex));
         });
       } catch(Exception ex) {
-        LOG.error(String.format("putimportAirportFuture failed. "), ex);
+        LOG.error(String.format("putimportContractFuture failed. "), ex);
         eventHandler.handle(Future.failedFuture(ex));
       }
     }).onFailure(ex -> {
@@ -2308,7 +2167,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("putimportAirport failed. ", ex2));
+          LOG.error(String.format("putimportContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2323,19 +2182,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("putimportAirport failed. "), ex);
+        LOG.error(String.format("putimportContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<ServiceResponse> response200PUTImportAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> response200PUTImportContract(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       JsonObject json = new JsonObject();
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200PUTImportAirport failed. "), ex);
+      LOG.error(String.format("response200PUTImportContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -2344,27 +2203,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // SearchPage //
 
   @Override
-  public void searchpageAirport(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void searchpageContract(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "GET"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2378,30 +2237,30 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, false, "GET").onSuccess(listAirport -> {
-                response200SearchPageAirport(listAirport).onSuccess(response -> {
+              searchContractList(siteRequest, false, true, false, "GET").onSuccess(listContract -> {
+                response200SearchPageContract(listContract).onSuccess(response -> {
                   eventHandler.handle(Future.succeededFuture(response));
-                  LOG.debug(String.format("searchpageAirport succeeded. "));
+                  LOG.debug(String.format("searchpageContract succeeded. "));
                 }).onFailure(ex -> {
-                  LOG.error(String.format("searchpageAirport failed. "), ex);
+                  LOG.error(String.format("searchpageContract failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("searchpageAirport failed. "), ex);
+                LOG.error(String.format("searchpageContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("searchpageAirport failed. "), ex);
+            LOG.error(String.format("searchpageContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("searchpageAirport failed. "), ex);
+        LOG.error(String.format("searchpageContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -2409,7 +2268,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("searchpageAirport failed. ", ex2));
+          LOG.error(String.format("searchpageContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2424,17 +2283,17 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("searchpageAirport failed. "), ex);
+        LOG.error(String.format("searchpageContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public void searchpageAirportPageInit(JsonObject ctx, AirportPage page, SearchList<Airport> listAirport, Promise<Void> promise) {
+  public void searchpageContractPageInit(JsonObject ctx, ContractPage page, SearchList<Contract> listContract, Promise<Void> promise) {
     String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
 
-    ctx.put("enUSUrlSearchPage", String.format("%s%s", siteBaseUrl, "/en-us/search/airport"));
-    ctx.put("enUSUrlPage", String.format("%s%s", siteBaseUrl, "/en-us/search/airport"));
+    ctx.put("enUSUrlSearchPage", String.format("%s%s", siteBaseUrl, "/en-us/search/contract"));
+    ctx.put("enUSUrlPage", String.format("%s%s", siteBaseUrl, "/en-us/search/contract"));
     ctx.put("enUSUrlDisplayPage", Optional.ofNullable(page.getResult()).map(o -> o.getDisplayPage()));
     ctx.put("enUSUrlEditPage", Optional.ofNullable(page.getResult()).map(o -> o.getEditPage()));
     ctx.put("enUSUrlUserPage", Optional.ofNullable(page.getResult()).map(o -> o.getUserPage()));
@@ -2443,19 +2302,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
     promise.complete();
   }
 
-  public String templateUriSearchPageAirport(ServiceRequest serviceRequest, Airport result) {
-    return "en-us/search/airport/AirportSearchPage.htm";
+  public String templateUriSearchPageContract(ServiceRequest serviceRequest, Contract result) {
+    return "en-us/search/contract/ContractSearchPage.htm";
   }
-  public void templateSearchPageAirport(JsonObject ctx, AirportPage page, SearchList<Airport> listAirport, Promise<String> promise) {
+  public void templateSearchPageContract(JsonObject ctx, ContractPage page, SearchList<Contract> listContract, Promise<String> promise) {
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
+      SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
       ServiceRequest serviceRequest = siteRequest.getServiceRequest();
-      Airport result = listAirport.first();
-      String pageTemplateUri = templateUriSearchPageAirport(serviceRequest, result);
+      Contract result = listContract.first();
+      String pageTemplateUri = templateUriSearchPageContract(serviceRequest, result);
       String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
       Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
       if(result == null || !Files.exists(resourceTemplatePath)) {
-        String template = Files.readString(Path.of(siteTemplatePath, "en-us/search/airport/AirportSearchPage.htm"), Charset.forName("UTF-8"));
+        String template = Files.readString(Path.of(siteTemplatePath, "en-us/search/contract/ContractSearchPage.htm"), Charset.forName("UTF-8"));
         String renderedTemplate = jinjava.render(template, ctx.getMap());
         promise.complete(renderedTemplate);
       } else if(pageTemplateUri.endsWith(".md")) {
@@ -2509,67 +2368,67 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         promise.complete(renderedTemplate);
       }
     } catch(Exception ex) {
-      LOG.error(String.format("templateSearchPageAirport failed. "), ex);
+      LOG.error(String.format("templateSearchPageContract failed. "), ex);
       ExceptionUtils.rethrow(ex);
     }
   }
-  public Future<ServiceResponse> response200SearchPageAirport(SearchList<Airport> listAirport) {
+  public Future<ServiceResponse> response200SearchPageContract(SearchList<Contract> listContract) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-      AirportPage page = new AirportPage();
+      SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
+      ContractPage page = new ContractPage();
       MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
       siteRequest.setRequestHeaders(requestHeaders);
 
-      if(listAirport.size() >= 1)
-        siteRequest.setRequestPk(listAirport.get(0).getPk());
-      page.setSearchListAirport_(listAirport);
+      if(listContract.size() >= 1)
+        siteRequest.setRequestPk(listContract.get(0).getPk());
+      page.setSearchListContract_(listContract);
       page.setSiteRequest_(siteRequest);
       page.setServiceRequest(siteRequest.getServiceRequest());
       page.setWebClient(webClient);
       page.setVertx(vertx);
-      page.promiseDeepAirportPage(siteRequest).onSuccess(a -> {
+      page.promiseDeepContractPage(siteRequest).onSuccess(a -> {
         try {
           JsonObject ctx = ConfigKeys.getPageContext(config);
           ctx.mergeIn(JsonObject.mapFrom(page));
           Promise<Void> promise1 = Promise.promise();
-          searchpageAirportPageInit(ctx, page, listAirport, promise1);
+          searchpageContractPageInit(ctx, page, listContract, promise1);
           promise1.future().onSuccess(b -> {
             try {
               Promise<String> promise2 = Promise.promise();
-              templateSearchPageAirport(ctx, page, listAirport, promise2);
+              templateSearchPageContract(ctx, page, listContract, promise2);
               promise2.future().onSuccess(renderedTemplate -> {
                 try {
                   Buffer buffer = Buffer.buffer(renderedTemplate);
                   promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
                 } catch(Throwable ex) {
-                  LOG.error(String.format("response200SearchPageAirport failed. "), ex);
+                  LOG.error(String.format("response200SearchPageContract failed. "), ex);
                   promise.fail(ex);
                 }
               }).onFailure(ex -> {
                 promise.fail(ex);
               });
             } catch(Throwable ex) {
-              LOG.error(String.format("response200SearchPageAirport failed. "), ex);
+              LOG.error(String.format("response200SearchPageContract failed. "), ex);
               promise.tryFail(ex);
             }
           }).onFailure(ex -> {
             promise.tryFail(ex);
           });
         } catch(Exception ex) {
-          LOG.error(String.format("response200SearchPageAirport failed. "), ex);
+          LOG.error(String.format("response200SearchPageContract failed. "), ex);
           promise.tryFail(ex);
         }
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("response200SearchPageAirport failed. "), ex);
+      LOG.error(String.format("response200SearchPageContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
-  public void responsePivotSearchPageAirport(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+  public void responsePivotSearchPageContract(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
     if(pivots != null) {
       for(SolrResponse.Pivot pivotField : pivots) {
         String entityIndexed = pivotField.getField();
@@ -2598,7 +2457,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         if(pivotFields2 != null) {
           JsonArray pivotArray2 = new JsonArray();
           pivotJson.put("pivot", pivotArray2);
-          responsePivotSearchPageAirport(pivotFields2, pivotArray2);
+          responsePivotSearchPageContract(pivotFields2, pivotArray2);
         }
       }
     }
@@ -2607,27 +2466,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // EditPage //
 
   @Override
-  public void editpageAirport(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void editpageContract(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "GET"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
               , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2641,30 +2500,30 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, false, "GET").onSuccess(listAirport -> {
-                response200EditPageAirport(listAirport).onSuccess(response -> {
+              searchContractList(siteRequest, false, true, false, "GET").onSuccess(listContract -> {
+                response200EditPageContract(listContract).onSuccess(response -> {
                   eventHandler.handle(Future.succeededFuture(response));
-                  LOG.debug(String.format("editpageAirport succeeded. "));
+                  LOG.debug(String.format("editpageContract succeeded. "));
                 }).onFailure(ex -> {
-                  LOG.error(String.format("editpageAirport failed. "), ex);
+                  LOG.error(String.format("editpageContract failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("editpageAirport failed. "), ex);
+                LOG.error(String.format("editpageContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
             });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("editpageAirport failed. "), ex);
+            LOG.error(String.format("editpageContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("editpageAirport failed. "), ex);
+        LOG.error(String.format("editpageContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -2672,7 +2531,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("editpageAirport failed. ", ex2));
+          LOG.error(String.format("editpageContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2687,16 +2546,16 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("editpageAirport failed. "), ex);
+        LOG.error(String.format("editpageContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public void editpageAirportPageInit(JsonObject ctx, AirportPage page, SearchList<Airport> listAirport, Promise<Void> promise) {
+  public void editpageContractPageInit(JsonObject ctx, ContractPage page, SearchList<Contract> listContract, Promise<Void> promise) {
     String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
 
-    ctx.put("enUSUrlSearchPage", String.format("%s%s", siteBaseUrl, "/en-us/search/airport"));
+    ctx.put("enUSUrlSearchPage", String.format("%s%s", siteBaseUrl, "/en-us/search/contract"));
     ctx.put("enUSUrlDisplayPage", Optional.ofNullable(page.getResult()).map(o -> o.getDisplayPage()));
     ctx.put("enUSUrlEditPage", Optional.ofNullable(page.getResult()).map(o -> o.getEditPage()));
     ctx.put("enUSUrlPage", Optional.ofNullable(page.getResult()).map(o -> o.getEditPage()));
@@ -2706,19 +2565,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
     promise.complete();
   }
 
-  public String templateUriEditPageAirport(ServiceRequest serviceRequest, Airport result) {
-    return "en-us/edit/airport/AirportEditPage.htm";
+  public String templateUriEditPageContract(ServiceRequest serviceRequest, Contract result) {
+    return "en-us/edit/contract/ContractEditPage.htm";
   }
-  public void templateEditPageAirport(JsonObject ctx, AirportPage page, SearchList<Airport> listAirport, Promise<String> promise) {
+  public void templateEditPageContract(JsonObject ctx, ContractPage page, SearchList<Contract> listContract, Promise<String> promise) {
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
+      SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
       ServiceRequest serviceRequest = siteRequest.getServiceRequest();
-      Airport result = listAirport.first();
-      String pageTemplateUri = templateUriEditPageAirport(serviceRequest, result);
+      Contract result = listContract.first();
+      String pageTemplateUri = templateUriEditPageContract(serviceRequest, result);
       String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
       Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
       if(result == null || !Files.exists(resourceTemplatePath)) {
-        String template = Files.readString(Path.of(siteTemplatePath, "en-us/edit/airport/AirportEditPage.htm"), Charset.forName("UTF-8"));
+        String template = Files.readString(Path.of(siteTemplatePath, "en-us/edit/contract/ContractEditPage.htm"), Charset.forName("UTF-8"));
         String renderedTemplate = jinjava.render(template, ctx.getMap());
         promise.complete(renderedTemplate);
       } else if(pageTemplateUri.endsWith(".md")) {
@@ -2772,67 +2631,67 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         promise.complete(renderedTemplate);
       }
     } catch(Exception ex) {
-      LOG.error(String.format("templateEditPageAirport failed. "), ex);
+      LOG.error(String.format("templateEditPageContract failed. "), ex);
       ExceptionUtils.rethrow(ex);
     }
   }
-  public Future<ServiceResponse> response200EditPageAirport(SearchList<Airport> listAirport) {
+  public Future<ServiceResponse> response200EditPageContract(SearchList<Contract> listContract) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-      AirportPage page = new AirportPage();
+      SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
+      ContractPage page = new ContractPage();
       MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
       siteRequest.setRequestHeaders(requestHeaders);
 
-      if(listAirport.size() >= 1)
-        siteRequest.setRequestPk(listAirport.get(0).getPk());
-      page.setSearchListAirport_(listAirport);
+      if(listContract.size() >= 1)
+        siteRequest.setRequestPk(listContract.get(0).getPk());
+      page.setSearchListContract_(listContract);
       page.setSiteRequest_(siteRequest);
       page.setServiceRequest(siteRequest.getServiceRequest());
       page.setWebClient(webClient);
       page.setVertx(vertx);
-      page.promiseDeepAirportPage(siteRequest).onSuccess(a -> {
+      page.promiseDeepContractPage(siteRequest).onSuccess(a -> {
         try {
           JsonObject ctx = ConfigKeys.getPageContext(config);
           ctx.mergeIn(JsonObject.mapFrom(page));
           Promise<Void> promise1 = Promise.promise();
-          editpageAirportPageInit(ctx, page, listAirport, promise1);
+          editpageContractPageInit(ctx, page, listContract, promise1);
           promise1.future().onSuccess(b -> {
             try {
               Promise<String> promise2 = Promise.promise();
-              templateEditPageAirport(ctx, page, listAirport, promise2);
+              templateEditPageContract(ctx, page, listContract, promise2);
               promise2.future().onSuccess(renderedTemplate -> {
                 try {
                   Buffer buffer = Buffer.buffer(renderedTemplate);
                   promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
                 } catch(Throwable ex) {
-                  LOG.error(String.format("response200EditPageAirport failed. "), ex);
+                  LOG.error(String.format("response200EditPageContract failed. "), ex);
                   promise.fail(ex);
                 }
               }).onFailure(ex -> {
                 promise.fail(ex);
               });
             } catch(Throwable ex) {
-              LOG.error(String.format("response200EditPageAirport failed. "), ex);
+              LOG.error(String.format("response200EditPageContract failed. "), ex);
               promise.tryFail(ex);
             }
           }).onFailure(ex -> {
             promise.tryFail(ex);
           });
         } catch(Exception ex) {
-          LOG.error(String.format("response200EditPageAirport failed. "), ex);
+          LOG.error(String.format("response200EditPageContract failed. "), ex);
           promise.tryFail(ex);
         }
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("response200EditPageAirport failed. "), ex);
+      LOG.error(String.format("response200EditPageContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
-  public void responsePivotEditPageAirport(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+  public void responsePivotEditPageContract(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
     if(pivots != null) {
       for(SolrResponse.Pivot pivotField : pivots) {
         String entityIndexed = pivotField.getField();
@@ -2861,7 +2720,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         if(pivotFields2 != null) {
           JsonArray pivotArray2 = new JsonArray();
           pivotJson.put("pivot", pivotArray2);
-          responsePivotEditPageAirport(pivotFields2, pivotArray2);
+          responsePivotEditPageContract(pivotFields2, pivotArray2);
         }
       }
     }
@@ -2870,28 +2729,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // DELETEFilter //
 
   @Override
-  public void deletefilterAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("deletefilterAirport started. "));
+  public void deletefilterContract(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("deletefilterContract started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
-        String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String contractId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("contractId");
+        String CONTRACT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("CONTRACT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
-        if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Contract.CLASS_AUTH_RESOURCE, "Admin"));
+        if(contractId != null)
+          form.add("permission", String.format("%s-%s#%s", Contract.CLASS_AUTH_RESOURCE, contractId, "DELETE"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2905,7 +2764,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "CONTRACT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("DELETE")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -2921,47 +2780,47 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             } else {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, true, "DELETE").onSuccess(listAirport -> {
+              searchContractList(siteRequest, false, true, true, "DELETE").onSuccess(listContract -> {
                 try {
                   ApiRequest apiRequest = new ApiRequest();
-                  apiRequest.setRows(listAirport.getRequest().getRows());
-                  apiRequest.setNumFound(listAirport.getResponse().getResponse().getNumFound());
+                  apiRequest.setRows(listContract.getRequest().getRows());
+                  apiRequest.setNumFound(listContract.getResponse().getResponse().getNumFound());
                   apiRequest.setNumPATCH(0L);
                   apiRequest.initDeepApiRequest(siteRequest);
                   siteRequest.setApiRequest_(apiRequest);
                   if(apiRequest.getNumFound() == 1L)
-                    apiRequest.setOriginal(listAirport.first());
-                  apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-                  eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                    apiRequest.setOriginal(listContract.first());
+                  apiRequest.setSolrId(Optional.ofNullable(listContract.first()).map(o2 -> o2.getSolrId()).orElse(null));
+                  eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
 
-                  listDELETEFilterAirport(apiRequest, listAirport).onSuccess(e -> {
-                    response200DELETEFilterAirport(siteRequest).onSuccess(response -> {
-                      LOG.debug(String.format("deletefilterAirport succeeded. "));
+                  listDELETEFilterContract(apiRequest, listContract).onSuccess(e -> {
+                    response200DELETEFilterContract(siteRequest).onSuccess(response -> {
+                      LOG.debug(String.format("deletefilterContract succeeded. "));
                       eventHandler.handle(Future.succeededFuture(response));
                     }).onFailure(ex -> {
-                      LOG.error(String.format("deletefilterAirport failed. "), ex);
+                      LOG.error(String.format("deletefilterContract failed. "), ex);
                       error(siteRequest, eventHandler, ex);
                     });
                   }).onFailure(ex -> {
-                    LOG.error(String.format("deletefilterAirport failed. "), ex);
+                    LOG.error(String.format("deletefilterContract failed. "), ex);
                     error(siteRequest, eventHandler, ex);
                   });
                 } catch(Exception ex) {
-                  LOG.error(String.format("deletefilterAirport failed. "), ex);
+                  LOG.error(String.format("deletefilterContract failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 }
               }).onFailure(ex -> {
-                LOG.error(String.format("deletefilterAirport failed. "), ex);
+                LOG.error(String.format("deletefilterContract failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("deletefilterAirport failed. "), ex);
+            LOG.error(String.format("deletefilterContract failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("deletefilterAirport failed. "), ex);
+        LOG.error(String.format("deletefilterContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -2969,7 +2828,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("deletefilterAirport failed. ", ex2));
+          LOG.error(String.format("deletefilterContract failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2984,58 +2843,58 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("deletefilterAirport failed. "), ex);
+        LOG.error(String.format("deletefilterContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Void> listDELETEFilterAirport(ApiRequest apiRequest, SearchList<Airport> listAirport) {
+  public Future<Void> listDELETEFilterContract(ApiRequest apiRequest, SearchList<Contract> listContract) {
     Promise<Void> promise = Promise.promise();
     List<Future> futures = new ArrayList<>();
-    SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-    listAirport.getList().forEach(o -> {
+    SiteRequest siteRequest = listContract.getSiteRequest_(SiteRequest.class);
+    listContract.getList().forEach(o -> {
       SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
       siteRequest2.setScopes(siteRequest.getScopes());
       o.setSiteRequest_(siteRequest2);
       siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
       JsonObject jsonObject = JsonObject.mapFrom(o);
-      Airport o2 = jsonObject.mapTo(Airport.class);
+      Contract o2 = jsonObject.mapTo(Contract.class);
       o2.setSiteRequest_(siteRequest2);
       futures.add(Future.future(promise1 -> {
-        deletefilterAirportFuture(o).onSuccess(a -> {
+        deletefilterContractFuture(o).onSuccess(a -> {
           promise1.complete();
         }).onFailure(ex -> {
-          LOG.error(String.format("listDELETEFilterAirport failed. "), ex);
+          LOG.error(String.format("listDELETEFilterContract failed. "), ex);
           promise1.tryFail(ex);
         });
       }));
     });
     CompositeFuture.all(futures).onSuccess( a -> {
-      listAirport.next().onSuccess(next -> {
+      listContract.next().onSuccess(next -> {
         if(next) {
-          listDELETEFilterAirport(apiRequest, listAirport).onSuccess(b -> {
+          listDELETEFilterContract(apiRequest, listContract).onSuccess(b -> {
             promise.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("listDELETEFilterAirport failed. "), ex);
+            LOG.error(String.format("listDELETEFilterContract failed. "), ex);
             promise.tryFail(ex);
           });
         } else {
           promise.complete();
         }
       }).onFailure(ex -> {
-        LOG.error(String.format("listDELETEFilterAirport failed. "), ex);
+        LOG.error(String.format("listDELETEFilterContract failed. "), ex);
         promise.tryFail(ex);
       });
     }).onFailure(ex -> {
-      LOG.error(String.format("listDELETEFilterAirport failed. "), ex);
+      LOG.error(String.format("listDELETEFilterContract failed. "), ex);
       promise.tryFail(ex);
     });
     return promise.future();
   }
 
   @Override
-  public void deletefilterAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void deletefilterContractFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -3047,10 +2906,10 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             siteRequest.addScopes(scope);
           });
         });
-        searchAirportList(siteRequest, false, true, true, "DELETE").onSuccess(listAirport -> {
+        searchContractList(siteRequest, false, true, true, "DELETE").onSuccess(listContract -> {
           try {
-            Airport o = listAirport.first();
-            if(o != null && listAirport.getResponse().getResponse().getNumFound() == 1) {
+            Contract o = listContract.first();
+            if(o != null && listContract.getResponse().getResponse().getNumFound() == 1) {
               ApiRequest apiRequest = new ApiRequest();
               apiRequest.setRows(1L);
               apiRequest.setNumFound(1L);
@@ -3062,9 +2921,9 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               }
               if(apiRequest.getNumFound() == 1L)
                 apiRequest.setOriginal(o);
-              apiRequest.setId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
-              apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-              deletefilterAirportFuture(o).onSuccess(o2 -> {
+              apiRequest.setId(Optional.ofNullable(listContract.first()).map(o2 -> o2.getContractId().toString()).orElse(null));
+              apiRequest.setSolrId(Optional.ofNullable(listContract.first()).map(o2 -> o2.getSolrId()).orElse(null));
+              deletefilterContractFuture(o).onSuccess(o2 -> {
                 eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
               }).onFailure(ex -> {
                 eventHandler.handle(Future.failedFuture(ex));
@@ -3073,42 +2932,42 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
             }
           } catch(Exception ex) {
-            LOG.error(String.format("deletefilterAirport failed. "), ex);
+            LOG.error(String.format("deletefilterContract failed. "), ex);
             error(siteRequest, eventHandler, ex);
           }
         }).onFailure(ex -> {
-          LOG.error(String.format("deletefilterAirport failed. "), ex);
+          LOG.error(String.format("deletefilterContract failed. "), ex);
           error(siteRequest, eventHandler, ex);
         });
       } catch(Exception ex) {
-        LOG.error(String.format("deletefilterAirport failed. "), ex);
+        LOG.error(String.format("deletefilterContract failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
-      LOG.error(String.format("deletefilterAirport failed. "), ex);
+      LOG.error(String.format("deletefilterContract failed. "), ex);
       error(null, eventHandler, ex);
     });
   }
 
-  public Future<Airport> deletefilterAirportFuture(Airport o) {
+  public Future<Contract> deletefilterContractFuture(Contract o) {
     SiteRequest siteRequest = o.getSiteRequest_();
-    Promise<Airport> promise = Promise.promise();
+    Promise<Contract> promise = Promise.promise();
 
     try {
       ApiRequest apiRequest = siteRequest.getApiRequest_();
-      Promise<Airport> promise1 = Promise.promise();
+      Promise<Contract> promise1 = Promise.promise();
       pgPool.withTransaction(sqlConnection -> {
         siteRequest.setSqlConnection(sqlConnection);
-        varsAirport(siteRequest).onSuccess(a -> {
-          sqlDELETEFilterAirport(o).onSuccess(airport -> {
-            relateAirport(o).onSuccess(d -> {
-              unindexAirport(o).onSuccess(o2 -> {
+        varsContract(siteRequest).onSuccess(a -> {
+          sqlDELETEFilterContract(o).onSuccess(contract -> {
+            relateContract(o).onSuccess(d -> {
+              unindexContract(o).onSuccess(o2 -> {
                 if(apiRequest != null) {
                   apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
                   if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-                    o2.apiRequestAirport();
+                    o2.apiRequestContract();
                     if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
-                      eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                      eventBus.publish("websocketContract", JsonObject.mapFrom(apiRequest).toString());
                   }
                 }
                 promise1.complete();
@@ -3130,27 +2989,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       }).onFailure(ex -> {
         siteRequest.setSqlConnection(null);
         promise.tryFail(ex);
-      }).compose(airport -> {
-        Promise<Airport> promise2 = Promise.promise();
-        refreshAirport(o).onSuccess(a -> {
+      }).compose(contract -> {
+        Promise<Contract> promise2 = Promise.promise();
+        refreshContract(o).onSuccess(a -> {
           promise2.complete(o);
         }).onFailure(ex -> {
           promise2.tryFail(ex);
         });
         return promise2.future();
-      }).onSuccess(airport -> {
-        promise.complete(airport);
+      }).onSuccess(contract -> {
+        promise.complete(contract);
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("deletefilterAirportFuture failed. "), ex);
+      LOG.error(String.format("deletefilterContractFuture failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Void> sqlDELETEFilterAirport(Airport o) {
+  public Future<Void> sqlDELETEFilterContract(Contract o) {
     Promise<Void> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
@@ -3159,11 +3018,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Integer num = 1;
-      StringBuilder bSql = new StringBuilder("DELETE FROM Airport ");
+      StringBuilder bSql = new StringBuilder("DELETE FROM Contract ");
       List<Object> bParams = new ArrayList<Object>();
       Long pk = o.getPk();
       JsonObject jsonObject = siteRequest.getJsonObject();
-      Airport o2 = new Airport();
+      Contract o2 = new Contract();
       o2.setSiteRequest_(siteRequest);
       List<Future> futures1 = new ArrayList<>();
       List<Future> futures2 = new ArrayList<>();
@@ -3184,45 +3043,36 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             ).onSuccess(b -> {
           a.handle(Future.succeededFuture());
         }).onFailure(ex -> {
-          RuntimeException ex2 = new RuntimeException("value Airport failed", ex);
-          LOG.error(String.format("unrelateAirport failed. "), ex2);
+          RuntimeException ex2 = new RuntimeException("value Contract failed", ex);
+          LOG.error(String.format("unrelateContract failed. "), ex2);
           a.handle(Future.failedFuture(ex2));
         });
       }));
       CompositeFuture.all(futures1).onSuccess(a -> {
         CompositeFuture.all(futures2).onSuccess(b -> {
-          if(config.getBoolean(ComputateConfigKeys.ENABLE_CONTEXT_BROKER_SEND)) {
-            cbDeleteEntity(o).onSuccess(c -> {
-              promise.complete();
-            }).onFailure(ex -> {
-              LOG.error(String.format("sqlDELETEFilterAirport failed. "), ex);
-              promise.tryFail(ex);
-            });
-          } else {
-            promise.complete();
-          }
+          promise.complete();
         }).onFailure(ex -> {
-          LOG.error(String.format("sqlDELETEFilterAirport failed. "), ex);
+          LOG.error(String.format("sqlDELETEFilterContract failed. "), ex);
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("sqlDELETEFilterAirport failed. "), ex);
+        LOG.error(String.format("sqlDELETEFilterContract failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("sqlDELETEFilterAirport failed. "), ex);
+      LOG.error(String.format("sqlDELETEFilterContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<ServiceResponse> response200DELETEFilterAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> response200DELETEFilterContract(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       JsonObject json = new JsonObject();
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200DELETEFilterAirport failed. "), ex);
+      LOG.error(String.format("response200DELETEFilterContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -3230,78 +3080,78 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 
   // General //
 
-  public Future<Airport> createAirport(SiteRequest siteRequest) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Contract> createContract(SiteRequest siteRequest) {
+    Promise<Contract> promise = Promise.promise();
     try {
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       String userId = siteRequest.getUserId();
       Long userKey = siteRequest.getUserKey();
       ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
 
-      sqlConnection.preparedQuery("INSERT INTO Airport(created, userKey) VALUES($1, $2) RETURNING pk")
+      sqlConnection.preparedQuery("INSERT INTO Contract(created, userKey) VALUES($1, $2) RETURNING pk")
           .collecting(Collectors.toList())
           .execute(Tuple.of(created.toOffsetDateTime(), userKey)).onSuccess(result -> {
         Row createLine = result.value().stream().findFirst().orElseGet(() -> null);
         Long pk = createLine.getLong(0);
-        Airport o = new Airport();
+        Contract o = new Contract();
         o.setPk(pk);
         o.setSiteRequest_(siteRequest);
         promise.complete(o);
       }).onFailure(ex -> {
         RuntimeException ex2 = new RuntimeException(ex);
-        LOG.error("createAirport failed. ", ex2);
+        LOG.error("createContract failed. ", ex2);
         promise.tryFail(ex2);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("createAirport failed. "), ex);
+      LOG.error(String.format("createContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public void searchAirportQ(SearchList<Airport> searchList, String entityVar, String valueIndexed, String varIndexed) {
+  public void searchContractQ(SearchList<Contract> searchList, String entityVar, String valueIndexed, String varIndexed) {
     searchList.q(varIndexed + ":" + ("*".equals(valueIndexed) ? valueIndexed : SearchTool.escapeQueryChars(valueIndexed)));
     if(!"*".equals(entityVar)) {
     }
   }
 
-  public String searchAirportFq(SearchList<Airport> searchList, String entityVar, String valueIndexed, String varIndexed) {
+  public String searchContractFq(SearchList<Contract> searchList, String entityVar, String valueIndexed, String varIndexed) {
     if(varIndexed == null)
       throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
     if(StringUtils.startsWith(valueIndexed, "[")) {
       String[] fqs = StringUtils.substringAfter(StringUtils.substringBeforeLast(valueIndexed, "]"), "[").split(" TO ");
       if(fqs.length != 2)
         throw new RuntimeException(String.format("\"%s\" invalid range query. ", valueIndexed));
-      String fq1 = fqs[0].equals("*") ? fqs[0] : Airport.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
-      String fq2 = fqs[1].equals("*") ? fqs[1] : Airport.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
+      String fq1 = fqs[0].equals("*") ? fqs[0] : Contract.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
+      String fq2 = fqs[1].equals("*") ? fqs[1] : Contract.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
        return varIndexed + ":[" + fq1 + " TO " + fq2 + "]";
     } else {
-      return varIndexed + ":" + SearchTool.escapeQueryChars(Airport.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
+      return varIndexed + ":" + SearchTool.escapeQueryChars(Contract.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
     }
   }
 
-  public void searchAirportSort(SearchList<Airport> searchList, String entityVar, String valueIndexed, String varIndexed) {
+  public void searchContractSort(SearchList<Contract> searchList, String entityVar, String valueIndexed, String varIndexed) {
     if(varIndexed == null)
       throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
     searchList.sort(varIndexed, valueIndexed);
   }
 
-  public void searchAirportRows(SearchList<Airport> searchList, Long valueRows) {
+  public void searchContractRows(SearchList<Contract> searchList, Long valueRows) {
       searchList.rows(valueRows != null ? valueRows : 10L);
   }
 
-  public void searchAirportStart(SearchList<Airport> searchList, Long valueStart) {
+  public void searchContractStart(SearchList<Contract> searchList, Long valueStart) {
     searchList.start(valueStart);
   }
 
-  public void searchAirportVar(SearchList<Airport> searchList, String var, String value) {
+  public void searchContractVar(SearchList<Contract> searchList, String var, String value) {
     searchList.getSiteRequest_(SiteRequest.class).getRequestVars().put(var, value);
   }
 
-  public void searchAirportUri(SearchList<Airport> searchList) {
+  public void searchContractUri(SearchList<Contract> searchList) {
   }
 
-  public Future<ServiceResponse> varsAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> varsContract(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       ServiceRequest serviceRequest = siteRequest.getServiceRequest();
@@ -3319,25 +3169,25 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             siteRequest.getRequestVars().put(entityVar, valueIndexed);
           }
         } catch(Exception ex) {
-          LOG.error(String.format("searchAirport failed. "), ex);
+          LOG.error(String.format("searchContract failed. "), ex);
           promise.tryFail(ex);
         }
       });
       promise.complete();
     } catch(Exception ex) {
-      LOG.error(String.format("searchAirport failed. "), ex);
+      LOG.error(String.format("searchContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<SearchList<Airport>> searchAirportList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, String scope) {
-    Promise<SearchList<Airport>> promise = Promise.promise();
+  public Future<SearchList<Contract>> searchContractList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, String scope) {
+    Promise<SearchList<Contract>> promise = Promise.promise();
     try {
       ServiceRequest serviceRequest = siteRequest.getServiceRequest();
       String entityListStr = siteRequest.getServiceRequest().getParams().getJsonObject("query").getString("fl");
       String[] entityList = entityListStr == null ? null : entityListStr.split(",\\s*");
-      SearchList<Airport> searchList = new SearchList<Airport>();
+      SearchList<Contract> searchList = new SearchList<Contract>();
       searchList.setScope(scope);
       String facetRange = null;
       Date facetRangeStart = null;
@@ -3348,18 +3198,18 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       searchList.setPopulate(populate);
       searchList.setStore(store);
       searchList.q("*:*");
-      searchList.setC(Airport.class);
+      searchList.setC(Contract.class);
       searchList.setSiteRequest_(siteRequest);
       searchList.facetMinCount(1);
       if(entityList != null) {
         for(String v : entityList) {
-          searchList.fl(Airport.varIndexedAirport(v));
+          searchList.fl(Contract.varIndexedContract(v));
         }
       }
 
-      String entityShortId = serviceRequest.getParams().getJsonObject("path").getString("entityShortId");
-      if(entityShortId != null) {
-        searchList.fq("entityShortId_docvalues_string:" + SearchTool.escapeQueryChars(entityShortId));
+      String contractId = serviceRequest.getParams().getJsonObject("path").getString("contractId");
+      if(contractId != null) {
+        searchList.fq("contractId_docvalues_string:" + SearchTool.escapeQueryChars(contractId));
       }
 
       for(String paramName : serviceRequest.getParams().getJsonObject("query").fieldNames()) {
@@ -3382,7 +3232,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               String[] varsIndexed = new String[entityVars.length];
               for(Integer i = 0; i < entityVars.length; i++) {
                 entityVar = entityVars[i];
-                varsIndexed[i] = Airport.varIndexedAirport(entityVar);
+                varsIndexed[i] = Contract.varIndexedContract(entityVar);
               }
               searchList.facetPivot((solrLocalParams == null ? "" : solrLocalParams) + StringUtils.join(varsIndexed, ","));
             }
@@ -3394,8 +3244,8 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 while(mQ.find()) {
                   entityVar = mQ.group(1).trim();
                   valueIndexed = mQ.group(2).trim();
-                  varIndexed = Airport.varIndexedAirport(entityVar);
-                  String entityQ = searchAirportFq(searchList, entityVar, valueIndexed, varIndexed);
+                  varIndexed = Contract.varIndexedContract(entityVar);
+                  String entityQ = searchContractFq(searchList, entityVar, valueIndexed, varIndexed);
                   mQ.appendReplacement(sb, entityQ);
                 }
                 if(!sb.isEmpty()) {
@@ -3408,8 +3258,8 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 while(mFq.find()) {
                   entityVar = mFq.group(1).trim();
                   valueIndexed = mFq.group(2).trim();
-                  varIndexed = Airport.varIndexedAirport(entityVar);
-                  String entityFq = searchAirportFq(searchList, entityVar, valueIndexed, varIndexed);
+                  varIndexed = Contract.varIndexedContract(entityVar);
+                  String entityFq = searchContractFq(searchList, entityVar, valueIndexed, varIndexed);
                   mFq.appendReplacement(sb, entityFq);
                 }
                 if(!sb.isEmpty()) {
@@ -3419,14 +3269,14 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               } else if(paramName.equals("sort")) {
                 entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, " "));
                 valueIndexed = StringUtils.trim(StringUtils.substringAfter((String)paramObject, " "));
-                varIndexed = Airport.varIndexedAirport(entityVar);
-                searchAirportSort(searchList, entityVar, valueIndexed, varIndexed);
+                varIndexed = Contract.varIndexedContract(entityVar);
+                searchContractSort(searchList, entityVar, valueIndexed, varIndexed);
               } else if(paramName.equals("start")) {
                 valueStart = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-                searchAirportStart(searchList, valueStart);
+                searchContractStart(searchList, valueStart);
               } else if(paramName.equals("rows")) {
                 valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-                searchAirportRows(searchList, valueRows);
+                searchContractRows(searchList, valueRows);
               } else if(paramName.equals("stats")) {
                 searchList.stats((Boolean)paramObject);
               } else if(paramName.equals("stats.field")) {
@@ -3434,7 +3284,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 if(mStats.find()) {
                   String solrLocalParams = mStats.group(1);
                   entityVar = mStats.group(2).trim();
-                  varIndexed = Airport.varIndexedAirport(entityVar);
+                  varIndexed = Contract.varIndexedContract(entityVar);
                   searchList.statsField((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
                   statsField = entityVar;
                   statsFieldIndexed = varIndexed;
@@ -3460,25 +3310,25 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 if(mFacetRange.find()) {
                   String solrLocalParams = mFacetRange.group(1);
                   entityVar = mFacetRange.group(2).trim();
-                  varIndexed = Airport.varIndexedAirport(entityVar);
+                  varIndexed = Contract.varIndexedContract(entityVar);
                   searchList.facetRange((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
                   facetRange = entityVar;
                 }
               } else if(paramName.equals("facet.field")) {
                 entityVar = (String)paramObject;
-                varIndexed = Airport.varIndexedAirport(entityVar);
+                varIndexed = Contract.varIndexedContract(entityVar);
                 if(varIndexed != null)
                   searchList.facetField(varIndexed);
               } else if(paramName.equals("var")) {
                 entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, ":"));
                 valueIndexed = URLDecoder.decode(StringUtils.trim(StringUtils.substringAfter((String)paramObject, ":")), "UTF-8");
-                searchAirportVar(searchList, entityVar, valueIndexed);
+                searchContractVar(searchList, entityVar, valueIndexed);
               } else if(paramName.equals("cursorMark")) {
                 valueCursorMark = (String)paramObject;
                 searchList.cursorMark((String)paramObject);
               }
             }
-            searchAirportUri(searchList);
+            searchContractUri(searchList);
           }
         } catch(Exception e) {
           ExceptionUtils.rethrow(e);
@@ -3493,7 +3343,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       String facetRangeGap2 = facetRangeGap;
       String statsField2 = statsField;
       String statsFieldIndexed2 = statsFieldIndexed;
-      searchAirport2(siteRequest, populate, store, modify, searchList);
+      searchContract2(siteRequest, populate, store, modify, searchList);
       searchList.promiseDeepForClass(siteRequest).onSuccess(searchList2 -> {
         if(facetRange2 != null && statsField2 != null && facetRange2.equals(statsField2)) {
           StatsField stats = searchList.getResponse().getStats().getStatsFields().get(statsFieldIndexed2);
@@ -3529,32 +3379,32 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           searchList.query().onSuccess(b -> {
             promise.complete(searchList);
           }).onFailure(ex -> {
-            LOG.error(String.format("searchAirport failed. "), ex);
+            LOG.error(String.format("searchContract failed. "), ex);
             promise.tryFail(ex);
           });
         } else {
           promise.complete(searchList);
         }
       }).onFailure(ex -> {
-        LOG.error(String.format("searchAirport failed. "), ex);
+        LOG.error(String.format("searchContract failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("searchAirport failed. "), ex);
+      LOG.error(String.format("searchContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
-  public void searchAirport2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<Airport> searchList) {
+  public void searchContract2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<Contract> searchList) {
   }
 
-  public Future<Void> persistAirport(Airport o, Boolean patch) {
+  public Future<Void> persistContract(Contract o, Boolean patch) {
     Promise<Void> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Long pk = o.getPk();
-      sqlConnection.preparedQuery("SELECT name, address, description, alternateName, location, created, codeIATA, id, codeICAO, entityShortId, archived, dataProvider, ngsildTenant, dateCreated, ngsildPath, dateModified, ngsildContext, owner, ngsildData, sessionId, seeAlso, color, userKey, source, objectTitle, displayPage, ST_AsGeoJSON(areaServed) as areaServed, editPage, userPage, download FROM Airport WHERE pk=$1")
+      sqlConnection.preparedQuery("SELECT region, name, created, abbreviation, displayName, archived, contractId, startDate, investmentYearsTotal, investmentYears, sessionId, investmentsPerYear, userKey, investmentsPerYearCumulative, assetClasses, assetClassesTargetIrr, objectTitle, revenueStreams, displayPage, economicOutputProjections, editPage, totalGdpImpact, userPage, economicOutputProjectionsDataset, download FROM Contract WHERE pk=$1")
           .collecting(Collectors.toList())
           .execute(Tuple.of(pk)
           ).onSuccess(result -> {
@@ -3567,200 +3417,50 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 try {
                   o.persistForClass(columnName, columnValue);
                 } catch(Exception e) {
-                  LOG.error(String.format("persistAirport failed. "), e);
+                  LOG.error(String.format("persistContract failed. "), e);
                 }
               }
             }
           }
           o.promiseDeepForClass(siteRequest).onSuccess(a -> {
-            if(config.getBoolean(ComputateConfigKeys.ENABLE_CONTEXT_BROKER_SEND)) {
-              cbUpsertEntity(o, patch).onSuccess(b -> {
-                promise.complete();
-              }).onFailure(ex -> {
-                LOG.error(String.format("persistAirport failed. "), ex);
-                promise.tryFail(ex);
-              });
-            } else {
-              promise.complete();
-            }
+            promise.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("persistAirport failed. "), ex);
+            LOG.error(String.format("persistContract failed. "), ex);
             promise.tryFail(ex);
           });
         } catch(Exception ex) {
-          LOG.error(String.format("persistAirport failed. "), ex);
+          LOG.error(String.format("persistContract failed. "), ex);
           promise.tryFail(ex);
         }
       }).onFailure(ex -> {
         RuntimeException ex2 = new RuntimeException(ex);
-        LOG.error(String.format("persistAirport failed. "), ex2);
+        LOG.error(String.format("persistContract failed. "), ex2);
         promise.tryFail(ex2);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("persistAirport failed. "), ex);
+      LOG.error(String.format("persistContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Void> cbUpsertEntity(Airport o, Boolean patch) {
-    Promise<Void> promise = Promise.promise();
-    try {
-      ZonedDateTime observedAt = ZonedDateTime.now(ZoneId.of("UTC"));
-      String observedAtStr = observedAt.format(ComputateZonedDateTimeSerializer.UTC_DATE_TIME_FORMATTER);
-      JsonArray entityArray = new JsonArray();
-      JsonObject entityBody = new JsonObject();
-      entityBody.put("@context", config.getString(ComputateConfigKeys.CONTEXT_BROKER_CONTEXT));
-      entityBody.put("id", o.getId());
-      entityBody.put("type", Airport.CLASS_SIMPLE_NAME);
-      entityBody.put("NGSILD-Tenant"
-          , new JsonObject()
-          .put("type", "Property")
-          .put("value", o.getNgsildTenant())
-          .put("observedAt", observedAtStr)
-          );
-      entityBody.put("NGSILD-Path"
-          , new JsonObject()
-          .put("type", "Property")
-          .put("value", o.getNgsildPath())
-          .put("observedAt", observedAtStr)
-          );
-
-      List<String> vars = Airport.varsFqForClass();
-      for (String var : vars) {
-        String ngsiType = Airport.ngsiType(var);
-        String displayName = Optional.ofNullable(Airport.displayNameAirport(var)).orElse(var);
-        if (ngsiType != null && displayName != null && !var.equals("id") && !var.equals("ngsildData")) {
-          Object value = o.obtainForClass(var);
-          if(value != null) {
-            Object ngsildVal = Airport.ngsiAirport(var, o);
-            String ngsildType = Airport.ngsiType(var);
-            if(ngsildVal != null) {
-              entityBody.put(displayName
-                  , new JsonObject()
-                  .put("type", ngsildType)
-                  .put("value", ngsildVal)
-                  .put("observedAt", observedAtStr)
-                  );
-            }
-          }
-        }
-      }
-      entityArray.add(entityBody);
-      LOG.debug(entityArray.encodePrettily());
-      webClient.post(
-          Integer.parseInt(config.getString(ComputateConfigKeys.CONTEXT_BROKER_PORT))
-          , config.getString(ComputateConfigKeys.CONTEXT_BROKER_HOST_NAME)
-          , "/ngsi-ld/v1/entityOperations/upsert/"
-          )
-          .ssl(Boolean.parseBoolean(config.getString(ComputateConfigKeys.CONTEXT_BROKER_SSL)))
-          .putHeader("Content-Type", "application/ld+json")
-          .putHeader("Fiware-Service", o.getNgsildTenant())
-          .putHeader("Fiware-ServicePath", o.getNgsildPath())
-          .putHeader("NGSILD-Tenant", o.getNgsildTenant())
-          .putHeader("NGSILD-Path", o.getNgsildPath())
-          .sendJson(entityArray)
-          .expecting(HttpResponseExpectation.SC_NO_CONTENT.or(HttpResponseExpectation.SC_CREATED)).onSuccess(b -> {
-        promise.complete();
-      }).onFailure(ex -> {
-        LOG.error(String.format("cbUpsertEntity failed. "), ex);
-        promise.tryFail(ex);
-      });
-    } catch(Throwable ex) {
-      LOG.error(String.format("cbUpsertEntity failed. "), ex);
-      promise.tryFail(ex);
-    }
-    return promise.future();
-  }
-
-  public Future<JsonObject> ngsildGetEntity(Airport o) {
-    Promise<JsonObject> promise = Promise.promise();
-    try {
-      String entityName = o.getName();
-      String entityType = Airport.CLASS_SIMPLE_NAME;
-      String entityId = o.getId();
-      String ngsildUri = String.format("/ngsi-ld/v1/entities/%s", urlEncode(entityId));
-      String ngsildContext = config.getString(ComputateConfigKeys.CONTEXT_BROKER_CONTEXT);
-      String link = String.format("<%s>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\"", ngsildContext);
-
-      webClient.get(
-          Integer.parseInt(config.getString(ComputateConfigKeys.CONTEXT_BROKER_PORT))
-          , config.getString(ComputateConfigKeys.CONTEXT_BROKER_HOST_NAME)
-          , ngsildUri
-          )
-          .ssl(Boolean.parseBoolean(config.getString(ComputateConfigKeys.CONTEXT_BROKER_SSL)))
-          .putHeader("Content-Type", "application/ld+json")
-          .putHeader("Fiware-Service", o.getNgsildTenant())
-          .putHeader("Fiware-ServicePath", o.getNgsildPath())
-          .putHeader("NGSILD-Tenant", o.getNgsildTenant())
-          .putHeader("NGSILD-Path", o.getNgsildPath())
-          .putHeader("Link", link)
-          .putHeader("Accept", "*/*")
-          .send()
-          .expecting(HttpResponseExpectation.SC_OK.or(HttpResponseExpectation.SC_NOT_FOUND)).onSuccess(entityResponse -> {
-        JsonObject entity = entityResponse.bodyAsJsonObject();
-        entity.remove("NGSILD data");
-        promise.complete(entity);
-      }).onFailure(ex -> {
-        LOG.error(String.format("postIotServiceFuture failed. "), ex);
-        promise.tryFail(ex);
-      });
-    } catch(Throwable ex) {
-      LOG.error(String.format("postIotServiceFuture failed. "), ex);
-      promise.tryFail(ex);
-    }
-    return promise.future();
-  }
-
-  public Future<Void> cbDeleteEntity(Airport o) {
-    Promise<Void> promise = Promise.promise();
-    try {
-      webClient.delete(
-          Integer.parseInt(config.getString(ComputateConfigKeys.CONTEXT_BROKER_PORT))
-          , config.getString(ComputateConfigKeys.CONTEXT_BROKER_HOST_NAME)
-          , String.format("/ngsi-ld/v1/entities/%s", urlEncode(o.getId()))
-          )
-          .ssl(Boolean.parseBoolean(config.getString(ComputateConfigKeys.CONTEXT_BROKER_SSL)))
-          .putHeader("Content-Type", "application/ld+json")
-          .putHeader("Fiware-Service", o.getNgsildTenant())
-          .putHeader("Fiware-ServicePath", o.getNgsildPath())
-          .putHeader("NGSILD-Tenant", o.getNgsildTenant())
-          .putHeader("NGSILD-Path", o.getNgsildPath())
-          .send()
-          .expecting(HttpResponseExpectation.SC_NO_CONTENT).onSuccess(b -> {
-        promise.complete();
-      }).onFailure(ex -> {
-        if("Response status code 404 is not equal to 204".equals(ex.getMessage())) {
-          promise.complete();
-        } else {
-          LOG.error(String.format("cbDeleteEntity failed. "), ex);
-          promise.tryFail(ex);
-        }
-      });
-    } catch(Throwable ex) {
-      LOG.error(String.format("cbDeleteEntity failed. "), ex);
-      promise.tryFail(ex);
-    }
-    return promise.future();
-  }
-
-  public Future<Void> relateAirport(Airport o) {
+  public Future<Void> relateContract(Contract o) {
     Promise<Void> promise = Promise.promise();
     promise.complete();
     return promise.future();
   }
 
   public String searchVar(String varIndexed) {
-    return Airport.searchVarAirport(varIndexed);
+    return Contract.searchVarContract(varIndexed);
   }
 
   @Override
   public String getClassApiAddress() {
-    return Airport.CLASS_API_ADDRESS_Airport;
+    return Contract.CLASS_API_ADDRESS_Contract;
   }
 
-  public Future<Airport> indexAirport(Airport o) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Contract> indexContract(Contract o) {
+    Promise<Contract> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3769,7 +3469,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       json.put("add", add);
       JsonObject doc = new JsonObject();
       add.put("doc", doc);
-      o.indexAirport(doc);
+      o.indexContract(doc);
       String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
       String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
       String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
@@ -3786,18 +3486,18 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
         promise.complete(o);
       }).onFailure(ex -> {
-        LOG.error(String.format("indexAirport failed. "), new RuntimeException(ex));
+        LOG.error(String.format("indexContract failed. "), new RuntimeException(ex));
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("indexAirport failed. "), ex);
+      LOG.error(String.format("indexContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Airport> unindexAirport(Airport o) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Contract> unindexContract(Contract o) {
+    Promise<Contract> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3805,7 +3505,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         JsonObject json = new JsonObject();
         JsonObject delete = new JsonObject();
         json.put("delete", delete);
-        String query = String.format("filter(%s:%s)", Airport.VAR_solrId, o.obtainForClass(Airport.VAR_solrId));
+        String query = String.format("filter(%s:%s)", Contract.VAR_solrId, o.obtainForClass(Contract.VAR_solrId));
         delete.put("query", query);
         String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
         String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
@@ -3823,21 +3523,21 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
           promise.complete(o);
         }).onFailure(ex -> {
-          LOG.error(String.format("unindexAirport failed. "), new RuntimeException(ex));
+          LOG.error(String.format("unindexContract failed. "), new RuntimeException(ex));
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("unindexAirport failed. "), ex);
+        LOG.error(String.format("unindexContract failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("unindexAirport failed. "), ex);
+      LOG.error(String.format("unindexContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Void> refreshAirport(Airport o) {
+  public Future<Void> refreshContract(Contract o) {
     Promise<Void> promise = Promise.promise();
     SiteRequest siteRequest = o.getSiteRequest_();
     try {
@@ -3874,7 +3574,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           params.put("query", query);
           JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
           JsonObject json = new JsonObject().put("context", context);
-          eventBus.request(Airport.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchAirportFuture")).onSuccess(c -> {
+          eventBus.request(Contract.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchContractFuture")).onSuccess(c -> {
             JsonObject responseMessage = (JsonObject)c.body();
             Integer statusCode = responseMessage.getInteger("statusCode");
             if(statusCode.equals(200))
@@ -3893,7 +3593,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         promise.complete();
       }
     } catch(Exception ex) {
-      LOG.error(String.format("refreshAirport failed. "), ex);
+      LOG.error(String.format("refreshContract failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -3906,39 +3606,34 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       Map<String, Object> result = (Map<String, Object>)ctx.get("result");
       SiteRequest siteRequest2 = (SiteRequest)siteRequest;
       String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
-      Airport o = new Airport();
+      Contract o = new Contract();
       o.setSiteRequest_((SiteRequest)siteRequest);
 
-      o.persistForClass(Airport.VAR_name, Airport.staticSetName(siteRequest2, (String)result.get(Airport.VAR_name)));
-      o.persistForClass(Airport.VAR_address, Airport.staticSetAddress(siteRequest2, (String)result.get(Airport.VAR_address)));
-      o.persistForClass(Airport.VAR_description, Airport.staticSetDescription(siteRequest2, (String)result.get(Airport.VAR_description)));
-      o.persistForClass(Airport.VAR_alternateName, Airport.staticSetAlternateName(siteRequest2, (String)result.get(Airport.VAR_alternateName)));
-      o.persistForClass(Airport.VAR_location, Airport.staticSetLocation(siteRequest2, (String)result.get(Airport.VAR_location)));
-      o.persistForClass(Airport.VAR_created, Airport.staticSetCreated(siteRequest2, (String)result.get(Airport.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
-      o.persistForClass(Airport.VAR_codeIATA, Airport.staticSetCodeIATA(siteRequest2, (String)result.get(Airport.VAR_codeIATA)));
-      o.persistForClass(Airport.VAR_id, Airport.staticSetId(siteRequest2, (String)result.get(Airport.VAR_id)));
-      o.persistForClass(Airport.VAR_codeICAO, Airport.staticSetCodeICAO(siteRequest2, (String)result.get(Airport.VAR_codeICAO)));
-      o.persistForClass(Airport.VAR_entityShortId, Airport.staticSetEntityShortId(siteRequest2, (String)result.get(Airport.VAR_entityShortId)));
-      o.persistForClass(Airport.VAR_archived, Airport.staticSetArchived(siteRequest2, (String)result.get(Airport.VAR_archived)));
-      o.persistForClass(Airport.VAR_dataProvider, Airport.staticSetDataProvider(siteRequest2, (String)result.get(Airport.VAR_dataProvider)));
-      o.persistForClass(Airport.VAR_ngsildTenant, Airport.staticSetNgsildTenant(siteRequest2, (String)result.get(Airport.VAR_ngsildTenant)));
-      o.persistForClass(Airport.VAR_dateCreated, Airport.staticSetDateCreated(siteRequest2, (String)result.get(Airport.VAR_dateCreated)));
-      o.persistForClass(Airport.VAR_ngsildPath, Airport.staticSetNgsildPath(siteRequest2, (String)result.get(Airport.VAR_ngsildPath)));
-      o.persistForClass(Airport.VAR_dateModified, Airport.staticSetDateModified(siteRequest2, (String)result.get(Airport.VAR_dateModified)));
-      o.persistForClass(Airport.VAR_ngsildContext, Airport.staticSetNgsildContext(siteRequest2, (String)result.get(Airport.VAR_ngsildContext)));
-      o.persistForClass(Airport.VAR_owner, Airport.staticSetOwner(siteRequest2, (String)result.get(Airport.VAR_owner)));
-      o.persistForClass(Airport.VAR_ngsildData, Airport.staticSetNgsildData(siteRequest2, (String)result.get(Airport.VAR_ngsildData)));
-      o.persistForClass(Airport.VAR_sessionId, Airport.staticSetSessionId(siteRequest2, (String)result.get(Airport.VAR_sessionId)));
-      o.persistForClass(Airport.VAR_seeAlso, Airport.staticSetSeeAlso(siteRequest2, (String)result.get(Airport.VAR_seeAlso)));
-      o.persistForClass(Airport.VAR_color, Airport.staticSetColor(siteRequest2, (String)result.get(Airport.VAR_color)));
-      o.persistForClass(Airport.VAR_userKey, Airport.staticSetUserKey(siteRequest2, (String)result.get(Airport.VAR_userKey)));
-      o.persistForClass(Airport.VAR_source, Airport.staticSetSource(siteRequest2, (String)result.get(Airport.VAR_source)));
-      o.persistForClass(Airport.VAR_objectTitle, Airport.staticSetObjectTitle(siteRequest2, (String)result.get(Airport.VAR_objectTitle)));
-      o.persistForClass(Airport.VAR_displayPage, Airport.staticSetDisplayPage(siteRequest2, (String)result.get(Airport.VAR_displayPage)));
-      o.persistForClass(Airport.VAR_areaServed, Airport.staticSetAreaServed(siteRequest2, (String)result.get(Airport.VAR_areaServed)));
-      o.persistForClass(Airport.VAR_editPage, Airport.staticSetEditPage(siteRequest2, (String)result.get(Airport.VAR_editPage)));
-      o.persistForClass(Airport.VAR_userPage, Airport.staticSetUserPage(siteRequest2, (String)result.get(Airport.VAR_userPage)));
-      o.persistForClass(Airport.VAR_download, Airport.staticSetDownload(siteRequest2, (String)result.get(Airport.VAR_download)));
+      o.persistForClass(Contract.VAR_region, Contract.staticSetRegion(siteRequest2, (String)result.get(Contract.VAR_region)));
+      o.persistForClass(Contract.VAR_name, Contract.staticSetName(siteRequest2, (String)result.get(Contract.VAR_name)));
+      o.persistForClass(Contract.VAR_created, Contract.staticSetCreated(siteRequest2, (String)result.get(Contract.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
+      o.persistForClass(Contract.VAR_abbreviation, Contract.staticSetAbbreviation(siteRequest2, (String)result.get(Contract.VAR_abbreviation)));
+      o.persistForClass(Contract.VAR_displayName, Contract.staticSetDisplayName(siteRequest2, (String)result.get(Contract.VAR_displayName)));
+      o.persistForClass(Contract.VAR_archived, Contract.staticSetArchived(siteRequest2, (String)result.get(Contract.VAR_archived)));
+      o.persistForClass(Contract.VAR_contractId, Contract.staticSetContractId(siteRequest2, (String)result.get(Contract.VAR_contractId)));
+      o.persistForClass(Contract.VAR_startDate, Contract.staticSetStartDate(siteRequest2, (String)result.get(Contract.VAR_startDate), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
+      o.persistForClass(Contract.VAR_investmentYearsTotal, Contract.staticSetInvestmentYearsTotal(siteRequest2, (String)result.get(Contract.VAR_investmentYearsTotal)));
+      o.persistForClass(Contract.VAR_investmentYears, Contract.staticSetInvestmentYears(siteRequest2, (String)result.get(Contract.VAR_investmentYears)));
+      o.persistForClass(Contract.VAR_sessionId, Contract.staticSetSessionId(siteRequest2, (String)result.get(Contract.VAR_sessionId)));
+      o.persistForClass(Contract.VAR_investmentsPerYear, Contract.staticSetInvestmentsPerYear(siteRequest2, (String)result.get(Contract.VAR_investmentsPerYear)));
+      o.persistForClass(Contract.VAR_userKey, Contract.staticSetUserKey(siteRequest2, (String)result.get(Contract.VAR_userKey)));
+      o.persistForClass(Contract.VAR_investmentsPerYearCumulative, Contract.staticSetInvestmentsPerYearCumulative(siteRequest2, (String)result.get(Contract.VAR_investmentsPerYearCumulative)));
+      o.persistForClass(Contract.VAR_assetClasses, Contract.staticSetAssetClasses(siteRequest2, (String)result.get(Contract.VAR_assetClasses)));
+      o.persistForClass(Contract.VAR_assetClassesTargetIrr, Contract.staticSetAssetClassesTargetIrr(siteRequest2, (String)result.get(Contract.VAR_assetClassesTargetIrr)));
+      o.persistForClass(Contract.VAR_objectTitle, Contract.staticSetObjectTitle(siteRequest2, (String)result.get(Contract.VAR_objectTitle)));
+      o.persistForClass(Contract.VAR_revenueStreams, Contract.staticSetRevenueStreams(siteRequest2, (String)result.get(Contract.VAR_revenueStreams)));
+      o.persistForClass(Contract.VAR_displayPage, Contract.staticSetDisplayPage(siteRequest2, (String)result.get(Contract.VAR_displayPage)));
+      o.persistForClass(Contract.VAR_economicOutputProjections, Contract.staticSetEconomicOutputProjections(siteRequest2, (String)result.get(Contract.VAR_economicOutputProjections)));
+      o.persistForClass(Contract.VAR_editPage, Contract.staticSetEditPage(siteRequest2, (String)result.get(Contract.VAR_editPage)));
+      o.persistForClass(Contract.VAR_totalGdpImpact, Contract.staticSetTotalGdpImpact(siteRequest2, (String)result.get(Contract.VAR_totalGdpImpact)));
+      o.persistForClass(Contract.VAR_userPage, Contract.staticSetUserPage(siteRequest2, (String)result.get(Contract.VAR_userPage)));
+      o.persistForClass(Contract.VAR_economicOutputProjectionsDataset, Contract.staticSetEconomicOutputProjectionsDataset(siteRequest2, (String)result.get(Contract.VAR_economicOutputProjectionsDataset)));
+      o.persistForClass(Contract.VAR_download, Contract.staticSetDownload(siteRequest2, (String)result.get(Contract.VAR_download)));
 
       o.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(o2 -> {
         try {

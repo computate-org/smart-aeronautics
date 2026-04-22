@@ -1,5 +1,9 @@
-package org.computate.smartaeronautics.model.fiware.airport;
+package org.computate.smartaeronautics.model.fiware.aircraft;
 
+import org.computate.smartaeronautics.timezone.TimeZoneEnUSApiServiceImpl;
+import org.computate.smartaeronautics.timezone.TimeZone;
+import org.computate.smartaeronautics.model.fiware.airport.AirportEnUSApiServiceImpl;
+import org.computate.smartaeronautics.model.fiware.airport.Airport;
 import org.computate.smartaeronautics.request.SiteRequest;
 import org.computate.smartaeronautics.user.SiteUser;
 import org.computate.vertx.api.ApiRequest;
@@ -104,41 +108,41 @@ import java.util.Base64;
 import java.time.ZonedDateTime;
 import org.apache.commons.lang3.BooleanUtils;
 import org.computate.vertx.search.list.SearchList;
-import org.computate.smartaeronautics.model.fiware.airport.AirportPage;
+import org.computate.smartaeronautics.model.fiware.aircraft.AircraftPage;
 
 
 /**
  * Translate: false
  * Generated: true
  **/
-public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements AirportEnUSGenApiService {
+public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements AircraftEnUSGenApiService {
 
-  protected static final Logger LOG = LoggerFactory.getLogger(AirportEnUSGenApiServiceImpl.class);
+  protected static final Logger LOG = LoggerFactory.getLogger(AircraftEnUSGenApiServiceImpl.class);
 
   // Search //
 
   @Override
-  public void searchAirport(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void searchAircraft(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -152,30 +156,30 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, false, "GET").onSuccess(listAirport -> {
-                response200SearchAirport(listAirport).onSuccess(response -> {
+              searchAircraftList(siteRequest, false, true, false, "GET").onSuccess(listAircraft -> {
+                response200SearchAircraft(listAircraft).onSuccess(response -> {
                   eventHandler.handle(Future.succeededFuture(response));
-                  LOG.debug(String.format("searchAirport succeeded. "));
+                  LOG.debug(String.format("searchAircraft succeeded. "));
                 }).onFailure(ex -> {
-                  LOG.error(String.format("searchAirport failed. "), ex);
+                  LOG.error(String.format("searchAircraft failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("searchAirport failed. "), ex);
+                LOG.error(String.format("searchAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("searchAirport failed. "), ex);
+            LOG.error(String.format("searchAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("searchAirport failed. "), ex);
+        LOG.error(String.format("searchAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -183,7 +187,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("searchAirport failed. ", ex2));
+          LOG.error(String.format("searchAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -198,28 +202,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("searchAirport failed. "), ex);
+        LOG.error(String.format("searchAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<ServiceResponse> response200SearchAirport(SearchList<Airport> listAirport) {
+  public Future<ServiceResponse> response200SearchAircraft(SearchList<Aircraft> listAircraft) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-      List<String> fls = listAirport.getRequest().getFields();
+      SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
+      List<String> fls = listAircraft.getRequest().getFields();
       JsonObject json = new JsonObject();
       JsonArray l = new JsonArray();
       List<String> scopes = siteRequest.getScopes();
-      listAirport.getList().stream().forEach(o -> {
+      listAircraft.getList().stream().forEach(o -> {
         JsonObject json2 = JsonObject.mapFrom(o);
         if(fls.size() > 0) {
           Set<String> fieldNames = new HashSet<String>();
           for(String fieldName : json2.fieldNames()) {
-            String v = Airport.varIndexedAirport(fieldName);
+            String v = Aircraft.varIndexedAircraft(fieldName);
             if(v != null)
-              fieldNames.add(Airport.varIndexedAirport(fieldName));
+              fieldNames.add(Aircraft.varIndexedAircraft(fieldName));
           }
           if(fls.size() == 1 && fls.stream().findFirst().orElse(null).equals("saves_docvalues_strings")) {
             fieldNames.removeAll(Optional.ofNullable(json2.getJsonArray("saves_docvalues_strings")).orElse(new JsonArray()).stream().map(s -> s.toString()).collect(Collectors.toList()));
@@ -237,15 +241,15 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         l.add(json2);
       });
       json.put("list", l);
-      response200Search(listAirport.getRequest(), listAirport.getResponse(), json);
+      response200Search(listAircraft.getRequest(), listAircraft.getResponse(), json);
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200SearchAirport failed. "), ex);
+      LOG.error(String.format("response200SearchAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
-  public void responsePivotSearchAirport(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+  public void responsePivotSearchAircraft(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
     if(pivots != null) {
       for(SolrResponse.Pivot pivotField : pivots) {
         String entityIndexed = pivotField.getField();
@@ -274,7 +278,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         if(pivotFields2 != null) {
           JsonArray pivotArray2 = new JsonArray();
           pivotJson.put("pivot", pivotArray2);
-          responsePivotSearchAirport(pivotFields2, pivotArray2);
+          responsePivotSearchAircraft(pivotFields2, pivotArray2);
         }
       }
     }
@@ -283,27 +287,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // GET //
 
   @Override
-  public void getAirport(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void getAircraft(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -317,30 +321,30 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, false, "GET").onSuccess(listAirport -> {
-                response200GETAirport(listAirport).onSuccess(response -> {
+              searchAircraftList(siteRequest, false, true, false, "GET").onSuccess(listAircraft -> {
+                response200GETAircraft(listAircraft).onSuccess(response -> {
                   eventHandler.handle(Future.succeededFuture(response));
-                  LOG.debug(String.format("getAirport succeeded. "));
+                  LOG.debug(String.format("getAircraft succeeded. "));
                 }).onFailure(ex -> {
-                  LOG.error(String.format("getAirport failed. "), ex);
+                  LOG.error(String.format("getAircraft failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("getAirport failed. "), ex);
+                LOG.error(String.format("getAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("getAirport failed. "), ex);
+            LOG.error(String.format("getAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("getAirport failed. "), ex);
+        LOG.error(String.format("getAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -348,7 +352,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("getAirport failed. ", ex2));
+          LOG.error(String.format("getAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -363,20 +367,20 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("getAirport failed. "), ex);
+        LOG.error(String.format("getAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<ServiceResponse> response200GETAirport(SearchList<Airport> listAirport) {
+  public Future<ServiceResponse> response200GETAircraft(SearchList<Aircraft> listAircraft) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-      JsonObject json = JsonObject.mapFrom(listAirport.getList().stream().findFirst().orElse(null));
+      SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
+      JsonObject json = JsonObject.mapFrom(listAircraft.getList().stream().findFirst().orElse(null));
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200GETAirport failed. "), ex);
+      LOG.error(String.format("response200GETAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -385,28 +389,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // PATCH //
 
   @Override
-  public void patchAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("patchAirport started. "));
+  public void patchAircraft(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("patchAircraft started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "PATCH"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "PATCH"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -420,7 +424,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("PATCH")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -436,48 +440,48 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             } else {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, true, "PATCH").onSuccess(listAirport -> {
+              searchAircraftList(siteRequest, false, true, true, "PATCH").onSuccess(listAircraft -> {
                 try {
                   ApiRequest apiRequest = new ApiRequest();
-                  apiRequest.setRows(listAirport.getRequest().getRows());
-                  apiRequest.setNumFound(listAirport.getResponse().getResponse().getNumFound());
+                  apiRequest.setRows(listAircraft.getRequest().getRows());
+                  apiRequest.setNumFound(listAircraft.getResponse().getResponse().getNumFound());
                   apiRequest.setNumPATCH(0L);
                   apiRequest.initDeepApiRequest(siteRequest);
                   siteRequest.setApiRequest_(apiRequest);
                   if(apiRequest.getNumFound() == 1L)
-                    apiRequest.setOriginal(listAirport.first());
-                  apiRequest.setId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
-                  apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-                  eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                    apiRequest.setOriginal(listAircraft.first());
+                  apiRequest.setId(Optional.ofNullable(listAircraft.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
+                  apiRequest.setSolrId(Optional.ofNullable(listAircraft.first()).map(o2 -> o2.getSolrId()).orElse(null));
+                  eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
 
-                  listPATCHAirport(apiRequest, listAirport).onSuccess(e -> {
-                    response200PATCHAirport(siteRequest).onSuccess(response -> {
-                      LOG.debug(String.format("patchAirport succeeded. "));
+                  listPATCHAircraft(apiRequest, listAircraft).onSuccess(e -> {
+                    response200PATCHAircraft(siteRequest).onSuccess(response -> {
+                      LOG.debug(String.format("patchAircraft succeeded. "));
                       eventHandler.handle(Future.succeededFuture(response));
                     }).onFailure(ex -> {
-                      LOG.error(String.format("patchAirport failed. "), ex);
+                      LOG.error(String.format("patchAircraft failed. "), ex);
                       error(siteRequest, eventHandler, ex);
                     });
                   }).onFailure(ex -> {
-                    LOG.error(String.format("patchAirport failed. "), ex);
+                    LOG.error(String.format("patchAircraft failed. "), ex);
                     error(siteRequest, eventHandler, ex);
                   });
                 } catch(Exception ex) {
-                  LOG.error(String.format("patchAirport failed. "), ex);
+                  LOG.error(String.format("patchAircraft failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 }
               }).onFailure(ex -> {
-                LOG.error(String.format("patchAirport failed. "), ex);
+                LOG.error(String.format("patchAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("patchAirport failed. "), ex);
+            LOG.error(String.format("patchAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("patchAirport failed. "), ex);
+        LOG.error(String.format("patchAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -485,7 +489,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("patchAirport failed. ", ex2));
+          LOG.error(String.format("patchAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -500,58 +504,58 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("patchAirport failed. "), ex);
+        LOG.error(String.format("patchAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Void> listPATCHAirport(ApiRequest apiRequest, SearchList<Airport> listAirport) {
+  public Future<Void> listPATCHAircraft(ApiRequest apiRequest, SearchList<Aircraft> listAircraft) {
     Promise<Void> promise = Promise.promise();
     List<Future> futures = new ArrayList<>();
-    SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-    listAirport.getList().forEach(o -> {
+    SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
+    listAircraft.getList().forEach(o -> {
       SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
       siteRequest2.setScopes(siteRequest.getScopes());
       o.setSiteRequest_(siteRequest2);
       siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
       JsonObject jsonObject = JsonObject.mapFrom(o);
-      Airport o2 = jsonObject.mapTo(Airport.class);
+      Aircraft o2 = jsonObject.mapTo(Aircraft.class);
       o2.setSiteRequest_(siteRequest2);
       futures.add(Future.future(promise1 -> {
-        patchAirportFuture(o2, false).onSuccess(a -> {
+        patchAircraftFuture(o2, false).onSuccess(a -> {
           promise1.complete();
         }).onFailure(ex -> {
-          LOG.error(String.format("listPATCHAirport failed. "), ex);
+          LOG.error(String.format("listPATCHAircraft failed. "), ex);
           promise1.tryFail(ex);
         });
       }));
     });
     CompositeFuture.all(futures).onSuccess( a -> {
-      listAirport.next().onSuccess(next -> {
+      listAircraft.next().onSuccess(next -> {
         if(next) {
-          listPATCHAirport(apiRequest, listAirport).onSuccess(b -> {
+          listPATCHAircraft(apiRequest, listAircraft).onSuccess(b -> {
             promise.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("listPATCHAirport failed. "), ex);
+            LOG.error(String.format("listPATCHAircraft failed. "), ex);
             promise.tryFail(ex);
           });
         } else {
           promise.complete();
         }
       }).onFailure(ex -> {
-        LOG.error(String.format("listPATCHAirport failed. "), ex);
+        LOG.error(String.format("listPATCHAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     }).onFailure(ex -> {
-      LOG.error(String.format("listPATCHAirport failed. "), ex);
+      LOG.error(String.format("listPATCHAircraft failed. "), ex);
       promise.tryFail(ex);
     });
     return promise.future();
   }
 
   @Override
-  public void patchAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void patchAircraftFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -563,9 +567,9 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             siteRequest.addScopes(scope);
           });
         });
-        searchAirportList(siteRequest, false, true, true, "PATCH").onSuccess(listAirport -> {
+        searchAircraftList(siteRequest, false, true, true, "PATCH").onSuccess(listAircraft -> {
           try {
-            Airport o = listAirport.first();
+            Aircraft o = listAircraft.first();
             ApiRequest apiRequest = new ApiRequest();
             apiRequest.setRows(1L);
             apiRequest.setNumFound(1L);
@@ -575,52 +579,52 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
               siteRequest.getRequestVars().put( "refresh", "false" );
             }
-            Airport o2;
+            Aircraft o2;
             if(o != null) {
               if(apiRequest.getNumFound() == 1L)
                 apiRequest.setOriginal(o);
-              apiRequest.setId(Optional.ofNullable(listAirport.first()).map(o3 -> o3.getEntityShortId().toString()).orElse(null));
-              apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o3 -> o3.getSolrId()).orElse(null));
+              apiRequest.setId(Optional.ofNullable(listAircraft.first()).map(o3 -> o3.getEntityShortId().toString()).orElse(null));
+              apiRequest.setSolrId(Optional.ofNullable(listAircraft.first()).map(o3 -> o3.getSolrId()).orElse(null));
               JsonObject jsonObject = JsonObject.mapFrom(o);
-              o2 = jsonObject.mapTo(Airport.class);
+              o2 = jsonObject.mapTo(Aircraft.class);
               o2.setSiteRequest_(siteRequest);
-              patchAirportFuture(o2, false).onSuccess(o3 -> {
+              patchAircraftFuture(o2, false).onSuccess(o3 -> {
                 eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
               }).onFailure(ex -> {
                 eventHandler.handle(Future.failedFuture(ex));
               });
             } else {
-              String m = String.format("%s %s not found", "Airport", null);
+              String m = String.format("%s %s not found", "Aircraft", null);
               eventHandler.handle(Future.failedFuture(m));
             }
           } catch(Exception ex) {
-            LOG.error(String.format("patchAirport failed. "), ex);
+            LOG.error(String.format("patchAircraft failed. "), ex);
             error(siteRequest, eventHandler, ex);
           }
         }).onFailure(ex -> {
-          LOG.error(String.format("patchAirport failed. "), ex);
+          LOG.error(String.format("patchAircraft failed. "), ex);
           error(siteRequest, eventHandler, ex);
         });
       } catch(Exception ex) {
-        LOG.error(String.format("patchAirport failed. "), ex);
+        LOG.error(String.format("patchAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
-      LOG.error(String.format("patchAirport failed. "), ex);
+      LOG.error(String.format("patchAircraft failed. "), ex);
       error(null, eventHandler, ex);
     });
   }
 
-  public Future<Airport> patchAirportFuture(Airport o, Boolean inheritPrimaryKey) {
+  public Future<Aircraft> patchAircraftFuture(Aircraft o, Boolean inheritPrimaryKey) {
     SiteRequest siteRequest = o.getSiteRequest_();
-    Promise<Airport> promise = Promise.promise();
+    Promise<Aircraft> promise = Promise.promise();
 
     try {
       ApiRequest apiRequest = siteRequest.getApiRequest_();
-      Promise<Airport> promise1 = Promise.promise();
+      Promise<Aircraft> promise1 = Promise.promise();
       pgPool.withTransaction(sqlConnection -> {
         siteRequest.setSqlConnection(sqlConnection);
-        varsAirport(siteRequest).onSuccess(a -> {
+        varsAircraft(siteRequest).onSuccess(a -> {
           JsonObject jsonObject = o.getSiteRequest_().getJsonObject();
           if(config.getBoolean(ComputateConfigKeys.ENABLE_CONTEXT_BROKER_SEND)) {
             ngsildGetEntity(o).compose(ngsildData -> {
@@ -628,26 +632,26 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               if(ngsildData == null) {
                 promise2.complete(jsonObject);
               } else {
-                String setNgsildData = String.format("set%s",StringUtils.capitalize(Airport.VAR_ngsildData));
+                String setNgsildData = String.format("set%s",StringUtils.capitalize(Aircraft.VAR_ngsildData));
                 jsonObject.put(setNgsildData, ngsildData);
                 promise2.complete(jsonObject);
               }
               return promise2.future();
             }).compose(ngsildData -> {
-              Promise<Airport> promise2 = Promise.promise();
-              sqlPATCHAirport(o, inheritPrimaryKey).onSuccess(airport -> {
-                persistAirport(airport, true).onSuccess(c -> {
-                  relateAirport(airport).onSuccess(d -> {
-                    indexAirport(airport).onSuccess(o2 -> {
+              Promise<Aircraft> promise2 = Promise.promise();
+              sqlPATCHAircraft(o, inheritPrimaryKey).onSuccess(aircraft -> {
+                persistAircraft(aircraft, true).onSuccess(c -> {
+                  relateAircraft(aircraft).onSuccess(d -> {
+                    indexAircraft(aircraft).onSuccess(o2 -> {
                       if(apiRequest != null) {
                         apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
                         if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-                          o2.apiRequestAirport();
+                          o2.apiRequestAircraft();
                           if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
-                            eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                            eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
                         }
                       }
-                      promise2.complete(airport);
+                      promise2.complete(aircraft);
                     }).onFailure(ex -> {
                       promise2.tryFail(ex);
                     });
@@ -667,19 +671,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               promise1.tryFail(ex);
             });
           } else {
-            sqlPATCHAirport(o, inheritPrimaryKey).onSuccess(airport -> {
-              persistAirport(airport, true).onSuccess(c -> {
-                relateAirport(airport).onSuccess(d -> {
-                  indexAirport(airport).onSuccess(o2 -> {
+            sqlPATCHAircraft(o, inheritPrimaryKey).onSuccess(aircraft -> {
+              persistAircraft(aircraft, true).onSuccess(c -> {
+                relateAircraft(aircraft).onSuccess(d -> {
+                  indexAircraft(aircraft).onSuccess(o2 -> {
                     if(apiRequest != null) {
                       apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
                       if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-                        o2.apiRequestAirport();
+                        o2.apiRequestAircraft();
                         if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
-                          eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                          eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
                       }
                     }
-                    promise1.complete(airport);
+                    promise1.complete(aircraft);
                   }).onFailure(ex -> {
                     promise1.tryFail(ex);
                   });
@@ -702,28 +706,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       }).onFailure(ex -> {
         siteRequest.setSqlConnection(null);
         promise.tryFail(ex);
-      }).compose(airport -> {
-        Promise<Airport> promise2 = Promise.promise();
-        refreshAirport(airport).onSuccess(a -> {
-          promise2.complete(airport);
+      }).compose(aircraft -> {
+        Promise<Aircraft> promise2 = Promise.promise();
+        refreshAircraft(aircraft).onSuccess(a -> {
+          promise2.complete(aircraft);
         }).onFailure(ex -> {
           promise2.tryFail(ex);
         });
         return promise2.future();
-      }).onSuccess(airport -> {
-        promise.complete(airport);
+      }).onSuccess(aircraft -> {
+        promise.complete(aircraft);
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("patchAirportFuture failed. "), ex);
+      LOG.error(String.format("patchAircraftFuture failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Airport> sqlPATCHAirport(Airport o, Boolean inheritPrimaryKey) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Aircraft> sqlPATCHAircraft(Aircraft o, Boolean inheritPrimaryKey) {
+    Promise<Aircraft> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -731,12 +735,12 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Integer num = 1;
-      StringBuilder bSql = new StringBuilder("UPDATE Airport SET ");
+      StringBuilder bSql = new StringBuilder("UPDATE Aircraft SET ");
       List<Object> bParams = new ArrayList<Object>();
       Long pk = o.getPk();
       JsonObject jsonObject = siteRequest.getJsonObject();
       Set<String> methodNames = jsonObject.fieldNames();
-      Airport o2 = new Airport();
+      Aircraft o2 = new Aircraft();
       o2.setSiteRequest_(siteRequest);
       List<Future> futures1 = new ArrayList<>();
       List<Future> futures2 = new ArrayList<>();
@@ -747,39 +751,85 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               o2.setName(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_name + "=$" + num);
+              bSql.append(Aircraft.VAR_name + "=$" + num);
               num++;
               bParams.add(o2.sqlName());
             break;
-          case "setAddress":
-              o2.setAddress(jsonObject.getJsonObject(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_address + "=$" + num);
-              num++;
-              bParams.add(o2.sqlAddress());
+          case "setTimeZone":
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+              futures1.add(Future.future(promise2 -> {
+                searchResult(siteRequest).query(TimeZone.varIndexedTimeZone(TimeZone.VAR_id), TimeZone.class, val).onSuccess(o3 -> {
+                  String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+                  if(solrId2 != null) {
+                    solrIds.add(solrId2);
+                    classes.add("TimeZone");
+                  }
+                  sql(siteRequest).update(Aircraft.class, pk).set(Aircraft.VAR_timeZone, TimeZone.class, solrId2, val).onSuccess(a -> {
+                    promise2.complete();
+                  }).onFailure(ex -> {
+                    promise2.tryFail(ex);
+                  });
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
+            break;
+          case "removeTimeZone":
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(solrId2 -> {
+              futures2.add(Future.future(promise2 -> {
+                sql(siteRequest).update(Aircraft.class, pk).setToNull(Aircraft.VAR_timeZone, TimeZone.class, null).onSuccess(a -> {
+                  promise2.complete();
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
             break;
           case "setDescription":
               o2.setDescription(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_description + "=$" + num);
+              bSql.append(Aircraft.VAR_description + "=$" + num);
               num++;
               bParams.add(o2.sqlDescription());
             break;
-          case "setAlternateName":
-              o2.setAlternateName(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Airport.VAR_alternateName + "=$" + num);
-              num++;
-              bParams.add(o2.sqlAlternateName());
+          case "setAirportId":
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+              futures1.add(Future.future(promise2 -> {
+                searchModel(siteRequest).query(Airport.varIndexedAirport(Airport.VAR_entityShortId), Airport.class, val).onSuccess(o3 -> {
+                  String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+                  if(solrId2 != null) {
+                    solrIds.add(solrId2);
+                    classes.add("Airport");
+                  }
+                  sql(siteRequest).update(Aircraft.class, pk).set(Aircraft.VAR_airportId, Airport.class, solrId2, val).onSuccess(a -> {
+                    promise2.complete();
+                  }).onFailure(ex -> {
+                    promise2.tryFail(ex);
+                  });
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
+            break;
+          case "removeAirportId":
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(solrId2 -> {
+              futures2.add(Future.future(promise2 -> {
+                sql(siteRequest).update(Aircraft.class, pk).setToNull(Aircraft.VAR_airportId, Airport.class, null).onSuccess(a -> {
+                  promise2.complete();
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
             break;
           case "setLocation":
               o2.setLocation(jsonObject.getJsonObject(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_location + "=$" + num);
+              bSql.append(Aircraft.VAR_location + "=$" + num);
               num++;
               bParams.add(o2.sqlLocation());
             break;
@@ -787,39 +837,39 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               o2.setCreated(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_created + "=$" + num);
+              bSql.append(Aircraft.VAR_created + "=$" + num);
               num++;
               bParams.add(o2.sqlCreated());
             break;
-          case "setCodeIATA":
-              o2.setCodeIATA(jsonObject.getString(entityVar));
+          case "setDepartureDate":
+              o2.setDepartureDate(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_codeIATA + "=$" + num);
+              bSql.append(Aircraft.VAR_departureDate + "=$" + num);
               num++;
-              bParams.add(o2.sqlCodeIATA());
+              bParams.add(o2.sqlDepartureDate());
             break;
           case "setId":
               o2.setId(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_id + "=$" + num);
+              bSql.append(Aircraft.VAR_id + "=$" + num);
               num++;
               bParams.add(o2.sqlId());
             break;
-          case "setCodeICAO":
-              o2.setCodeICAO(jsonObject.getString(entityVar));
+          case "setArrivalDate":
+              o2.setArrivalDate(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_codeICAO + "=$" + num);
+              bSql.append(Aircraft.VAR_arrivalDate + "=$" + num);
               num++;
-              bParams.add(o2.sqlCodeICAO());
+              bParams.add(o2.sqlArrivalDate());
             break;
           case "setEntityShortId":
               o2.setEntityShortId(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_entityShortId + "=$" + num);
+              bSql.append(Aircraft.VAR_entityShortId + "=$" + num);
               num++;
               bParams.add(o2.sqlEntityShortId());
             break;
@@ -827,71 +877,71 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               o2.setArchived(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_archived + "=$" + num);
+              bSql.append(Aircraft.VAR_archived + "=$" + num);
               num++;
               bParams.add(o2.sqlArchived());
             break;
-          case "setDataProvider":
-              o2.setDataProvider(jsonObject.getString(entityVar));
+          case "setAvgSpeedInMph":
+              o2.setAvgSpeedInMph(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_dataProvider + "=$" + num);
+              bSql.append(Aircraft.VAR_avgSpeedInMph + "=$" + num);
               num++;
-              bParams.add(o2.sqlDataProvider());
+              bParams.add(o2.sqlAvgSpeedInMph());
             break;
           case "setNgsildTenant":
               o2.setNgsildTenant(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_ngsildTenant + "=$" + num);
+              bSql.append(Aircraft.VAR_ngsildTenant + "=$" + num);
               num++;
               bParams.add(o2.sqlNgsildTenant());
             break;
-          case "setDateCreated":
-              o2.setDateCreated(jsonObject.getString(entityVar));
+          case "setAddress":
+              o2.setAddress(jsonObject.getJsonObject(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_dateCreated + "=$" + num);
+              bSql.append(Aircraft.VAR_address + "=$" + num);
               num++;
-              bParams.add(o2.sqlDateCreated());
+              bParams.add(o2.sqlAddress());
             break;
           case "setNgsildPath":
               o2.setNgsildPath(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_ngsildPath + "=$" + num);
+              bSql.append(Aircraft.VAR_ngsildPath + "=$" + num);
               num++;
               bParams.add(o2.sqlNgsildPath());
             break;
-          case "setDateModified":
-              o2.setDateModified(jsonObject.getString(entityVar));
+          case "setAlternateName":
+              o2.setAlternateName(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_dateModified + "=$" + num);
+              bSql.append(Aircraft.VAR_alternateName + "=$" + num);
               num++;
-              bParams.add(o2.sqlDateModified());
+              bParams.add(o2.sqlAlternateName());
             break;
           case "setNgsildContext":
               o2.setNgsildContext(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_ngsildContext + "=$" + num);
+              bSql.append(Aircraft.VAR_ngsildContext + "=$" + num);
               num++;
               bParams.add(o2.sqlNgsildContext());
             break;
-          case "setOwner":
-              o2.setOwner(jsonObject.getJsonObject(entityVar));
+          case "setBelongsToAircraftModel":
+              o2.setBelongsToAircraftModel(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_owner + "=$" + num);
+              bSql.append(Aircraft.VAR_belongsToAircraftModel + "=$" + num);
               num++;
-              bParams.add(o2.sqlOwner());
+              bParams.add(o2.sqlBelongsToAircraftModel());
             break;
           case "setNgsildData":
               o2.setNgsildData(jsonObject.getJsonObject(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_ngsildData + "=$" + num);
+              bSql.append(Aircraft.VAR_ngsildData + "=$" + num);
               num++;
               bParams.add(o2.sqlNgsildData());
             break;
@@ -899,23 +949,23 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               o2.setSessionId(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_sessionId + "=$" + num);
+              bSql.append(Aircraft.VAR_sessionId + "=$" + num);
               num++;
               bParams.add(o2.sqlSessionId());
             break;
-          case "setSeeAlso":
-              o2.setSeeAlso(jsonObject.getString(entityVar));
+          case "setDataProvider":
+              o2.setDataProvider(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_seeAlso + "=$" + num);
+              bSql.append(Aircraft.VAR_dataProvider + "=$" + num);
               num++;
-              bParams.add(o2.sqlSeeAlso());
+              bParams.add(o2.sqlDataProvider());
             break;
           case "setColor":
               o2.setColor(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_color + "=$" + num);
+              bSql.append(Aircraft.VAR_color + "=$" + num);
               num++;
               bParams.add(o2.sqlColor());
             break;
@@ -923,65 +973,161 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               o2.setUserKey(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_userKey + "=$" + num);
+              bSql.append(Aircraft.VAR_userKey + "=$" + num);
               num++;
               bParams.add(o2.sqlUserKey());
             break;
-          case "setSource":
-              o2.setSource(jsonObject.getString(entityVar));
+          case "setDateCreated":
+              o2.setDateCreated(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_source + "=$" + num);
+              bSql.append(Aircraft.VAR_dateCreated + "=$" + num);
               num++;
-              bParams.add(o2.sqlSource());
+              bParams.add(o2.sqlDateCreated());
+            break;
+          case "setDateIssued":
+              o2.setDateIssued(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_dateIssued + "=$" + num);
+              num++;
+              bParams.add(o2.sqlDateIssued());
+            break;
+          case "setDateModified":
+              o2.setDateModified(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_dateModified + "=$" + num);
+              num++;
+              bParams.add(o2.sqlDateModified());
             break;
           case "setObjectTitle":
               o2.setObjectTitle(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_objectTitle + "=$" + num);
+              bSql.append(Aircraft.VAR_objectTitle + "=$" + num);
               num++;
               bParams.add(o2.sqlObjectTitle());
+            break;
+          case "setHeading":
+              o2.setHeading(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_heading + "=$" + num);
+              num++;
+              bParams.add(o2.sqlHeading());
             break;
           case "setDisplayPage":
               o2.setDisplayPage(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_displayPage + "=$" + num);
+              bSql.append(Aircraft.VAR_displayPage + "=$" + num);
               num++;
               bParams.add(o2.sqlDisplayPage());
             break;
-          case "setAreaServed":
-              o2.setAreaServed(jsonObject.getJsonObject(entityVar));
+          case "setIsOnGround":
+              o2.setIsOnGround(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(String.format("%s=ST_GeomFromGeoJSON($%s)", Airport.VAR_areaServed, num));
+              bSql.append(Aircraft.VAR_isOnGround + "=$" + num);
               num++;
-              bParams.add(o2.sqlAreaServed());
+              bParams.add(o2.sqlIsOnGround());
             break;
           case "setEditPage":
               o2.setEditPage(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_editPage + "=$" + num);
+              bSql.append(Aircraft.VAR_editPage + "=$" + num);
               num++;
               bParams.add(o2.sqlEditPage());
+            break;
+          case "setOwner":
+              o2.setOwner(jsonObject.getJsonObject(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_owner + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOwner());
             break;
           case "setUserPage":
               o2.setUserPage(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_userPage + "=$" + num);
+              bSql.append(Aircraft.VAR_userPage + "=$" + num);
               num++;
               bParams.add(o2.sqlUserPage());
+            break;
+          case "setRegistration":
+              o2.setRegistration(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_registration + "=$" + num);
+              num++;
+              bParams.add(o2.sqlRegistration());
             break;
           case "setDownload":
               o2.setDownload(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
                 bSql.append(", ");
-              bSql.append(Airport.VAR_download + "=$" + num);
+              bSql.append(Aircraft.VAR_download + "=$" + num);
               num++;
               bParams.add(o2.sqlDownload());
+            break;
+          case "setSeeAlso":
+              o2.setSeeAlso(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_seeAlso + "=$" + num);
+              num++;
+              bParams.add(o2.sqlSeeAlso());
+            break;
+          case "setSource":
+              o2.setSource(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_source + "=$" + num);
+              num++;
+              bParams.add(o2.sqlSource());
+            break;
+          case "setSpeed":
+              o2.setSpeed(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_speed + "=$" + num);
+              num++;
+              bParams.add(o2.sqlSpeed());
+            break;
+          case "setVerticalSpeed":
+              o2.setVerticalSpeed(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_verticalSpeed + "=$" + num);
+              num++;
+              bParams.add(o2.sqlVerticalSpeed());
+            break;
+          case "setPath":
+              o2.setPath(jsonObject.getJsonObject(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_path + "=$" + num);
+              num++;
+              bParams.add(o2.sqlPath());
+            break;
+          case "setSimulation":
+              o2.setSimulation(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_simulation + "=$" + num);
+              num++;
+              bParams.add(o2.sqlSimulation());
+            break;
+          case "setSimulationDelayMillis":
+              o2.setSimulationDelayMillis(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_simulationDelayMillis + "=$" + num);
+              num++;
+              bParams.add(o2.sqlSimulationDelayMillis());
             break;
         }
       }
@@ -995,40 +1141,40 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               ).onSuccess(b -> {
             a.handle(Future.succeededFuture());
           }).onFailure(ex -> {
-            RuntimeException ex2 = new RuntimeException("value Airport failed", ex);
-            LOG.error(String.format("relateAirport failed. "), ex2);
+            RuntimeException ex2 = new RuntimeException("value Aircraft failed", ex);
+            LOG.error(String.format("relateAircraft failed. "), ex2);
             a.handle(Future.failedFuture(ex2));
           });
         }));
       }
       CompositeFuture.all(futures1).onSuccess(a -> {
         CompositeFuture.all(futures2).onSuccess(b -> {
-          Airport o3 = new Airport();
+          Aircraft o3 = new Aircraft();
           o3.setSiteRequest_(o.getSiteRequest_());
           o3.setPk(pk);
           promise.complete(o3);
         }).onFailure(ex -> {
-          LOG.error(String.format("sqlPATCHAirport failed. "), ex);
+          LOG.error(String.format("sqlPATCHAircraft failed. "), ex);
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("sqlPATCHAirport failed. "), ex);
+        LOG.error(String.format("sqlPATCHAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("sqlPATCHAirport failed. "), ex);
+      LOG.error(String.format("sqlPATCHAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<ServiceResponse> response200PATCHAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> response200PATCHAircraft(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       JsonObject json = new JsonObject();
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200PATCHAirport failed. "), ex);
+      LOG.error(String.format("response200PATCHAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -1037,28 +1183,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // POST //
 
   @Override
-  public void postAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("postAirport started. "));
+  public void postAircraft(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("postAircraft started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "POST"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "POST"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1072,7 +1218,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("POST")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -1094,7 +1240,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               apiRequest.setNumPATCH(0L);
               apiRequest.initDeepApiRequest(siteRequest);
               siteRequest.setApiRequest_(apiRequest);
-              eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+              eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
               JsonObject params = new JsonObject();
               params.put("body", siteRequest.getJsonObject());
               params.put("path", new JsonObject());
@@ -1114,24 +1260,24 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               params.put("query", query);
               JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
               JsonObject json = new JsonObject().put("context", context);
-              eventBus.request(Airport.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAirportFuture")).onSuccess(a -> {
+              eventBus.request(Aircraft.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "postAircraftFuture")).onSuccess(a -> {
                 JsonObject responseMessage = (JsonObject)a.body();
                 JsonObject responseBody = new JsonObject(Buffer.buffer(JsonUtil.BASE64_DECODER.decode(responseMessage.getString("payload"))));
-                apiRequest.setSolrId(responseBody.getString(Airport.VAR_solrId));
+                apiRequest.setSolrId(responseBody.getString(Aircraft.VAR_solrId));
                 eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(responseBody.encodePrettily()))));
-                LOG.debug(String.format("postAirport succeeded. "));
+                LOG.debug(String.format("postAircraft succeeded. "));
               }).onFailure(ex -> {
-                LOG.error(String.format("postAirport failed. "), ex);
+                LOG.error(String.format("postAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("postAirport failed. "), ex);
+            LOG.error(String.format("postAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("postAirport failed. "), ex);
+        LOG.error(String.format("postAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -1139,7 +1285,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("postAirport failed. ", ex2));
+          LOG.error(String.format("postAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1154,14 +1300,14 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("postAirport failed. "), ex);
+        LOG.error(String.format("postAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
   @Override
-  public void postAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void postAircraftFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -1180,13 +1326,13 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
           siteRequest.getRequestVars().put( "refresh", "false" );
         }
-        postAirportFuture(siteRequest, false).onSuccess(o -> {
+        postAircraftFuture(siteRequest, false).onSuccess(o -> {
           eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(JsonObject.mapFrom(o).encodePrettily()))));
         }).onFailure(ex -> {
           eventHandler.handle(Future.failedFuture(ex));
         });
       } catch(Throwable ex) {
-        LOG.error(String.format("postAirport failed. "), ex);
+        LOG.error(String.format("postAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -1194,7 +1340,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("postAirport failed. ", ex2));
+          LOG.error(String.format("postAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1209,26 +1355,26 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("postAirport failed. "), ex);
+        LOG.error(String.format("postAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Airport> postAirportFuture(SiteRequest siteRequest, Boolean entityShortId) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Aircraft> postAircraftFuture(SiteRequest siteRequest, Boolean entityShortId) {
+    Promise<Aircraft> promise = Promise.promise();
 
     try {
       pgPool.withTransaction(sqlConnection -> {
-        Promise<Airport> promise1 = Promise.promise();
+        Promise<Aircraft> promise1 = Promise.promise();
         siteRequest.setSqlConnection(sqlConnection);
-        varsAirport(siteRequest).onSuccess(a -> {
-          createAirport(siteRequest).onSuccess(airport -> {
-            sqlPOSTAirport(airport, entityShortId).onSuccess(b -> {
-              persistAirport(airport, false).onSuccess(c -> {
-                relateAirport(airport).onSuccess(d -> {
-                  indexAirport(airport).onSuccess(o2 -> {
-                    promise1.complete(airport);
+        varsAircraft(siteRequest).onSuccess(a -> {
+          createAircraft(siteRequest).onSuccess(aircraft -> {
+            sqlPOSTAircraft(aircraft, entityShortId).onSuccess(b -> {
+              persistAircraft(aircraft, false).onSuccess(c -> {
+                relateAircraft(aircraft).onSuccess(d -> {
+                  indexAircraft(aircraft).onSuccess(o2 -> {
+                    promise1.complete(aircraft);
                   }).onFailure(ex -> {
                     promise1.tryFail(ex);
                   });
@@ -1253,50 +1399,50 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       }).onFailure(ex -> {
         siteRequest.setSqlConnection(null);
         promise.tryFail(ex);
-      }).compose(airport -> {
-        Promise<Airport> promise2 = Promise.promise();
-        refreshAirport(airport).onSuccess(a -> {
+      }).compose(aircraft -> {
+        Promise<Aircraft> promise2 = Promise.promise();
+        refreshAircraft(aircraft).onSuccess(a -> {
           try {
             ApiRequest apiRequest = siteRequest.getApiRequest_();
             if(apiRequest != null) {
               apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-              airport.apiRequestAirport();
-              eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+              aircraft.apiRequestAircraft();
+              eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
             }
-            promise2.complete(airport);
+            promise2.complete(aircraft);
           } catch(Exception ex) {
-            LOG.error(String.format("postAirportFuture failed. "), ex);
+            LOG.error(String.format("postAircraftFuture failed. "), ex);
             promise2.tryFail(ex);
           }
         }).onFailure(ex -> {
           promise2.tryFail(ex);
         });
         return promise2.future();
-      }).onSuccess(airport -> {
+      }).onSuccess(aircraft -> {
         try {
           ApiRequest apiRequest = siteRequest.getApiRequest_();
           if(apiRequest != null) {
             apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
-            airport.apiRequestAirport();
-            eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+            aircraft.apiRequestAircraft();
+            eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
           }
-          promise.complete(airport);
+          promise.complete(aircraft);
         } catch(Exception ex) {
-          LOG.error(String.format("postAirportFuture failed. "), ex);
+          LOG.error(String.format("postAircraftFuture failed. "), ex);
           promise.tryFail(ex);
         }
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("postAirportFuture failed. "), ex);
+      LOG.error(String.format("postAircraftFuture failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Airport> sqlPOSTAirport(Airport o, Boolean inheritPrimaryKey) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Aircraft> sqlPOSTAircraft(Aircraft o, Boolean inheritPrimaryKey) {
+    Promise<Aircraft> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -1304,11 +1450,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Integer num = 1;
-      StringBuilder bSql = new StringBuilder("UPDATE Airport SET ");
+      StringBuilder bSql = new StringBuilder("UPDATE Aircraft SET ");
       List<Object> bParams = new ArrayList<Object>();
       Long pk = o.getPk();
       JsonObject jsonObject = siteRequest.getJsonObject();
-      Airport o2 = new Airport();
+      Aircraft o2 = new Aircraft();
       o2.setSiteRequest_(siteRequest);
       List<Future> futures1 = new ArrayList<>();
       List<Future> futures2 = new ArrayList<>();
@@ -1334,275 +1480,405 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         Set<String> entityVars = jsonObject.fieldNames();
         for(String entityVar : entityVars) {
           switch(entityVar) {
-          case Airport.VAR_name:
+          case Aircraft.VAR_name:
             o2.setName(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_name + "=$" + num);
+            bSql.append(Aircraft.VAR_name + "=$" + num);
             num++;
             bParams.add(o2.sqlName());
             break;
-          case Airport.VAR_address:
-            o2.setAddress(jsonObject.getJsonObject(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_address + "=$" + num);
-            num++;
-            bParams.add(o2.sqlAddress());
+          case Aircraft.VAR_timeZone:
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+              futures1.add(Future.future(promise2 -> {
+                searchResult(siteRequest).query(TimeZone.varIndexedTimeZone(TimeZone.VAR_id), TimeZone.class, val).onSuccess(o3 -> {
+                  String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+                  if(solrId2 != null) {
+                    solrIds.add(solrId2);
+                    classes.add("TimeZone");
+                  }
+                  sql(siteRequest).update(Aircraft.class, pk).set(Aircraft.VAR_timeZone, TimeZone.class, solrId2, val).onSuccess(a -> {
+                    promise2.complete();
+                  }).onFailure(ex -> {
+                    promise2.tryFail(ex);
+                  });
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
             break;
-          case Airport.VAR_description:
+          case Aircraft.VAR_description:
             o2.setDescription(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_description + "=$" + num);
+            bSql.append(Aircraft.VAR_description + "=$" + num);
             num++;
             bParams.add(o2.sqlDescription());
             break;
-          case Airport.VAR_alternateName:
-            o2.setAlternateName(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Airport.VAR_alternateName + "=$" + num);
-            num++;
-            bParams.add(o2.sqlAlternateName());
+          case Aircraft.VAR_airportId:
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+              futures1.add(Future.future(promise2 -> {
+                searchModel(siteRequest).query(Airport.varIndexedAirport(Airport.VAR_entityShortId), Airport.class, val).onSuccess(o3 -> {
+                  String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+                  if(solrId2 != null) {
+                    solrIds.add(solrId2);
+                    classes.add("Airport");
+                  }
+                  sql(siteRequest).update(Aircraft.class, pk).set(Aircraft.VAR_airportId, Airport.class, solrId2, val).onSuccess(a -> {
+                    promise2.complete();
+                  }).onFailure(ex -> {
+                    promise2.tryFail(ex);
+                  });
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
             break;
-          case Airport.VAR_location:
+          case Aircraft.VAR_location:
             o2.setLocation(jsonObject.getJsonObject(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_location + "=$" + num);
+            bSql.append(Aircraft.VAR_location + "=$" + num);
             num++;
             bParams.add(o2.sqlLocation());
             break;
-          case Airport.VAR_created:
+          case Aircraft.VAR_created:
             o2.setCreated(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_created + "=$" + num);
+            bSql.append(Aircraft.VAR_created + "=$" + num);
             num++;
             bParams.add(o2.sqlCreated());
             break;
-          case Airport.VAR_codeIATA:
-            o2.setCodeIATA(jsonObject.getString(entityVar));
+          case Aircraft.VAR_departureDate:
+            o2.setDepartureDate(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_codeIATA + "=$" + num);
+            bSql.append(Aircraft.VAR_departureDate + "=$" + num);
             num++;
-            bParams.add(o2.sqlCodeIATA());
+            bParams.add(o2.sqlDepartureDate());
             break;
-          case Airport.VAR_id:
+          case Aircraft.VAR_id:
             o2.setId(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_id + "=$" + num);
+            bSql.append(Aircraft.VAR_id + "=$" + num);
             num++;
             bParams.add(o2.sqlId());
             break;
-          case Airport.VAR_codeICAO:
-            o2.setCodeICAO(jsonObject.getString(entityVar));
+          case Aircraft.VAR_arrivalDate:
+            o2.setArrivalDate(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_codeICAO + "=$" + num);
+            bSql.append(Aircraft.VAR_arrivalDate + "=$" + num);
             num++;
-            bParams.add(o2.sqlCodeICAO());
+            bParams.add(o2.sqlArrivalDate());
             break;
-          case Airport.VAR_entityShortId:
+          case Aircraft.VAR_entityShortId:
             o2.setEntityShortId(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_entityShortId + "=$" + num);
+            bSql.append(Aircraft.VAR_entityShortId + "=$" + num);
             num++;
             bParams.add(o2.sqlEntityShortId());
             break;
-          case Airport.VAR_archived:
+          case Aircraft.VAR_archived:
             o2.setArchived(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_archived + "=$" + num);
+            bSql.append(Aircraft.VAR_archived + "=$" + num);
             num++;
             bParams.add(o2.sqlArchived());
             break;
-          case Airport.VAR_dataProvider:
-            o2.setDataProvider(jsonObject.getString(entityVar));
+          case Aircraft.VAR_avgSpeedInMph:
+            o2.setAvgSpeedInMph(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_dataProvider + "=$" + num);
+            bSql.append(Aircraft.VAR_avgSpeedInMph + "=$" + num);
             num++;
-            bParams.add(o2.sqlDataProvider());
+            bParams.add(o2.sqlAvgSpeedInMph());
             break;
-          case Airport.VAR_ngsildTenant:
+          case Aircraft.VAR_ngsildTenant:
             o2.setNgsildTenant(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_ngsildTenant + "=$" + num);
+            bSql.append(Aircraft.VAR_ngsildTenant + "=$" + num);
             num++;
             bParams.add(o2.sqlNgsildTenant());
             break;
-          case Airport.VAR_dateCreated:
-            o2.setDateCreated(jsonObject.getString(entityVar));
+          case Aircraft.VAR_address:
+            o2.setAddress(jsonObject.getJsonObject(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_dateCreated + "=$" + num);
+            bSql.append(Aircraft.VAR_address + "=$" + num);
             num++;
-            bParams.add(o2.sqlDateCreated());
+            bParams.add(o2.sqlAddress());
             break;
-          case Airport.VAR_ngsildPath:
+          case Aircraft.VAR_ngsildPath:
             o2.setNgsildPath(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_ngsildPath + "=$" + num);
+            bSql.append(Aircraft.VAR_ngsildPath + "=$" + num);
             num++;
             bParams.add(o2.sqlNgsildPath());
             break;
-          case Airport.VAR_dateModified:
-            o2.setDateModified(jsonObject.getString(entityVar));
+          case Aircraft.VAR_alternateName:
+            o2.setAlternateName(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_dateModified + "=$" + num);
+            bSql.append(Aircraft.VAR_alternateName + "=$" + num);
             num++;
-            bParams.add(o2.sqlDateModified());
+            bParams.add(o2.sqlAlternateName());
             break;
-          case Airport.VAR_ngsildContext:
+          case Aircraft.VAR_ngsildContext:
             o2.setNgsildContext(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_ngsildContext + "=$" + num);
+            bSql.append(Aircraft.VAR_ngsildContext + "=$" + num);
             num++;
             bParams.add(o2.sqlNgsildContext());
             break;
-          case Airport.VAR_owner:
-            o2.setOwner(jsonObject.getJsonObject(entityVar));
+          case Aircraft.VAR_belongsToAircraftModel:
+            o2.setBelongsToAircraftModel(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_owner + "=$" + num);
+            bSql.append(Aircraft.VAR_belongsToAircraftModel + "=$" + num);
             num++;
-            bParams.add(o2.sqlOwner());
+            bParams.add(o2.sqlBelongsToAircraftModel());
             break;
-          case Airport.VAR_ngsildData:
+          case Aircraft.VAR_ngsildData:
             o2.setNgsildData(jsonObject.getJsonObject(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_ngsildData + "=$" + num);
+            bSql.append(Aircraft.VAR_ngsildData + "=$" + num);
             num++;
             bParams.add(o2.sqlNgsildData());
             break;
-          case Airport.VAR_sessionId:
+          case Aircraft.VAR_sessionId:
             o2.setSessionId(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_sessionId + "=$" + num);
+            bSql.append(Aircraft.VAR_sessionId + "=$" + num);
             num++;
             bParams.add(o2.sqlSessionId());
             break;
-          case Airport.VAR_seeAlso:
-            o2.setSeeAlso(jsonObject.getString(entityVar));
+          case Aircraft.VAR_dataProvider:
+            o2.setDataProvider(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_seeAlso + "=$" + num);
+            bSql.append(Aircraft.VAR_dataProvider + "=$" + num);
             num++;
-            bParams.add(o2.sqlSeeAlso());
+            bParams.add(o2.sqlDataProvider());
             break;
-          case Airport.VAR_color:
+          case Aircraft.VAR_color:
             o2.setColor(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_color + "=$" + num);
+            bSql.append(Aircraft.VAR_color + "=$" + num);
             num++;
             bParams.add(o2.sqlColor());
             break;
-          case Airport.VAR_userKey:
+          case Aircraft.VAR_userKey:
             o2.setUserKey(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_userKey + "=$" + num);
+            bSql.append(Aircraft.VAR_userKey + "=$" + num);
             num++;
             bParams.add(o2.sqlUserKey());
             break;
-          case Airport.VAR_source:
-            o2.setSource(jsonObject.getString(entityVar));
+          case Aircraft.VAR_dateCreated:
+            o2.setDateCreated(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_source + "=$" + num);
+            bSql.append(Aircraft.VAR_dateCreated + "=$" + num);
             num++;
-            bParams.add(o2.sqlSource());
+            bParams.add(o2.sqlDateCreated());
             break;
-          case Airport.VAR_objectTitle:
+          case Aircraft.VAR_dateIssued:
+            o2.setDateIssued(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_dateIssued + "=$" + num);
+            num++;
+            bParams.add(o2.sqlDateIssued());
+            break;
+          case Aircraft.VAR_dateModified:
+            o2.setDateModified(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_dateModified + "=$" + num);
+            num++;
+            bParams.add(o2.sqlDateModified());
+            break;
+          case Aircraft.VAR_objectTitle:
             o2.setObjectTitle(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_objectTitle + "=$" + num);
+            bSql.append(Aircraft.VAR_objectTitle + "=$" + num);
             num++;
             bParams.add(o2.sqlObjectTitle());
             break;
-          case Airport.VAR_displayPage:
+          case Aircraft.VAR_heading:
+            o2.setHeading(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_heading + "=$" + num);
+            num++;
+            bParams.add(o2.sqlHeading());
+            break;
+          case Aircraft.VAR_displayPage:
             o2.setDisplayPage(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_displayPage + "=$" + num);
+            bSql.append(Aircraft.VAR_displayPage + "=$" + num);
             num++;
             bParams.add(o2.sqlDisplayPage());
             break;
-          case Airport.VAR_areaServed:
-            o2.setAreaServed(jsonObject.getJsonObject(entityVar));
+          case Aircraft.VAR_isOnGround:
+            o2.setIsOnGround(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_areaServed + "=$" + num);
+            bSql.append(Aircraft.VAR_isOnGround + "=$" + num);
             num++;
-            bParams.add(o2.sqlAreaServed());
+            bParams.add(o2.sqlIsOnGround());
             break;
-          case Airport.VAR_editPage:
+          case Aircraft.VAR_editPage:
             o2.setEditPage(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_editPage + "=$" + num);
+            bSql.append(Aircraft.VAR_editPage + "=$" + num);
             num++;
             bParams.add(o2.sqlEditPage());
             break;
-          case Airport.VAR_userPage:
+          case Aircraft.VAR_owner:
+            o2.setOwner(jsonObject.getJsonObject(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_owner + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOwner());
+            break;
+          case Aircraft.VAR_userPage:
             o2.setUserPage(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_userPage + "=$" + num);
+            bSql.append(Aircraft.VAR_userPage + "=$" + num);
             num++;
             bParams.add(o2.sqlUserPage());
             break;
-          case Airport.VAR_download:
+          case Aircraft.VAR_registration:
+            o2.setRegistration(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_registration + "=$" + num);
+            num++;
+            bParams.add(o2.sqlRegistration());
+            break;
+          case Aircraft.VAR_download:
             o2.setDownload(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
               bSql.append(", ");
             }
-            bSql.append(Airport.VAR_download + "=$" + num);
+            bSql.append(Aircraft.VAR_download + "=$" + num);
             num++;
             bParams.add(o2.sqlDownload());
+            break;
+          case Aircraft.VAR_seeAlso:
+            o2.setSeeAlso(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_seeAlso + "=$" + num);
+            num++;
+            bParams.add(o2.sqlSeeAlso());
+            break;
+          case Aircraft.VAR_source:
+            o2.setSource(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_source + "=$" + num);
+            num++;
+            bParams.add(o2.sqlSource());
+            break;
+          case Aircraft.VAR_speed:
+            o2.setSpeed(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_speed + "=$" + num);
+            num++;
+            bParams.add(o2.sqlSpeed());
+            break;
+          case Aircraft.VAR_verticalSpeed:
+            o2.setVerticalSpeed(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_verticalSpeed + "=$" + num);
+            num++;
+            bParams.add(o2.sqlVerticalSpeed());
+            break;
+          case Aircraft.VAR_path:
+            o2.setPath(jsonObject.getJsonObject(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_path + "=$" + num);
+            num++;
+            bParams.add(o2.sqlPath());
+            break;
+          case Aircraft.VAR_simulation:
+            o2.setSimulation(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_simulation + "=$" + num);
+            num++;
+            bParams.add(o2.sqlSimulation());
+            break;
+          case Aircraft.VAR_simulationDelayMillis:
+            o2.setSimulationDelayMillis(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_simulationDelayMillis + "=$" + num);
+            num++;
+            bParams.add(o2.sqlSimulationDelayMillis());
             break;
           }
         }
@@ -1617,8 +1893,8 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               ).onSuccess(b -> {
             a.handle(Future.succeededFuture());
           }).onFailure(ex -> {
-            RuntimeException ex2 = new RuntimeException("value Airport failed", ex);
-            LOG.error(String.format("relateAirport failed. "), ex2);
+            RuntimeException ex2 = new RuntimeException("value Aircraft failed", ex);
+            LOG.error(String.format("relateAircraft failed. "), ex2);
             a.handle(Future.failedFuture(ex2));
           });
         }));
@@ -1627,28 +1903,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         CompositeFuture.all(futures2).onSuccess(b -> {
           promise.complete(o2);
         }).onFailure(ex -> {
-          LOG.error(String.format("sqlPOSTAirport failed. "), ex);
+          LOG.error(String.format("sqlPOSTAircraft failed. "), ex);
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("sqlPOSTAirport failed. "), ex);
+        LOG.error(String.format("sqlPOSTAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("sqlPOSTAirport failed. "), ex);
+      LOG.error(String.format("sqlPOSTAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<ServiceResponse> response200POSTAirport(Airport o) {
+  public Future<ServiceResponse> response200POSTAircraft(Aircraft o) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       JsonObject json = JsonObject.mapFrom(o);
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200POSTAirport failed. "), ex);
+      LOG.error(String.format("response200POSTAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -1657,28 +1933,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // DELETE //
 
   @Override
-  public void deleteAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("deleteAirport started. "));
+  public void deleteAircraft(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("deleteAircraft started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "DELETE"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "DELETE"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -1692,7 +1968,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("DELETE")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -1708,47 +1984,47 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             } else {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, true, "DELETE").onSuccess(listAirport -> {
+              searchAircraftList(siteRequest, false, true, true, "DELETE").onSuccess(listAircraft -> {
                 try {
                   ApiRequest apiRequest = new ApiRequest();
-                  apiRequest.setRows(listAirport.getRequest().getRows());
-                  apiRequest.setNumFound(listAirport.getResponse().getResponse().getNumFound());
+                  apiRequest.setRows(listAircraft.getRequest().getRows());
+                  apiRequest.setNumFound(listAircraft.getResponse().getResponse().getNumFound());
                   apiRequest.setNumPATCH(0L);
                   apiRequest.initDeepApiRequest(siteRequest);
                   siteRequest.setApiRequest_(apiRequest);
                   if(apiRequest.getNumFound() == 1L)
-                    apiRequest.setOriginal(listAirport.first());
-                  apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-                  eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                    apiRequest.setOriginal(listAircraft.first());
+                  apiRequest.setSolrId(Optional.ofNullable(listAircraft.first()).map(o2 -> o2.getSolrId()).orElse(null));
+                  eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
 
-                  listDELETEAirport(apiRequest, listAirport).onSuccess(e -> {
-                    response200DELETEAirport(siteRequest).onSuccess(response -> {
-                      LOG.debug(String.format("deleteAirport succeeded. "));
+                  listDELETEAircraft(apiRequest, listAircraft).onSuccess(e -> {
+                    response200DELETEAircraft(siteRequest).onSuccess(response -> {
+                      LOG.debug(String.format("deleteAircraft succeeded. "));
                       eventHandler.handle(Future.succeededFuture(response));
                     }).onFailure(ex -> {
-                      LOG.error(String.format("deleteAirport failed. "), ex);
+                      LOG.error(String.format("deleteAircraft failed. "), ex);
                       error(siteRequest, eventHandler, ex);
                     });
                   }).onFailure(ex -> {
-                    LOG.error(String.format("deleteAirport failed. "), ex);
+                    LOG.error(String.format("deleteAircraft failed. "), ex);
                     error(siteRequest, eventHandler, ex);
                   });
                 } catch(Exception ex) {
-                  LOG.error(String.format("deleteAirport failed. "), ex);
+                  LOG.error(String.format("deleteAircraft failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 }
               }).onFailure(ex -> {
-                LOG.error(String.format("deleteAirport failed. "), ex);
+                LOG.error(String.format("deleteAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("deleteAirport failed. "), ex);
+            LOG.error(String.format("deleteAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("deleteAirport failed. "), ex);
+        LOG.error(String.format("deleteAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -1756,7 +2032,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("deleteAirport failed. ", ex2));
+          LOG.error(String.format("deleteAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -1771,58 +2047,58 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("deleteAirport failed. "), ex);
+        LOG.error(String.format("deleteAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Void> listDELETEAirport(ApiRequest apiRequest, SearchList<Airport> listAirport) {
+  public Future<Void> listDELETEAircraft(ApiRequest apiRequest, SearchList<Aircraft> listAircraft) {
     Promise<Void> promise = Promise.promise();
     List<Future> futures = new ArrayList<>();
-    SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-    listAirport.getList().forEach(o -> {
+    SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
+    listAircraft.getList().forEach(o -> {
       SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
       siteRequest2.setScopes(siteRequest.getScopes());
       o.setSiteRequest_(siteRequest2);
       siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
       JsonObject jsonObject = JsonObject.mapFrom(o);
-      Airport o2 = jsonObject.mapTo(Airport.class);
+      Aircraft o2 = jsonObject.mapTo(Aircraft.class);
       o2.setSiteRequest_(siteRequest2);
       futures.add(Future.future(promise1 -> {
-        deleteAirportFuture(o).onSuccess(a -> {
+        deleteAircraftFuture(o).onSuccess(a -> {
           promise1.complete();
         }).onFailure(ex -> {
-          LOG.error(String.format("listDELETEAirport failed. "), ex);
+          LOG.error(String.format("listDELETEAircraft failed. "), ex);
           promise1.tryFail(ex);
         });
       }));
     });
     CompositeFuture.all(futures).onSuccess( a -> {
-      listAirport.next().onSuccess(next -> {
+      listAircraft.next().onSuccess(next -> {
         if(next) {
-          listDELETEAirport(apiRequest, listAirport).onSuccess(b -> {
+          listDELETEAircraft(apiRequest, listAircraft).onSuccess(b -> {
             promise.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("listDELETEAirport failed. "), ex);
+            LOG.error(String.format("listDELETEAircraft failed. "), ex);
             promise.tryFail(ex);
           });
         } else {
           promise.complete();
         }
       }).onFailure(ex -> {
-        LOG.error(String.format("listDELETEAirport failed. "), ex);
+        LOG.error(String.format("listDELETEAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     }).onFailure(ex -> {
-      LOG.error(String.format("listDELETEAirport failed. "), ex);
+      LOG.error(String.format("listDELETEAircraft failed. "), ex);
       promise.tryFail(ex);
     });
     return promise.future();
   }
 
   @Override
-  public void deleteAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void deleteAircraftFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -1834,10 +2110,10 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             siteRequest.addScopes(scope);
           });
         });
-        searchAirportList(siteRequest, false, true, true, "DELETE").onSuccess(listAirport -> {
+        searchAircraftList(siteRequest, false, true, true, "DELETE").onSuccess(listAircraft -> {
           try {
-            Airport o = listAirport.first();
-            if(o != null && listAirport.getResponse().getResponse().getNumFound() == 1) {
+            Aircraft o = listAircraft.first();
+            if(o != null && listAircraft.getResponse().getResponse().getNumFound() == 1) {
               ApiRequest apiRequest = new ApiRequest();
               apiRequest.setRows(1L);
               apiRequest.setNumFound(1L);
@@ -1849,9 +2125,9 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               }
               if(apiRequest.getNumFound() == 1L)
                 apiRequest.setOriginal(o);
-              apiRequest.setId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
-              apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-              deleteAirportFuture(o).onSuccess(o2 -> {
+              apiRequest.setId(Optional.ofNullable(listAircraft.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
+              apiRequest.setSolrId(Optional.ofNullable(listAircraft.first()).map(o2 -> o2.getSolrId()).orElse(null));
+              deleteAircraftFuture(o).onSuccess(o2 -> {
                 eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
               }).onFailure(ex -> {
                 eventHandler.handle(Future.failedFuture(ex));
@@ -1860,42 +2136,42 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
             }
           } catch(Exception ex) {
-            LOG.error(String.format("deleteAirport failed. "), ex);
+            LOG.error(String.format("deleteAircraft failed. "), ex);
             error(siteRequest, eventHandler, ex);
           }
         }).onFailure(ex -> {
-          LOG.error(String.format("deleteAirport failed. "), ex);
+          LOG.error(String.format("deleteAircraft failed. "), ex);
           error(siteRequest, eventHandler, ex);
         });
       } catch(Exception ex) {
-        LOG.error(String.format("deleteAirport failed. "), ex);
+        LOG.error(String.format("deleteAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
-      LOG.error(String.format("deleteAirport failed. "), ex);
+      LOG.error(String.format("deleteAircraft failed. "), ex);
       error(null, eventHandler, ex);
     });
   }
 
-  public Future<Airport> deleteAirportFuture(Airport o) {
+  public Future<Aircraft> deleteAircraftFuture(Aircraft o) {
     SiteRequest siteRequest = o.getSiteRequest_();
-    Promise<Airport> promise = Promise.promise();
+    Promise<Aircraft> promise = Promise.promise();
 
     try {
       ApiRequest apiRequest = siteRequest.getApiRequest_();
-      Promise<Airport> promise1 = Promise.promise();
+      Promise<Aircraft> promise1 = Promise.promise();
       pgPool.withTransaction(sqlConnection -> {
         siteRequest.setSqlConnection(sqlConnection);
-        varsAirport(siteRequest).onSuccess(a -> {
-          sqlDELETEAirport(o).onSuccess(airport -> {
-            relateAirport(o).onSuccess(d -> {
-              unindexAirport(o).onSuccess(o2 -> {
+        varsAircraft(siteRequest).onSuccess(a -> {
+          sqlDELETEAircraft(o).onSuccess(aircraft -> {
+            relateAircraft(o).onSuccess(d -> {
+              unindexAircraft(o).onSuccess(o2 -> {
                 if(apiRequest != null) {
                   apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
                   if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-                    o2.apiRequestAirport();
+                    o2.apiRequestAircraft();
                     if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
-                      eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                      eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
                   }
                 }
                 promise1.complete();
@@ -1917,27 +2193,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       }).onFailure(ex -> {
         siteRequest.setSqlConnection(null);
         promise.tryFail(ex);
-      }).compose(airport -> {
-        Promise<Airport> promise2 = Promise.promise();
-        refreshAirport(o).onSuccess(a -> {
+      }).compose(aircraft -> {
+        Promise<Aircraft> promise2 = Promise.promise();
+        refreshAircraft(o).onSuccess(a -> {
           promise2.complete(o);
         }).onFailure(ex -> {
           promise2.tryFail(ex);
         });
         return promise2.future();
-      }).onSuccess(airport -> {
-        promise.complete(airport);
+      }).onSuccess(aircraft -> {
+        promise.complete(aircraft);
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("deleteAirportFuture failed. "), ex);
+      LOG.error(String.format("deleteAircraftFuture failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Void> sqlDELETEAirport(Airport o) {
+  public Future<Void> sqlDELETEAircraft(Aircraft o) {
     Promise<Void> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
@@ -1946,11 +2222,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Integer num = 1;
-      StringBuilder bSql = new StringBuilder("DELETE FROM Airport ");
+      StringBuilder bSql = new StringBuilder("DELETE FROM Aircraft ");
       List<Object> bParams = new ArrayList<Object>();
       Long pk = o.getPk();
       JsonObject jsonObject = siteRequest.getJsonObject();
-      Airport o2 = new Airport();
+      Aircraft o2 = new Aircraft();
       o2.setSiteRequest_(siteRequest);
       List<Future> futures1 = new ArrayList<>();
       List<Future> futures2 = new ArrayList<>();
@@ -1959,6 +2235,46 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         Set<String> entityVars = jsonObject.fieldNames();
         for(String entityVar : entityVars) {
           switch(entityVar) {
+          case Aircraft.VAR_timeZone:
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+              futures1.add(Future.future(promise2 -> {
+                searchResult(siteRequest).query(TimeZone.varIndexedTimeZone(TimeZone.VAR_id), TimeZone.class, val).onSuccess(o3 -> {
+                  String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+                  if(solrId2 != null) {
+                    solrIds.add(solrId2);
+                    classes.add("TimeZone");
+                  }
+                  sql(siteRequest).update(Aircraft.class, pk).set(Aircraft.VAR_timeZone, TimeZone.class, null, null).onSuccess(a -> {
+                    promise2.complete();
+                  }).onFailure(ex -> {
+                    promise2.tryFail(ex);
+                  });
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
+            break;
+          case Aircraft.VAR_airportId:
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+              futures1.add(Future.future(promise2 -> {
+                searchModel(siteRequest).query(Airport.varIndexedAirport(Airport.VAR_entityShortId), Airport.class, val).onSuccess(o3 -> {
+                  String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+                  if(solrId2 != null) {
+                    solrIds.add(solrId2);
+                    classes.add("Airport");
+                  }
+                  sql(siteRequest).update(Aircraft.class, pk).set(Aircraft.VAR_airportId, Airport.class, null, null).onSuccess(a -> {
+                    promise2.complete();
+                  }).onFailure(ex -> {
+                    promise2.tryFail(ex);
+                  });
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
+            break;
           }
         }
       }
@@ -1971,8 +2287,8 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             ).onSuccess(b -> {
           a.handle(Future.succeededFuture());
         }).onFailure(ex -> {
-          RuntimeException ex2 = new RuntimeException("value Airport failed", ex);
-          LOG.error(String.format("unrelateAirport failed. "), ex2);
+          RuntimeException ex2 = new RuntimeException("value Aircraft failed", ex);
+          LOG.error(String.format("unrelateAircraft failed. "), ex2);
           a.handle(Future.failedFuture(ex2));
         });
       }));
@@ -1982,34 +2298,34 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             cbDeleteEntity(o).onSuccess(c -> {
               promise.complete();
             }).onFailure(ex -> {
-              LOG.error(String.format("sqlDELETEAirport failed. "), ex);
+              LOG.error(String.format("sqlDELETEAircraft failed. "), ex);
               promise.tryFail(ex);
             });
           } else {
             promise.complete();
           }
         }).onFailure(ex -> {
-          LOG.error(String.format("sqlDELETEAirport failed. "), ex);
+          LOG.error(String.format("sqlDELETEAircraft failed. "), ex);
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("sqlDELETEAirport failed. "), ex);
+        LOG.error(String.format("sqlDELETEAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("sqlDELETEAirport failed. "), ex);
+      LOG.error(String.format("sqlDELETEAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<ServiceResponse> response200DELETEAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> response200DELETEAircraft(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       JsonObject json = new JsonObject();
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200DELETEAirport failed. "), ex);
+      LOG.error(String.format("response200DELETEAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -2018,28 +2334,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // PUTImport //
 
   @Override
-  public void putimportAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("putimportAirport started. "));
+  public void putimportAircraft(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("putimportAircraft started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "PUT"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "PUT"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2053,7 +2369,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("PUT")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -2076,32 +2392,32 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               apiRequest.setNumPATCH(0L);
               apiRequest.initDeepApiRequest(siteRequest);
               siteRequest.setApiRequest_(apiRequest);
-              eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
-              varsAirport(siteRequest).onSuccess(d -> {
-                listPUTImportAirport(apiRequest, siteRequest).onSuccess(e -> {
-                  response200PUTImportAirport(siteRequest).onSuccess(response -> {
-                    LOG.debug(String.format("putimportAirport succeeded. "));
+              eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
+              varsAircraft(siteRequest).onSuccess(d -> {
+                listPUTImportAircraft(apiRequest, siteRequest).onSuccess(e -> {
+                  response200PUTImportAircraft(siteRequest).onSuccess(response -> {
+                    LOG.debug(String.format("putimportAircraft succeeded. "));
                     eventHandler.handle(Future.succeededFuture(response));
                   }).onFailure(ex -> {
-                    LOG.error(String.format("putimportAirport failed. "), ex);
+                    LOG.error(String.format("putimportAircraft failed. "), ex);
                     error(siteRequest, eventHandler, ex);
                   });
                 }).onFailure(ex -> {
-                  LOG.error(String.format("putimportAirport failed. "), ex);
+                  LOG.error(String.format("putimportAircraft failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("putimportAirport failed. "), ex);
+                LOG.error(String.format("putimportAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("putimportAirport failed. "), ex);
+            LOG.error(String.format("putimportAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("putimportAirport failed. "), ex);
+        LOG.error(String.format("putimportAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -2109,7 +2425,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("putimportAirport failed. ", ex2));
+          LOG.error(String.format("putimportAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2124,13 +2440,13 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("putimportAirport failed. "), ex);
+        LOG.error(String.format("putimportAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Void> listPUTImportAirport(ApiRequest apiRequest, SiteRequest siteRequest) {
+  public Future<Void> listPUTImportAircraft(ApiRequest apiRequest, SiteRequest siteRequest) {
     Promise<Void> promise = Promise.promise();
     List<Future> futures = new ArrayList<>();
     JsonArray jsonArray = Optional.ofNullable(siteRequest.getJsonObject()).map(o -> o.getJsonArray("list")).orElse(new JsonArray());
@@ -2155,10 +2471,10 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           params.put("query", query);
           JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
           JsonObject json = new JsonObject().put("context", context);
-          eventBus.request(Airport.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportAirportFuture")).onSuccess(a -> {
+          eventBus.request(Aircraft.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "putimportAircraftFuture")).onSuccess(a -> {
             promise1.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("listPUTImportAirport failed. "), ex);
+            LOG.error(String.format("listPUTImportAircraft failed. "), ex);
             promise1.tryFail(ex);
           });
         }));
@@ -2167,18 +2483,18 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
         promise.complete();
       }).onFailure(ex -> {
-        LOG.error(String.format("listPUTImportAirport failed. "), ex);
+        LOG.error(String.format("listPUTImportAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("listPUTImportAirport failed. "), ex);
+      LOG.error(String.format("listPUTImportAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
   @Override
-  public void putimportAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void putimportAircraftFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -2194,19 +2510,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         apiRequest.setNumPATCH(0L);
         apiRequest.initDeepApiRequest(siteRequest);
         siteRequest.setApiRequest_(apiRequest);
-        String entityShortId = Optional.ofNullable(body.getString(Airport.VAR_entityShortId)).orElse(body.getString(Airport.VAR_solrId));
+        String entityShortId = Optional.ofNullable(body.getString(Aircraft.VAR_entityShortId)).orElse(body.getString(Aircraft.VAR_solrId));
         if(Optional.ofNullable(serviceRequest.getParams()).map(p -> p.getJsonObject("query")).map( q -> q.getJsonArray("var")).orElse(new JsonArray()).stream().filter(s -> "refresh:false".equals(s)).count() > 0L) {
           siteRequest.getRequestVars().put( "refresh", "false" );
         }
         pgPool.getConnection().onSuccess(sqlConnection -> {
-          String sqlQuery = String.format("select * from %s WHERE entityShortId=$1", Airport.CLASS_SIMPLE_NAME);
+          String sqlQuery = String.format("select * from %s WHERE entityShortId=$1", Aircraft.CLASS_SIMPLE_NAME);
           sqlConnection.preparedQuery(sqlQuery)
               .execute(Tuple.tuple(Arrays.asList(entityShortId))
               ).onSuccess(result -> {
             sqlConnection.close().onSuccess(a -> {
               try {
                 if(result.size() >= 1) {
-                  Airport o = new Airport();
+                  Aircraft o = new Aircraft();
                   o.setSiteRequest_(siteRequest);
                   for(Row definition : result.value()) {
                     for(Integer i = 0; i < definition.size(); i++) {
@@ -2215,11 +2531,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                         Object columnValue = definition.getValue(i);
                         o.persistForClass(columnName, columnValue);
                       } catch(Exception e) {
-                        LOG.error(String.format("persistAirport failed. "), e);
+                        LOG.error(String.format("persistAircraft failed. "), e);
                       }
                     }
                   }
-                  Airport o2 = new Airport();
+                  Aircraft o2 = new Aircraft();
                   o2.setSiteRequest_(siteRequest);
                   JsonObject body2 = new JsonObject();
                   for(String f : body.fieldNames()) {
@@ -2267,40 +2583,40 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                     apiRequest.setSolrId(o.getSolrId());
                   }
                   siteRequest.setJsonObject(body2);
-                  patchAirportFuture(o, true).onSuccess(b -> {
-                    LOG.debug("Import Airport {} succeeded, modified Airport. ", body.getValue(Airport.VAR_entityShortId));
+                  patchAircraftFuture(o, true).onSuccess(b -> {
+                    LOG.debug("Import Aircraft {} succeeded, modified Aircraft. ", body.getValue(Aircraft.VAR_entityShortId));
                     eventHandler.handle(Future.succeededFuture());
                   }).onFailure(ex -> {
-                    LOG.error(String.format("putimportAirportFuture failed. "), ex);
+                    LOG.error(String.format("putimportAircraftFuture failed. "), ex);
                     eventHandler.handle(Future.failedFuture(ex));
                   });
                 } else {
-                  postAirportFuture(siteRequest, true).onSuccess(b -> {
-                    LOG.debug("Import Airport {} succeeded, created new Airport. ", body.getValue(Airport.VAR_entityShortId));
+                  postAircraftFuture(siteRequest, true).onSuccess(b -> {
+                    LOG.debug("Import Aircraft {} succeeded, created new Aircraft. ", body.getValue(Aircraft.VAR_entityShortId));
                     eventHandler.handle(Future.succeededFuture());
                   }).onFailure(ex -> {
-                    LOG.error(String.format("putimportAirportFuture failed. "), ex);
+                    LOG.error(String.format("putimportAircraftFuture failed. "), ex);
                     eventHandler.handle(Future.failedFuture(ex));
                   });
                 }
               } catch(Exception ex) {
-                LOG.error(String.format("putimportAirportFuture failed. "), ex);
+                LOG.error(String.format("putimportAircraftFuture failed. "), ex);
                 eventHandler.handle(Future.failedFuture(ex));
               }
             }).onFailure(ex -> {
-              LOG.error(String.format("putimportAirportFuture failed. "), ex);
+              LOG.error(String.format("putimportAircraftFuture failed. "), ex);
               eventHandler.handle(Future.failedFuture(ex));
             });
           }).onFailure(ex -> {
-            LOG.error(String.format("putimportAirportFuture failed. "), ex);
+            LOG.error(String.format("putimportAircraftFuture failed. "), ex);
             eventHandler.handle(Future.failedFuture(ex));
           });
         }).onFailure(ex -> {
-          LOG.error(String.format("putimportAirportFuture failed. "), ex);
+          LOG.error(String.format("putimportAircraftFuture failed. "), ex);
           eventHandler.handle(Future.failedFuture(ex));
         });
       } catch(Exception ex) {
-        LOG.error(String.format("putimportAirportFuture failed. "), ex);
+        LOG.error(String.format("putimportAircraftFuture failed. "), ex);
         eventHandler.handle(Future.failedFuture(ex));
       }
     }).onFailure(ex -> {
@@ -2308,7 +2624,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("putimportAirport failed. ", ex2));
+          LOG.error(String.format("putimportAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2323,19 +2639,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("putimportAirport failed. "), ex);
+        LOG.error(String.format("putimportAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<ServiceResponse> response200PUTImportAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> response200PUTImportAircraft(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       JsonObject json = new JsonObject();
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200PUTImportAirport failed. "), ex);
+      LOG.error(String.format("response200PUTImportAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -2344,27 +2660,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // SearchPage //
 
   @Override
-  public void searchpageAirport(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void searchpageAircraft(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2378,30 +2694,30 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, false, "GET").onSuccess(listAirport -> {
-                response200SearchPageAirport(listAirport).onSuccess(response -> {
+              searchAircraftList(siteRequest, false, true, false, "GET").onSuccess(listAircraft -> {
+                response200SearchPageAircraft(listAircraft).onSuccess(response -> {
                   eventHandler.handle(Future.succeededFuture(response));
-                  LOG.debug(String.format("searchpageAirport succeeded. "));
+                  LOG.debug(String.format("searchpageAircraft succeeded. "));
                 }).onFailure(ex -> {
-                  LOG.error(String.format("searchpageAirport failed. "), ex);
+                  LOG.error(String.format("searchpageAircraft failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("searchpageAirport failed. "), ex);
+                LOG.error(String.format("searchpageAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("searchpageAirport failed. "), ex);
+            LOG.error(String.format("searchpageAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("searchpageAirport failed. "), ex);
+        LOG.error(String.format("searchpageAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -2409,7 +2725,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("searchpageAirport failed. ", ex2));
+          LOG.error(String.format("searchpageAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2424,17 +2740,17 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("searchpageAirport failed. "), ex);
+        LOG.error(String.format("searchpageAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public void searchpageAirportPageInit(JsonObject ctx, AirportPage page, SearchList<Airport> listAirport, Promise<Void> promise) {
+  public void searchpageAircraftPageInit(JsonObject ctx, AircraftPage page, SearchList<Aircraft> listAircraft, Promise<Void> promise) {
     String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
 
-    ctx.put("enUSUrlSearchPage", String.format("%s%s", siteBaseUrl, "/en-us/search/airport"));
-    ctx.put("enUSUrlPage", String.format("%s%s", siteBaseUrl, "/en-us/search/airport"));
+    ctx.put("enUSUrlSearchPage", String.format("%s%s", siteBaseUrl, "/en-us/search/aircraft"));
+    ctx.put("enUSUrlPage", String.format("%s%s", siteBaseUrl, "/en-us/search/aircraft"));
     ctx.put("enUSUrlDisplayPage", Optional.ofNullable(page.getResult()).map(o -> o.getDisplayPage()));
     ctx.put("enUSUrlEditPage", Optional.ofNullable(page.getResult()).map(o -> o.getEditPage()));
     ctx.put("enUSUrlUserPage", Optional.ofNullable(page.getResult()).map(o -> o.getUserPage()));
@@ -2443,19 +2759,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
     promise.complete();
   }
 
-  public String templateUriSearchPageAirport(ServiceRequest serviceRequest, Airport result) {
-    return "en-us/search/airport/AirportSearchPage.htm";
+  public String templateUriSearchPageAircraft(ServiceRequest serviceRequest, Aircraft result) {
+    return "en-us/search/aircraft/AircraftSearchPage.htm";
   }
-  public void templateSearchPageAirport(JsonObject ctx, AirportPage page, SearchList<Airport> listAirport, Promise<String> promise) {
+  public void templateSearchPageAircraft(JsonObject ctx, AircraftPage page, SearchList<Aircraft> listAircraft, Promise<String> promise) {
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
+      SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
       ServiceRequest serviceRequest = siteRequest.getServiceRequest();
-      Airport result = listAirport.first();
-      String pageTemplateUri = templateUriSearchPageAirport(serviceRequest, result);
+      Aircraft result = listAircraft.first();
+      String pageTemplateUri = templateUriSearchPageAircraft(serviceRequest, result);
       String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
       Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
       if(result == null || !Files.exists(resourceTemplatePath)) {
-        String template = Files.readString(Path.of(siteTemplatePath, "en-us/search/airport/AirportSearchPage.htm"), Charset.forName("UTF-8"));
+        String template = Files.readString(Path.of(siteTemplatePath, "en-us/search/aircraft/AircraftSearchPage.htm"), Charset.forName("UTF-8"));
         String renderedTemplate = jinjava.render(template, ctx.getMap());
         promise.complete(renderedTemplate);
       } else if(pageTemplateUri.endsWith(".md")) {
@@ -2509,67 +2825,67 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         promise.complete(renderedTemplate);
       }
     } catch(Exception ex) {
-      LOG.error(String.format("templateSearchPageAirport failed. "), ex);
+      LOG.error(String.format("templateSearchPageAircraft failed. "), ex);
       ExceptionUtils.rethrow(ex);
     }
   }
-  public Future<ServiceResponse> response200SearchPageAirport(SearchList<Airport> listAirport) {
+  public Future<ServiceResponse> response200SearchPageAircraft(SearchList<Aircraft> listAircraft) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-      AirportPage page = new AirportPage();
+      SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
+      AircraftPage page = new AircraftPage();
       MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
       siteRequest.setRequestHeaders(requestHeaders);
 
-      if(listAirport.size() >= 1)
-        siteRequest.setRequestPk(listAirport.get(0).getPk());
-      page.setSearchListAirport_(listAirport);
+      if(listAircraft.size() >= 1)
+        siteRequest.setRequestPk(listAircraft.get(0).getPk());
+      page.setSearchListAircraft_(listAircraft);
       page.setSiteRequest_(siteRequest);
       page.setServiceRequest(siteRequest.getServiceRequest());
       page.setWebClient(webClient);
       page.setVertx(vertx);
-      page.promiseDeepAirportPage(siteRequest).onSuccess(a -> {
+      page.promiseDeepAircraftPage(siteRequest).onSuccess(a -> {
         try {
           JsonObject ctx = ConfigKeys.getPageContext(config);
           ctx.mergeIn(JsonObject.mapFrom(page));
           Promise<Void> promise1 = Promise.promise();
-          searchpageAirportPageInit(ctx, page, listAirport, promise1);
+          searchpageAircraftPageInit(ctx, page, listAircraft, promise1);
           promise1.future().onSuccess(b -> {
             try {
               Promise<String> promise2 = Promise.promise();
-              templateSearchPageAirport(ctx, page, listAirport, promise2);
+              templateSearchPageAircraft(ctx, page, listAircraft, promise2);
               promise2.future().onSuccess(renderedTemplate -> {
                 try {
                   Buffer buffer = Buffer.buffer(renderedTemplate);
                   promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
                 } catch(Throwable ex) {
-                  LOG.error(String.format("response200SearchPageAirport failed. "), ex);
+                  LOG.error(String.format("response200SearchPageAircraft failed. "), ex);
                   promise.fail(ex);
                 }
               }).onFailure(ex -> {
                 promise.fail(ex);
               });
             } catch(Throwable ex) {
-              LOG.error(String.format("response200SearchPageAirport failed. "), ex);
+              LOG.error(String.format("response200SearchPageAircraft failed. "), ex);
               promise.tryFail(ex);
             }
           }).onFailure(ex -> {
             promise.tryFail(ex);
           });
         } catch(Exception ex) {
-          LOG.error(String.format("response200SearchPageAirport failed. "), ex);
+          LOG.error(String.format("response200SearchPageAircraft failed. "), ex);
           promise.tryFail(ex);
         }
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("response200SearchPageAirport failed. "), ex);
+      LOG.error(String.format("response200SearchPageAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
-  public void responsePivotSearchPageAirport(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+  public void responsePivotSearchPageAircraft(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
     if(pivots != null) {
       for(SolrResponse.Pivot pivotField : pivots) {
         String entityIndexed = pivotField.getField();
@@ -2598,7 +2914,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         if(pivotFields2 != null) {
           JsonArray pivotArray2 = new JsonArray();
           pivotJson.put("pivot", pivotArray2);
-          responsePivotSearchPageAirport(pivotFields2, pivotArray2);
+          responsePivotSearchPageAircraft(pivotFields2, pivotArray2);
         }
       }
     }
@@ -2607,27 +2923,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // EditPage //
 
   @Override
-  public void editpageAirport(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void editpageAircraft(ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "GET"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
               , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2641,30 +2957,30 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, false, "GET").onSuccess(listAirport -> {
-                response200EditPageAirport(listAirport).onSuccess(response -> {
+              searchAircraftList(siteRequest, false, true, false, "GET").onSuccess(listAircraft -> {
+                response200EditPageAircraft(listAircraft).onSuccess(response -> {
                   eventHandler.handle(Future.succeededFuture(response));
-                  LOG.debug(String.format("editpageAirport succeeded. "));
+                  LOG.debug(String.format("editpageAircraft succeeded. "));
                 }).onFailure(ex -> {
-                  LOG.error(String.format("editpageAirport failed. "), ex);
+                  LOG.error(String.format("editpageAircraft failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 });
               }).onFailure(ex -> {
-                LOG.error(String.format("editpageAirport failed. "), ex);
+                LOG.error(String.format("editpageAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
             });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("editpageAirport failed. "), ex);
+            LOG.error(String.format("editpageAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("editpageAirport failed. "), ex);
+        LOG.error(String.format("editpageAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -2672,7 +2988,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("editpageAirport failed. ", ex2));
+          LOG.error(String.format("editpageAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2687,16 +3003,16 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("editpageAirport failed. "), ex);
+        LOG.error(String.format("editpageAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public void editpageAirportPageInit(JsonObject ctx, AirportPage page, SearchList<Airport> listAirport, Promise<Void> promise) {
+  public void editpageAircraftPageInit(JsonObject ctx, AircraftPage page, SearchList<Aircraft> listAircraft, Promise<Void> promise) {
     String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
 
-    ctx.put("enUSUrlSearchPage", String.format("%s%s", siteBaseUrl, "/en-us/search/airport"));
+    ctx.put("enUSUrlSearchPage", String.format("%s%s", siteBaseUrl, "/en-us/search/aircraft"));
     ctx.put("enUSUrlDisplayPage", Optional.ofNullable(page.getResult()).map(o -> o.getDisplayPage()));
     ctx.put("enUSUrlEditPage", Optional.ofNullable(page.getResult()).map(o -> o.getEditPage()));
     ctx.put("enUSUrlPage", Optional.ofNullable(page.getResult()).map(o -> o.getEditPage()));
@@ -2706,19 +3022,19 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
     promise.complete();
   }
 
-  public String templateUriEditPageAirport(ServiceRequest serviceRequest, Airport result) {
-    return "en-us/edit/airport/AirportEditPage.htm";
+  public String templateUriEditPageAircraft(ServiceRequest serviceRequest, Aircraft result) {
+    return "en-us/edit/aircraft/AircraftEditPage.htm";
   }
-  public void templateEditPageAirport(JsonObject ctx, AirportPage page, SearchList<Airport> listAirport, Promise<String> promise) {
+  public void templateEditPageAircraft(JsonObject ctx, AircraftPage page, SearchList<Aircraft> listAircraft, Promise<String> promise) {
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
+      SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
       ServiceRequest serviceRequest = siteRequest.getServiceRequest();
-      Airport result = listAirport.first();
-      String pageTemplateUri = templateUriEditPageAirport(serviceRequest, result);
+      Aircraft result = listAircraft.first();
+      String pageTemplateUri = templateUriEditPageAircraft(serviceRequest, result);
       String siteTemplatePath = config.getString(ComputateConfigKeys.TEMPLATE_PATH);
       Path resourceTemplatePath = Path.of(siteTemplatePath, pageTemplateUri);
       if(result == null || !Files.exists(resourceTemplatePath)) {
-        String template = Files.readString(Path.of(siteTemplatePath, "en-us/edit/airport/AirportEditPage.htm"), Charset.forName("UTF-8"));
+        String template = Files.readString(Path.of(siteTemplatePath, "en-us/edit/aircraft/AircraftEditPage.htm"), Charset.forName("UTF-8"));
         String renderedTemplate = jinjava.render(template, ctx.getMap());
         promise.complete(renderedTemplate);
       } else if(pageTemplateUri.endsWith(".md")) {
@@ -2772,67 +3088,67 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         promise.complete(renderedTemplate);
       }
     } catch(Exception ex) {
-      LOG.error(String.format("templateEditPageAirport failed. "), ex);
+      LOG.error(String.format("templateEditPageAircraft failed. "), ex);
       ExceptionUtils.rethrow(ex);
     }
   }
-  public Future<ServiceResponse> response200EditPageAirport(SearchList<Airport> listAirport) {
+  public Future<ServiceResponse> response200EditPageAircraft(SearchList<Aircraft> listAircraft) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
-      SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-      AirportPage page = new AirportPage();
+      SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
+      AircraftPage page = new AircraftPage();
       MultiMap requestHeaders = MultiMap.caseInsensitiveMultiMap();
       siteRequest.setRequestHeaders(requestHeaders);
 
-      if(listAirport.size() >= 1)
-        siteRequest.setRequestPk(listAirport.get(0).getPk());
-      page.setSearchListAirport_(listAirport);
+      if(listAircraft.size() >= 1)
+        siteRequest.setRequestPk(listAircraft.get(0).getPk());
+      page.setSearchListAircraft_(listAircraft);
       page.setSiteRequest_(siteRequest);
       page.setServiceRequest(siteRequest.getServiceRequest());
       page.setWebClient(webClient);
       page.setVertx(vertx);
-      page.promiseDeepAirportPage(siteRequest).onSuccess(a -> {
+      page.promiseDeepAircraftPage(siteRequest).onSuccess(a -> {
         try {
           JsonObject ctx = ConfigKeys.getPageContext(config);
           ctx.mergeIn(JsonObject.mapFrom(page));
           Promise<Void> promise1 = Promise.promise();
-          editpageAirportPageInit(ctx, page, listAirport, promise1);
+          editpageAircraftPageInit(ctx, page, listAircraft, promise1);
           promise1.future().onSuccess(b -> {
             try {
               Promise<String> promise2 = Promise.promise();
-              templateEditPageAirport(ctx, page, listAirport, promise2);
+              templateEditPageAircraft(ctx, page, listAircraft, promise2);
               promise2.future().onSuccess(renderedTemplate -> {
                 try {
                   Buffer buffer = Buffer.buffer(renderedTemplate);
                   promise.complete(new ServiceResponse(200, "OK", buffer, requestHeaders));
                 } catch(Throwable ex) {
-                  LOG.error(String.format("response200EditPageAirport failed. "), ex);
+                  LOG.error(String.format("response200EditPageAircraft failed. "), ex);
                   promise.fail(ex);
                 }
               }).onFailure(ex -> {
                 promise.fail(ex);
               });
             } catch(Throwable ex) {
-              LOG.error(String.format("response200EditPageAirport failed. "), ex);
+              LOG.error(String.format("response200EditPageAircraft failed. "), ex);
               promise.tryFail(ex);
             }
           }).onFailure(ex -> {
             promise.tryFail(ex);
           });
         } catch(Exception ex) {
-          LOG.error(String.format("response200EditPageAirport failed. "), ex);
+          LOG.error(String.format("response200EditPageAircraft failed. "), ex);
           promise.tryFail(ex);
         }
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("response200EditPageAirport failed. "), ex);
+      LOG.error(String.format("response200EditPageAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
-  public void responsePivotEditPageAirport(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
+  public void responsePivotEditPageAircraft(List<SolrResponse.Pivot> pivots, JsonArray pivotArray) {
     if(pivots != null) {
       for(SolrResponse.Pivot pivotField : pivots) {
         String entityIndexed = pivotField.getField();
@@ -2861,7 +3177,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         if(pivotFields2 != null) {
           JsonArray pivotArray2 = new JsonArray();
           pivotJson.put("pivot", pivotArray2);
-          responsePivotEditPageAirport(pivotFields2, pivotArray2);
+          responsePivotEditPageAircraft(pivotFields2, pivotArray2);
         }
       }
     }
@@ -2870,28 +3186,28 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
   // DELETEFilter //
 
   @Override
-  public void deletefilterAirport(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
-    LOG.debug(String.format("deletefilterAirport started. "));
+  public void deletefilterAircraft(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+    LOG.debug(String.format("deletefilterAircraft started. "));
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
         siteRequest.setLang("enUS");
         String entityShortId = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("entityShortId");
-        String AIRPORT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRPORT");
+        String AIRCRAFT = siteRequest.getServiceRequest().getParams().getJsonObject("path").getString("AIRCRAFT");
         List<String> groups = Optional.ofNullable(siteRequest.getGroups()).orElse(new ArrayList<>());
         MultiMap form = MultiMap.caseInsensitiveMultiMap();
         form.add("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
         form.add("audience", config.getString(ComputateConfigKeys.AUTH_CLIENT));
         form.add("response_mode", "permissions");
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "GET"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "POST"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PATCH"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "PUT"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "DELETE"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "SuperAdmin"));
-        form.add("permission", String.format("%s#%s", Airport.CLASS_AUTH_RESOURCE, "Admin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "GET"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "POST"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PATCH"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "PUT"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "DELETE"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "SuperAdmin"));
+        form.add("permission", String.format("%s#%s", Aircraft.CLASS_AUTH_RESOURCE, "Admin"));
         if(entityShortId != null)
-          form.add("permission", String.format("%s-%s#%s", Airport.CLASS_AUTH_RESOURCE, entityShortId, "DELETE"));
+          form.add("permission", String.format("%s-%s#%s", Aircraft.CLASS_AUTH_RESOURCE, entityShortId, "DELETE"));
         webClient.post(
             config.getInteger(ComputateConfigKeys.AUTH_PORT)
             , config.getString(ComputateConfigKeys.AUTH_HOST_NAME)
@@ -2905,7 +3221,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           try {
             HttpResponse<Buffer> authorizationDecision = authorizationDecisionResponse.result();
             JsonArray authorizationDecisionBody = authorizationDecisionResponse.failed() ? new JsonArray() : authorizationDecision.bodyAsJsonArray();
-            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRPORT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
+            JsonArray scopes = authorizationDecisionBody.stream().map(o -> (JsonObject)o).filter(o -> "AIRCRAFT".equals(o.getString("rsname"))).findFirst().map(decision -> ((JsonObject)decision).getJsonArray("scopes")).orElse(new JsonArray());
             if(authorizationDecisionResponse.failed() || !scopes.contains("DELETE")) {
               String msg = String.format("403 FORBIDDEN user %s to %s %s", siteRequest.getUser().attributes().getJsonObject("accessToken").getString("preferred_username"), serviceRequest.getExtra().getString("method"), serviceRequest.getExtra().getString("uri"));
               eventHandler.handle(Future.succeededFuture(
@@ -2921,47 +3237,47 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             } else {
               siteRequest.setScopes(scopes.stream().map(o -> o.toString()).collect(Collectors.toList()));
               List<String> scopes2 = siteRequest.getScopes();
-              searchAirportList(siteRequest, false, true, true, "DELETE").onSuccess(listAirport -> {
+              searchAircraftList(siteRequest, false, true, true, "DELETE").onSuccess(listAircraft -> {
                 try {
                   ApiRequest apiRequest = new ApiRequest();
-                  apiRequest.setRows(listAirport.getRequest().getRows());
-                  apiRequest.setNumFound(listAirport.getResponse().getResponse().getNumFound());
+                  apiRequest.setRows(listAircraft.getRequest().getRows());
+                  apiRequest.setNumFound(listAircraft.getResponse().getResponse().getNumFound());
                   apiRequest.setNumPATCH(0L);
                   apiRequest.initDeepApiRequest(siteRequest);
                   siteRequest.setApiRequest_(apiRequest);
                   if(apiRequest.getNumFound() == 1L)
-                    apiRequest.setOriginal(listAirport.first());
-                  apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-                  eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                    apiRequest.setOriginal(listAircraft.first());
+                  apiRequest.setSolrId(Optional.ofNullable(listAircraft.first()).map(o2 -> o2.getSolrId()).orElse(null));
+                  eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
 
-                  listDELETEFilterAirport(apiRequest, listAirport).onSuccess(e -> {
-                    response200DELETEFilterAirport(siteRequest).onSuccess(response -> {
-                      LOG.debug(String.format("deletefilterAirport succeeded. "));
+                  listDELETEFilterAircraft(apiRequest, listAircraft).onSuccess(e -> {
+                    response200DELETEFilterAircraft(siteRequest).onSuccess(response -> {
+                      LOG.debug(String.format("deletefilterAircraft succeeded. "));
                       eventHandler.handle(Future.succeededFuture(response));
                     }).onFailure(ex -> {
-                      LOG.error(String.format("deletefilterAirport failed. "), ex);
+                      LOG.error(String.format("deletefilterAircraft failed. "), ex);
                       error(siteRequest, eventHandler, ex);
                     });
                   }).onFailure(ex -> {
-                    LOG.error(String.format("deletefilterAirport failed. "), ex);
+                    LOG.error(String.format("deletefilterAircraft failed. "), ex);
                     error(siteRequest, eventHandler, ex);
                   });
                 } catch(Exception ex) {
-                  LOG.error(String.format("deletefilterAirport failed. "), ex);
+                  LOG.error(String.format("deletefilterAircraft failed. "), ex);
                   error(siteRequest, eventHandler, ex);
                 }
               }).onFailure(ex -> {
-                LOG.error(String.format("deletefilterAirport failed. "), ex);
+                LOG.error(String.format("deletefilterAircraft failed. "), ex);
                 error(siteRequest, eventHandler, ex);
               });
             }
           } catch(Exception ex) {
-            LOG.error(String.format("deletefilterAirport failed. "), ex);
+            LOG.error(String.format("deletefilterAircraft failed. "), ex);
             error(null, eventHandler, ex);
           }
         });
       } catch(Exception ex) {
-        LOG.error(String.format("deletefilterAirport failed. "), ex);
+        LOG.error(String.format("deletefilterAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
@@ -2969,7 +3285,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         try {
           eventHandler.handle(Future.succeededFuture(new ServiceResponse(302, "Found", null, MultiMap.caseInsensitiveMultiMap().add(HttpHeaders.LOCATION, "/logout?redirect_uri=" + URLEncoder.encode(serviceRequest.getExtra().getString("uri"), "UTF-8")))));
         } catch(Exception ex2) {
-          LOG.error(String.format("deletefilterAirport failed. ", ex2));
+          LOG.error(String.format("deletefilterAircraft failed. ", ex2));
           error(null, eventHandler, ex2);
         }
       } else if(StringUtils.startsWith(ex.getMessage(), "401 UNAUTHORIZED ")) {
@@ -2984,58 +3300,58 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               )
           ));
       } else {
-        LOG.error(String.format("deletefilterAirport failed. "), ex);
+        LOG.error(String.format("deletefilterAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     });
   }
 
-  public Future<Void> listDELETEFilterAirport(ApiRequest apiRequest, SearchList<Airport> listAirport) {
+  public Future<Void> listDELETEFilterAircraft(ApiRequest apiRequest, SearchList<Aircraft> listAircraft) {
     Promise<Void> promise = Promise.promise();
     List<Future> futures = new ArrayList<>();
-    SiteRequest siteRequest = listAirport.getSiteRequest_(SiteRequest.class);
-    listAirport.getList().forEach(o -> {
+    SiteRequest siteRequest = listAircraft.getSiteRequest_(SiteRequest.class);
+    listAircraft.getList().forEach(o -> {
       SiteRequest siteRequest2 = generateSiteRequest(siteRequest.getUser(), siteRequest.getUserPrincipal(), siteRequest.getServiceRequest(), siteRequest.getJsonObject(), SiteRequest.class);
       siteRequest2.setScopes(siteRequest.getScopes());
       o.setSiteRequest_(siteRequest2);
       siteRequest2.setApiRequest_(siteRequest.getApiRequest_());
       JsonObject jsonObject = JsonObject.mapFrom(o);
-      Airport o2 = jsonObject.mapTo(Airport.class);
+      Aircraft o2 = jsonObject.mapTo(Aircraft.class);
       o2.setSiteRequest_(siteRequest2);
       futures.add(Future.future(promise1 -> {
-        deletefilterAirportFuture(o).onSuccess(a -> {
+        deletefilterAircraftFuture(o).onSuccess(a -> {
           promise1.complete();
         }).onFailure(ex -> {
-          LOG.error(String.format("listDELETEFilterAirport failed. "), ex);
+          LOG.error(String.format("listDELETEFilterAircraft failed. "), ex);
           promise1.tryFail(ex);
         });
       }));
     });
     CompositeFuture.all(futures).onSuccess( a -> {
-      listAirport.next().onSuccess(next -> {
+      listAircraft.next().onSuccess(next -> {
         if(next) {
-          listDELETEFilterAirport(apiRequest, listAirport).onSuccess(b -> {
+          listDELETEFilterAircraft(apiRequest, listAircraft).onSuccess(b -> {
             promise.complete();
           }).onFailure(ex -> {
-            LOG.error(String.format("listDELETEFilterAirport failed. "), ex);
+            LOG.error(String.format("listDELETEFilterAircraft failed. "), ex);
             promise.tryFail(ex);
           });
         } else {
           promise.complete();
         }
       }).onFailure(ex -> {
-        LOG.error(String.format("listDELETEFilterAirport failed. "), ex);
+        LOG.error(String.format("listDELETEFilterAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     }).onFailure(ex -> {
-      LOG.error(String.format("listDELETEFilterAirport failed. "), ex);
+      LOG.error(String.format("listDELETEFilterAircraft failed. "), ex);
       promise.tryFail(ex);
     });
     return promise.future();
   }
 
   @Override
-  public void deletefilterAirportFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
+  public void deletefilterAircraftFuture(JsonObject body, ServiceRequest serviceRequest, Handler<AsyncResult<ServiceResponse>> eventHandler) {
     Boolean classPublicRead = false;
     user(serviceRequest, SiteRequest.class, SiteUser.class, SiteUser.getClassApiAddress(), "postSiteUserFuture", "patchSiteUserFuture", classPublicRead).onSuccess(siteRequest -> {
       try {
@@ -3047,10 +3363,10 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             siteRequest.addScopes(scope);
           });
         });
-        searchAirportList(siteRequest, false, true, true, "DELETE").onSuccess(listAirport -> {
+        searchAircraftList(siteRequest, false, true, true, "DELETE").onSuccess(listAircraft -> {
           try {
-            Airport o = listAirport.first();
-            if(o != null && listAirport.getResponse().getResponse().getNumFound() == 1) {
+            Aircraft o = listAircraft.first();
+            if(o != null && listAircraft.getResponse().getResponse().getNumFound() == 1) {
               ApiRequest apiRequest = new ApiRequest();
               apiRequest.setRows(1L);
               apiRequest.setNumFound(1L);
@@ -3062,9 +3378,9 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               }
               if(apiRequest.getNumFound() == 1L)
                 apiRequest.setOriginal(o);
-              apiRequest.setId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
-              apiRequest.setSolrId(Optional.ofNullable(listAirport.first()).map(o2 -> o2.getSolrId()).orElse(null));
-              deletefilterAirportFuture(o).onSuccess(o2 -> {
+              apiRequest.setId(Optional.ofNullable(listAircraft.first()).map(o2 -> o2.getEntityShortId().toString()).orElse(null));
+              apiRequest.setSolrId(Optional.ofNullable(listAircraft.first()).map(o2 -> o2.getSolrId()).orElse(null));
+              deletefilterAircraftFuture(o).onSuccess(o2 -> {
                 eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
               }).onFailure(ex -> {
                 eventHandler.handle(Future.failedFuture(ex));
@@ -3073,42 +3389,42 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               eventHandler.handle(Future.succeededFuture(ServiceResponse.completedWithJson(Buffer.buffer(new JsonObject().encodePrettily()))));
             }
           } catch(Exception ex) {
-            LOG.error(String.format("deletefilterAirport failed. "), ex);
+            LOG.error(String.format("deletefilterAircraft failed. "), ex);
             error(siteRequest, eventHandler, ex);
           }
         }).onFailure(ex -> {
-          LOG.error(String.format("deletefilterAirport failed. "), ex);
+          LOG.error(String.format("deletefilterAircraft failed. "), ex);
           error(siteRequest, eventHandler, ex);
         });
       } catch(Exception ex) {
-        LOG.error(String.format("deletefilterAirport failed. "), ex);
+        LOG.error(String.format("deletefilterAircraft failed. "), ex);
         error(null, eventHandler, ex);
       }
     }).onFailure(ex -> {
-      LOG.error(String.format("deletefilterAirport failed. "), ex);
+      LOG.error(String.format("deletefilterAircraft failed. "), ex);
       error(null, eventHandler, ex);
     });
   }
 
-  public Future<Airport> deletefilterAirportFuture(Airport o) {
+  public Future<Aircraft> deletefilterAircraftFuture(Aircraft o) {
     SiteRequest siteRequest = o.getSiteRequest_();
-    Promise<Airport> promise = Promise.promise();
+    Promise<Aircraft> promise = Promise.promise();
 
     try {
       ApiRequest apiRequest = siteRequest.getApiRequest_();
-      Promise<Airport> promise1 = Promise.promise();
+      Promise<Aircraft> promise1 = Promise.promise();
       pgPool.withTransaction(sqlConnection -> {
         siteRequest.setSqlConnection(sqlConnection);
-        varsAirport(siteRequest).onSuccess(a -> {
-          sqlDELETEFilterAirport(o).onSuccess(airport -> {
-            relateAirport(o).onSuccess(d -> {
-              unindexAirport(o).onSuccess(o2 -> {
+        varsAircraft(siteRequest).onSuccess(a -> {
+          sqlDELETEFilterAircraft(o).onSuccess(aircraft -> {
+            relateAircraft(o).onSuccess(d -> {
+              unindexAircraft(o).onSuccess(o2 -> {
                 if(apiRequest != null) {
                   apiRequest.setNumPATCH(apiRequest.getNumPATCH() + 1);
                   if(apiRequest.getNumFound() == 1L && Optional.ofNullable(siteRequest.getJsonObject()).map(json -> json.size() > 0).orElse(false)) {
-                    o2.apiRequestAirport();
+                    o2.apiRequestAircraft();
                     if(apiRequest.getVars().size() > 0 && Optional.ofNullable(siteRequest.getRequestVars().get("refresh")).map(refresh -> !refresh.equals("false")).orElse(true))
-                      eventBus.publish("websocketAirport", JsonObject.mapFrom(apiRequest).toString());
+                      eventBus.publish("websocketAircraft", JsonObject.mapFrom(apiRequest).toString());
                   }
                 }
                 promise1.complete();
@@ -3130,27 +3446,27 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       }).onFailure(ex -> {
         siteRequest.setSqlConnection(null);
         promise.tryFail(ex);
-      }).compose(airport -> {
-        Promise<Airport> promise2 = Promise.promise();
-        refreshAirport(o).onSuccess(a -> {
+      }).compose(aircraft -> {
+        Promise<Aircraft> promise2 = Promise.promise();
+        refreshAircraft(o).onSuccess(a -> {
           promise2.complete(o);
         }).onFailure(ex -> {
           promise2.tryFail(ex);
         });
         return promise2.future();
-      }).onSuccess(airport -> {
-        promise.complete(airport);
+      }).onSuccess(aircraft -> {
+        promise.complete(aircraft);
       }).onFailure(ex -> {
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("deletefilterAirportFuture failed. "), ex);
+      LOG.error(String.format("deletefilterAircraftFuture failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Void> sqlDELETEFilterAirport(Airport o) {
+  public Future<Void> sqlDELETEFilterAircraft(Aircraft o) {
     Promise<Void> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
@@ -3159,11 +3475,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       List<String> classes = Optional.ofNullable(apiRequest).map(r -> r.getClasses()).orElse(new ArrayList<>());
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Integer num = 1;
-      StringBuilder bSql = new StringBuilder("DELETE FROM Airport ");
+      StringBuilder bSql = new StringBuilder("DELETE FROM Aircraft ");
       List<Object> bParams = new ArrayList<Object>();
       Long pk = o.getPk();
       JsonObject jsonObject = siteRequest.getJsonObject();
-      Airport o2 = new Airport();
+      Aircraft o2 = new Aircraft();
       o2.setSiteRequest_(siteRequest);
       List<Future> futures1 = new ArrayList<>();
       List<Future> futures2 = new ArrayList<>();
@@ -3172,6 +3488,46 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         Set<String> entityVars = jsonObject.fieldNames();
         for(String entityVar : entityVars) {
           switch(entityVar) {
+          case Aircraft.VAR_timeZone:
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+              futures1.add(Future.future(promise2 -> {
+                searchResult(siteRequest).query(TimeZone.varIndexedTimeZone(TimeZone.VAR_id), TimeZone.class, val).onSuccess(o3 -> {
+                  String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+                  if(solrId2 != null) {
+                    solrIds.add(solrId2);
+                    classes.add("TimeZone");
+                  }
+                  sql(siteRequest).update(Aircraft.class, pk).set(Aircraft.VAR_timeZone, TimeZone.class, null, null).onSuccess(a -> {
+                    promise2.complete();
+                  }).onFailure(ex -> {
+                    promise2.tryFail(ex);
+                  });
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
+            break;
+          case Aircraft.VAR_airportId:
+            Optional.ofNullable(jsonObject.getString(entityVar)).ifPresent(val -> {
+              futures1.add(Future.future(promise2 -> {
+                searchModel(siteRequest).query(Airport.varIndexedAirport(Airport.VAR_entityShortId), Airport.class, val).onSuccess(o3 -> {
+                  String solrId2 = Optional.ofNullable(o3).map(o4 -> o4.getSolrId()).filter(solrId3 -> !solrIds.contains(solrId3)).orElse(null);
+                  if(solrId2 != null) {
+                    solrIds.add(solrId2);
+                    classes.add("Airport");
+                  }
+                  sql(siteRequest).update(Aircraft.class, pk).set(Aircraft.VAR_airportId, Airport.class, null, null).onSuccess(a -> {
+                    promise2.complete();
+                  }).onFailure(ex -> {
+                    promise2.tryFail(ex);
+                  });
+                }).onFailure(ex -> {
+                  promise2.tryFail(ex);
+                });
+              }));
+            });
+            break;
           }
         }
       }
@@ -3184,8 +3540,8 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             ).onSuccess(b -> {
           a.handle(Future.succeededFuture());
         }).onFailure(ex -> {
-          RuntimeException ex2 = new RuntimeException("value Airport failed", ex);
-          LOG.error(String.format("unrelateAirport failed. "), ex2);
+          RuntimeException ex2 = new RuntimeException("value Aircraft failed", ex);
+          LOG.error(String.format("unrelateAircraft failed. "), ex2);
           a.handle(Future.failedFuture(ex2));
         });
       }));
@@ -3195,34 +3551,34 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             cbDeleteEntity(o).onSuccess(c -> {
               promise.complete();
             }).onFailure(ex -> {
-              LOG.error(String.format("sqlDELETEFilterAirport failed. "), ex);
+              LOG.error(String.format("sqlDELETEFilterAircraft failed. "), ex);
               promise.tryFail(ex);
             });
           } else {
             promise.complete();
           }
         }).onFailure(ex -> {
-          LOG.error(String.format("sqlDELETEFilterAirport failed. "), ex);
+          LOG.error(String.format("sqlDELETEFilterAircraft failed. "), ex);
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("sqlDELETEFilterAirport failed. "), ex);
+        LOG.error(String.format("sqlDELETEFilterAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("sqlDELETEFilterAirport failed. "), ex);
+      LOG.error(String.format("sqlDELETEFilterAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<ServiceResponse> response200DELETEFilterAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> response200DELETEFilterAircraft(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       JsonObject json = new JsonObject();
       promise.complete(ServiceResponse.completedWithJson(Buffer.buffer(Optional.ofNullable(json).orElse(new JsonObject()).encodePrettily())));
     } catch(Exception ex) {
-      LOG.error(String.format("response200DELETEFilterAirport failed. "), ex);
+      LOG.error(String.format("response200DELETEFilterAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -3230,78 +3586,78 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
 
   // General //
 
-  public Future<Airport> createAirport(SiteRequest siteRequest) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Aircraft> createAircraft(SiteRequest siteRequest) {
+    Promise<Aircraft> promise = Promise.promise();
     try {
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       String userId = siteRequest.getUserId();
       Long userKey = siteRequest.getUserKey();
       ZonedDateTime created = Optional.ofNullable(siteRequest.getJsonObject()).map(j -> j.getString("created")).map(s -> ZonedDateTime.parse(s, ComputateZonedDateTimeSerializer.ZONED_DATE_TIME_FORMATTER.withZone(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))))).orElse(ZonedDateTime.now(ZoneId.of(config.getString(ConfigKeys.SITE_ZONE))));
 
-      sqlConnection.preparedQuery("INSERT INTO Airport(created, userKey) VALUES($1, $2) RETURNING pk")
+      sqlConnection.preparedQuery("INSERT INTO Aircraft(created, userKey) VALUES($1, $2) RETURNING pk")
           .collecting(Collectors.toList())
           .execute(Tuple.of(created.toOffsetDateTime(), userKey)).onSuccess(result -> {
         Row createLine = result.value().stream().findFirst().orElseGet(() -> null);
         Long pk = createLine.getLong(0);
-        Airport o = new Airport();
+        Aircraft o = new Aircraft();
         o.setPk(pk);
         o.setSiteRequest_(siteRequest);
         promise.complete(o);
       }).onFailure(ex -> {
         RuntimeException ex2 = new RuntimeException(ex);
-        LOG.error("createAirport failed. ", ex2);
+        LOG.error("createAircraft failed. ", ex2);
         promise.tryFail(ex2);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("createAirport failed. "), ex);
+      LOG.error(String.format("createAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public void searchAirportQ(SearchList<Airport> searchList, String entityVar, String valueIndexed, String varIndexed) {
+  public void searchAircraftQ(SearchList<Aircraft> searchList, String entityVar, String valueIndexed, String varIndexed) {
     searchList.q(varIndexed + ":" + ("*".equals(valueIndexed) ? valueIndexed : SearchTool.escapeQueryChars(valueIndexed)));
     if(!"*".equals(entityVar)) {
     }
   }
 
-  public String searchAirportFq(SearchList<Airport> searchList, String entityVar, String valueIndexed, String varIndexed) {
+  public String searchAircraftFq(SearchList<Aircraft> searchList, String entityVar, String valueIndexed, String varIndexed) {
     if(varIndexed == null)
       throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
     if(StringUtils.startsWith(valueIndexed, "[")) {
       String[] fqs = StringUtils.substringAfter(StringUtils.substringBeforeLast(valueIndexed, "]"), "[").split(" TO ");
       if(fqs.length != 2)
         throw new RuntimeException(String.format("\"%s\" invalid range query. ", valueIndexed));
-      String fq1 = fqs[0].equals("*") ? fqs[0] : Airport.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
-      String fq2 = fqs[1].equals("*") ? fqs[1] : Airport.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
+      String fq1 = fqs[0].equals("*") ? fqs[0] : Aircraft.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[0]);
+      String fq2 = fqs[1].equals("*") ? fqs[1] : Aircraft.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), fqs[1]);
        return varIndexed + ":[" + fq1 + " TO " + fq2 + "]";
     } else {
-      return varIndexed + ":" + SearchTool.escapeQueryChars(Airport.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
+      return varIndexed + ":" + SearchTool.escapeQueryChars(Aircraft.staticSearchFqForClass(entityVar, searchList.getSiteRequest_(SiteRequest.class), valueIndexed)).replace("\\", "\\\\");
     }
   }
 
-  public void searchAirportSort(SearchList<Airport> searchList, String entityVar, String valueIndexed, String varIndexed) {
+  public void searchAircraftSort(SearchList<Aircraft> searchList, String entityVar, String valueIndexed, String varIndexed) {
     if(varIndexed == null)
       throw new RuntimeException(String.format("\"%s\" is not an indexed entity. ", entityVar));
     searchList.sort(varIndexed, valueIndexed);
   }
 
-  public void searchAirportRows(SearchList<Airport> searchList, Long valueRows) {
+  public void searchAircraftRows(SearchList<Aircraft> searchList, Long valueRows) {
       searchList.rows(valueRows != null ? valueRows : 10L);
   }
 
-  public void searchAirportStart(SearchList<Airport> searchList, Long valueStart) {
+  public void searchAircraftStart(SearchList<Aircraft> searchList, Long valueStart) {
     searchList.start(valueStart);
   }
 
-  public void searchAirportVar(SearchList<Airport> searchList, String var, String value) {
+  public void searchAircraftVar(SearchList<Aircraft> searchList, String var, String value) {
     searchList.getSiteRequest_(SiteRequest.class).getRequestVars().put(var, value);
   }
 
-  public void searchAirportUri(SearchList<Airport> searchList) {
+  public void searchAircraftUri(SearchList<Aircraft> searchList) {
   }
 
-  public Future<ServiceResponse> varsAirport(SiteRequest siteRequest) {
+  public Future<ServiceResponse> varsAircraft(SiteRequest siteRequest) {
     Promise<ServiceResponse> promise = Promise.promise();
     try {
       ServiceRequest serviceRequest = siteRequest.getServiceRequest();
@@ -3319,25 +3675,25 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
             siteRequest.getRequestVars().put(entityVar, valueIndexed);
           }
         } catch(Exception ex) {
-          LOG.error(String.format("searchAirport failed. "), ex);
+          LOG.error(String.format("searchAircraft failed. "), ex);
           promise.tryFail(ex);
         }
       });
       promise.complete();
     } catch(Exception ex) {
-      LOG.error(String.format("searchAirport failed. "), ex);
+      LOG.error(String.format("searchAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<SearchList<Airport>> searchAirportList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, String scope) {
-    Promise<SearchList<Airport>> promise = Promise.promise();
+  public Future<SearchList<Aircraft>> searchAircraftList(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, String scope) {
+    Promise<SearchList<Aircraft>> promise = Promise.promise();
     try {
       ServiceRequest serviceRequest = siteRequest.getServiceRequest();
       String entityListStr = siteRequest.getServiceRequest().getParams().getJsonObject("query").getString("fl");
       String[] entityList = entityListStr == null ? null : entityListStr.split(",\\s*");
-      SearchList<Airport> searchList = new SearchList<Airport>();
+      SearchList<Aircraft> searchList = new SearchList<Aircraft>();
       searchList.setScope(scope);
       String facetRange = null;
       Date facetRangeStart = null;
@@ -3348,12 +3704,12 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       searchList.setPopulate(populate);
       searchList.setStore(store);
       searchList.q("*:*");
-      searchList.setC(Airport.class);
+      searchList.setC(Aircraft.class);
       searchList.setSiteRequest_(siteRequest);
       searchList.facetMinCount(1);
       if(entityList != null) {
         for(String v : entityList) {
-          searchList.fl(Airport.varIndexedAirport(v));
+          searchList.fl(Aircraft.varIndexedAircraft(v));
         }
       }
 
@@ -3382,7 +3738,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               String[] varsIndexed = new String[entityVars.length];
               for(Integer i = 0; i < entityVars.length; i++) {
                 entityVar = entityVars[i];
-                varsIndexed[i] = Airport.varIndexedAirport(entityVar);
+                varsIndexed[i] = Aircraft.varIndexedAircraft(entityVar);
               }
               searchList.facetPivot((solrLocalParams == null ? "" : solrLocalParams) + StringUtils.join(varsIndexed, ","));
             }
@@ -3394,8 +3750,8 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 while(mQ.find()) {
                   entityVar = mQ.group(1).trim();
                   valueIndexed = mQ.group(2).trim();
-                  varIndexed = Airport.varIndexedAirport(entityVar);
-                  String entityQ = searchAirportFq(searchList, entityVar, valueIndexed, varIndexed);
+                  varIndexed = Aircraft.varIndexedAircraft(entityVar);
+                  String entityQ = searchAircraftFq(searchList, entityVar, valueIndexed, varIndexed);
                   mQ.appendReplacement(sb, entityQ);
                 }
                 if(!sb.isEmpty()) {
@@ -3408,8 +3764,8 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 while(mFq.find()) {
                   entityVar = mFq.group(1).trim();
                   valueIndexed = mFq.group(2).trim();
-                  varIndexed = Airport.varIndexedAirport(entityVar);
-                  String entityFq = searchAirportFq(searchList, entityVar, valueIndexed, varIndexed);
+                  varIndexed = Aircraft.varIndexedAircraft(entityVar);
+                  String entityFq = searchAircraftFq(searchList, entityVar, valueIndexed, varIndexed);
                   mFq.appendReplacement(sb, entityFq);
                 }
                 if(!sb.isEmpty()) {
@@ -3419,14 +3775,14 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               } else if(paramName.equals("sort")) {
                 entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, " "));
                 valueIndexed = StringUtils.trim(StringUtils.substringAfter((String)paramObject, " "));
-                varIndexed = Airport.varIndexedAirport(entityVar);
-                searchAirportSort(searchList, entityVar, valueIndexed, varIndexed);
+                varIndexed = Aircraft.varIndexedAircraft(entityVar);
+                searchAircraftSort(searchList, entityVar, valueIndexed, varIndexed);
               } else if(paramName.equals("start")) {
                 valueStart = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-                searchAirportStart(searchList, valueStart);
+                searchAircraftStart(searchList, valueStart);
               } else if(paramName.equals("rows")) {
                 valueRows = paramObject instanceof Long ? (Long)paramObject : Long.parseLong(paramObject.toString());
-                searchAirportRows(searchList, valueRows);
+                searchAircraftRows(searchList, valueRows);
               } else if(paramName.equals("stats")) {
                 searchList.stats((Boolean)paramObject);
               } else if(paramName.equals("stats.field")) {
@@ -3434,7 +3790,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 if(mStats.find()) {
                   String solrLocalParams = mStats.group(1);
                   entityVar = mStats.group(2).trim();
-                  varIndexed = Airport.varIndexedAirport(entityVar);
+                  varIndexed = Aircraft.varIndexedAircraft(entityVar);
                   searchList.statsField((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
                   statsField = entityVar;
                   statsFieldIndexed = varIndexed;
@@ -3460,25 +3816,25 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 if(mFacetRange.find()) {
                   String solrLocalParams = mFacetRange.group(1);
                   entityVar = mFacetRange.group(2).trim();
-                  varIndexed = Airport.varIndexedAirport(entityVar);
+                  varIndexed = Aircraft.varIndexedAircraft(entityVar);
                   searchList.facetRange((solrLocalParams == null ? "" : solrLocalParams) + varIndexed);
                   facetRange = entityVar;
                 }
               } else if(paramName.equals("facet.field")) {
                 entityVar = (String)paramObject;
-                varIndexed = Airport.varIndexedAirport(entityVar);
+                varIndexed = Aircraft.varIndexedAircraft(entityVar);
                 if(varIndexed != null)
                   searchList.facetField(varIndexed);
               } else if(paramName.equals("var")) {
                 entityVar = StringUtils.trim(StringUtils.substringBefore((String)paramObject, ":"));
                 valueIndexed = URLDecoder.decode(StringUtils.trim(StringUtils.substringAfter((String)paramObject, ":")), "UTF-8");
-                searchAirportVar(searchList, entityVar, valueIndexed);
+                searchAircraftVar(searchList, entityVar, valueIndexed);
               } else if(paramName.equals("cursorMark")) {
                 valueCursorMark = (String)paramObject;
                 searchList.cursorMark((String)paramObject);
               }
             }
-            searchAirportUri(searchList);
+            searchAircraftUri(searchList);
           }
         } catch(Exception e) {
           ExceptionUtils.rethrow(e);
@@ -3493,7 +3849,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       String facetRangeGap2 = facetRangeGap;
       String statsField2 = statsField;
       String statsFieldIndexed2 = statsFieldIndexed;
-      searchAirport2(siteRequest, populate, store, modify, searchList);
+      searchAircraft2(siteRequest, populate, store, modify, searchList);
       searchList.promiseDeepForClass(siteRequest).onSuccess(searchList2 -> {
         if(facetRange2 != null && statsField2 != null && facetRange2.equals(statsField2)) {
           StatsField stats = searchList.getResponse().getStats().getStatsFields().get(statsFieldIndexed2);
@@ -3529,32 +3885,32 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           searchList.query().onSuccess(b -> {
             promise.complete(searchList);
           }).onFailure(ex -> {
-            LOG.error(String.format("searchAirport failed. "), ex);
+            LOG.error(String.format("searchAircraft failed. "), ex);
             promise.tryFail(ex);
           });
         } else {
           promise.complete(searchList);
         }
       }).onFailure(ex -> {
-        LOG.error(String.format("searchAirport failed. "), ex);
+        LOG.error(String.format("searchAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("searchAirport failed. "), ex);
+      LOG.error(String.format("searchAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
-  public void searchAirport2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<Airport> searchList) {
+  public void searchAircraft2(SiteRequest siteRequest, Boolean populate, Boolean store, Boolean modify, SearchList<Aircraft> searchList) {
   }
 
-  public Future<Void> persistAirport(Airport o, Boolean patch) {
+  public Future<Void> persistAircraft(Aircraft o, Boolean patch) {
     Promise<Void> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Long pk = o.getPk();
-      sqlConnection.preparedQuery("SELECT name, address, description, alternateName, location, created, codeIATA, id, codeICAO, entityShortId, archived, dataProvider, ngsildTenant, dateCreated, ngsildPath, dateModified, ngsildContext, owner, ngsildData, sessionId, seeAlso, color, userKey, source, objectTitle, displayPage, ST_AsGeoJSON(areaServed) as areaServed, editPage, userPage, download FROM Airport WHERE pk=$1")
+      sqlConnection.preparedQuery("SELECT name, timeZone, description, airportId, location, created, departureDate, id, arrivalDate, entityShortId, archived, avgSpeedInMph, ngsildTenant, address, ngsildPath, alternateName, ngsildContext, belongsToAircraftModel, ngsildData, sessionId, dataProvider, color, userKey, dateCreated, dateIssued, dateModified, objectTitle, heading, displayPage, isOnGround, editPage, owner, userPage, registration, download, seeAlso, source, speed, verticalSpeed, path, simulation, simulationDelayMillis FROM Aircraft WHERE pk=$1")
           .collecting(Collectors.toList())
           .execute(Tuple.of(pk)
           ).onSuccess(result -> {
@@ -3567,7 +3923,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
                 try {
                   o.persistForClass(columnName, columnValue);
                 } catch(Exception e) {
-                  LOG.error(String.format("persistAirport failed. "), e);
+                  LOG.error(String.format("persistAircraft failed. "), e);
                 }
               }
             }
@@ -3577,33 +3933,33 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
               cbUpsertEntity(o, patch).onSuccess(b -> {
                 promise.complete();
               }).onFailure(ex -> {
-                LOG.error(String.format("persistAirport failed. "), ex);
+                LOG.error(String.format("persistAircraft failed. "), ex);
                 promise.tryFail(ex);
               });
             } else {
               promise.complete();
             }
           }).onFailure(ex -> {
-            LOG.error(String.format("persistAirport failed. "), ex);
+            LOG.error(String.format("persistAircraft failed. "), ex);
             promise.tryFail(ex);
           });
         } catch(Exception ex) {
-          LOG.error(String.format("persistAirport failed. "), ex);
+          LOG.error(String.format("persistAircraft failed. "), ex);
           promise.tryFail(ex);
         }
       }).onFailure(ex -> {
         RuntimeException ex2 = new RuntimeException(ex);
-        LOG.error(String.format("persistAirport failed. "), ex2);
+        LOG.error(String.format("persistAircraft failed. "), ex2);
         promise.tryFail(ex2);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("persistAirport failed. "), ex);
+      LOG.error(String.format("persistAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Void> cbUpsertEntity(Airport o, Boolean patch) {
+  public Future<Void> cbUpsertEntity(Aircraft o, Boolean patch) {
     Promise<Void> promise = Promise.promise();
     try {
       ZonedDateTime observedAt = ZonedDateTime.now(ZoneId.of("UTC"));
@@ -3612,7 +3968,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       JsonObject entityBody = new JsonObject();
       entityBody.put("@context", config.getString(ComputateConfigKeys.CONTEXT_BROKER_CONTEXT));
       entityBody.put("id", o.getId());
-      entityBody.put("type", Airport.CLASS_SIMPLE_NAME);
+      entityBody.put("type", Aircraft.CLASS_SIMPLE_NAME);
       entityBody.put("NGSILD-Tenant"
           , new JsonObject()
           .put("type", "Property")
@@ -3626,15 +3982,15 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           .put("observedAt", observedAtStr)
           );
 
-      List<String> vars = Airport.varsFqForClass();
+      List<String> vars = Aircraft.varsFqForClass();
       for (String var : vars) {
-        String ngsiType = Airport.ngsiType(var);
-        String displayName = Optional.ofNullable(Airport.displayNameAirport(var)).orElse(var);
+        String ngsiType = Aircraft.ngsiType(var);
+        String displayName = Optional.ofNullable(Aircraft.displayNameAircraft(var)).orElse(var);
         if (ngsiType != null && displayName != null && !var.equals("id") && !var.equals("ngsildData")) {
           Object value = o.obtainForClass(var);
           if(value != null) {
-            Object ngsildVal = Airport.ngsiAirport(var, o);
-            String ngsildType = Airport.ngsiType(var);
+            Object ngsildVal = Aircraft.ngsiAircraft(var, o);
+            String ngsildType = Aircraft.ngsiType(var);
             if(ngsildVal != null) {
               entityBody.put(displayName
                   , new JsonObject()
@@ -3673,11 +4029,11 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
     return promise.future();
   }
 
-  public Future<JsonObject> ngsildGetEntity(Airport o) {
+  public Future<JsonObject> ngsildGetEntity(Aircraft o) {
     Promise<JsonObject> promise = Promise.promise();
     try {
       String entityName = o.getName();
-      String entityType = Airport.CLASS_SIMPLE_NAME;
+      String entityType = Aircraft.CLASS_SIMPLE_NAME;
       String entityId = o.getId();
       String ngsildUri = String.format("/ngsi-ld/v1/entities/%s", urlEncode(entityId));
       String ngsildContext = config.getString(ComputateConfigKeys.CONTEXT_BROKER_CONTEXT);
@@ -3712,7 +4068,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
     return promise.future();
   }
 
-  public Future<Void> cbDeleteEntity(Airport o) {
+  public Future<Void> cbDeleteEntity(Aircraft o) {
     Promise<Void> promise = Promise.promise();
     try {
       webClient.delete(
@@ -3744,23 +4100,49 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
     return promise.future();
   }
 
-  public Future<Void> relateAirport(Airport o) {
+  public Future<Void> relateAircraft(Aircraft o) {
     Promise<Void> promise = Promise.promise();
-    promise.complete();
+    try {
+      SiteRequest siteRequest = o.getSiteRequest_();
+      SqlConnection sqlConnection = siteRequest.getSqlConnection();
+      sqlConnection.preparedQuery("SELECT entityShortId as pk2, 'airportId' FROM Airport WHERE entityShortId=$1")
+          .collecting(Collectors.toList())
+          .execute(Tuple.of(o.getAirportId())
+          ).onSuccess(result -> {
+        try {
+          if(result != null) {
+            for(Row definition : result.value()) {
+              o.relateForClass(definition.getString(1), definition.getValue(0));
+            }
+          }
+          promise.complete();
+        } catch(Exception ex) {
+          LOG.error(String.format("relateAircraft failed. "), ex);
+          promise.tryFail(ex);
+        }
+      }).onFailure(ex -> {
+        RuntimeException ex2 = new RuntimeException(ex);
+        LOG.error(String.format("relateAircraft failed. "), ex2);
+        promise.tryFail(ex2);
+      });
+    } catch(Exception ex) {
+      LOG.error(String.format("relateAircraft failed. "), ex);
+      promise.tryFail(ex);
+    }
     return promise.future();
   }
 
   public String searchVar(String varIndexed) {
-    return Airport.searchVarAirport(varIndexed);
+    return Aircraft.searchVarAircraft(varIndexed);
   }
 
   @Override
   public String getClassApiAddress() {
-    return Airport.CLASS_API_ADDRESS_Airport;
+    return Aircraft.CLASS_API_ADDRESS_Aircraft;
   }
 
-  public Future<Airport> indexAirport(Airport o) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Aircraft> indexAircraft(Aircraft o) {
+    Promise<Aircraft> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3769,7 +4151,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       json.put("add", add);
       JsonObject doc = new JsonObject();
       add.put("doc", doc);
-      o.indexAirport(doc);
+      o.indexAircraft(doc);
       String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
       String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
       String solrHostName = siteRequest.getConfig().getString(ConfigKeys.SOLR_HOST_NAME);
@@ -3786,18 +4168,18 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
         promise.complete(o);
       }).onFailure(ex -> {
-        LOG.error(String.format("indexAirport failed. "), new RuntimeException(ex));
+        LOG.error(String.format("indexAircraft failed. "), new RuntimeException(ex));
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("indexAirport failed. "), ex);
+      LOG.error(String.format("indexAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Airport> unindexAirport(Airport o) {
-    Promise<Airport> promise = Promise.promise();
+  public Future<Aircraft> unindexAircraft(Aircraft o) {
+    Promise<Aircraft> promise = Promise.promise();
     try {
       SiteRequest siteRequest = o.getSiteRequest_();
       ApiRequest apiRequest = siteRequest.getApiRequest_();
@@ -3805,7 +4187,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         JsonObject json = new JsonObject();
         JsonObject delete = new JsonObject();
         json.put("delete", delete);
-        String query = String.format("filter(%s:%s)", Airport.VAR_solrId, o.obtainForClass(Airport.VAR_solrId));
+        String query = String.format("filter(%s:%s)", Aircraft.VAR_solrId, o.obtainForClass(Aircraft.VAR_solrId));
         delete.put("query", query);
         String solrUsername = siteRequest.getConfig().getString(ConfigKeys.SOLR_USERNAME);
         String solrPassword = siteRequest.getConfig().getString(ConfigKeys.SOLR_PASSWORD);
@@ -3823,21 +4205,21 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         webClient.post(solrPort, solrHostName, solrRequestUri).ssl(solrSsl).authentication(new UsernamePasswordCredentials(solrUsername, solrPassword)).putHeader("Content-Type", "application/json").sendBuffer(json.toBuffer()).expecting(HttpResponseExpectation.SC_OK).onSuccess(b -> {
           promise.complete(o);
         }).onFailure(ex -> {
-          LOG.error(String.format("unindexAirport failed. "), new RuntimeException(ex));
+          LOG.error(String.format("unindexAircraft failed. "), new RuntimeException(ex));
           promise.tryFail(ex);
         });
       }).onFailure(ex -> {
-        LOG.error(String.format("unindexAirport failed. "), ex);
+        LOG.error(String.format("unindexAircraft failed. "), ex);
         promise.tryFail(ex);
       });
     } catch(Exception ex) {
-      LOG.error(String.format("unindexAirport failed. "), ex);
+      LOG.error(String.format("unindexAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
   }
 
-  public Future<Void> refreshAirport(Airport o) {
+  public Future<Void> refreshAircraft(Aircraft o) {
     Promise<Void> promise = Promise.promise();
     SiteRequest siteRequest = o.getSiteRequest_();
     try {
@@ -3851,6 +4233,78 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         for(int i=0; i < solrIds.size(); i++) {
           String solrId2 = solrIds.get(i);
           String classSimpleName2 = classes.get(i);
+
+          if("TimeZone".equals(classSimpleName2) && solrId2 != null) {
+            SearchList<TimeZone> searchList2 = new SearchList<TimeZone>();
+            searchList2.setStore(true);
+            searchList2.q("*:*");
+            searchList2.setC(TimeZone.class);
+            searchList2.fq("solrId:" + solrId2);
+            searchList2.rows(1L);
+            futures.add(Future.future(promise2 -> {
+              searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
+                TimeZone o2 = searchList2.getList().stream().findFirst().orElse(null);
+                if(o2 != null) {
+                  JsonObject params = new JsonObject();
+                  params.put("body", new JsonObject());
+                  params.put("scopes", siteRequest.getScopes());
+                  params.put("cookie", new JsonObject());
+                  params.put("path", new JsonObject());
+                  params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("solrId:" + solrId2)).put("var", new JsonArray().add("refresh:false")));
+                  JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
+                  JsonObject json = new JsonObject().put("context", context);
+                  eventBus.request("smart-aeronautics-enUS-TimeZone", json, new DeliveryOptions().addHeader("action", "patchTimeZoneFuture")).onSuccess(c -> {
+                    JsonObject responseMessage = (JsonObject)c.body();
+                    Integer statusCode = responseMessage.getInteger("statusCode");
+                    if(statusCode.equals(200))
+                      promise2.complete();
+                    else
+                      promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
+                  }).onFailure(ex -> {
+                    promise2.fail(ex);
+                  });
+                }
+              }).onFailure(ex -> {
+                promise2.fail(ex);
+              });
+            }));
+          }
+
+          if("Airport".equals(classSimpleName2) && solrId2 != null) {
+            SearchList<Airport> searchList2 = new SearchList<Airport>();
+            searchList2.setStore(true);
+            searchList2.q("*:*");
+            searchList2.setC(Airport.class);
+            searchList2.fq("solrId:" + solrId2);
+            searchList2.rows(1L);
+            futures.add(Future.future(promise2 -> {
+              searchList2.promiseDeepSearchList(siteRequest).onSuccess(b -> {
+                Airport o2 = searchList2.getList().stream().findFirst().orElse(null);
+                if(o2 != null) {
+                  JsonObject params = new JsonObject();
+                  params.put("body", new JsonObject());
+                  params.put("scopes", siteRequest.getScopes());
+                  params.put("cookie", new JsonObject());
+                  params.put("path", new JsonObject());
+                  params.put("query", new JsonObject().put("q", "*:*").put("fq", new JsonArray().add("solrId:" + solrId2)).put("var", new JsonArray().add("refresh:false")));
+                  JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
+                  JsonObject json = new JsonObject().put("context", context);
+                  eventBus.request("smart-aeronautics-enUS-Airport", json, new DeliveryOptions().addHeader("action", "patchAirportFuture")).onSuccess(c -> {
+                    JsonObject responseMessage = (JsonObject)c.body();
+                    Integer statusCode = responseMessage.getInteger("statusCode");
+                    if(statusCode.equals(200))
+                      promise2.complete();
+                    else
+                      promise2.fail(new RuntimeException(responseMessage.getString("statusMessage")));
+                  }).onFailure(ex -> {
+                    promise2.fail(ex);
+                  });
+                }
+              }).onFailure(ex -> {
+                promise2.fail(ex);
+              });
+            }));
+          }
         }
 
         CompositeFuture.all(futures).onSuccess(b -> {
@@ -3874,7 +4328,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
           params.put("query", query);
           JsonObject context = new JsonObject().put("params", params).put("user", siteRequest.getUserPrincipal());
           JsonObject json = new JsonObject().put("context", context);
-          eventBus.request(Airport.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchAirportFuture")).onSuccess(c -> {
+          eventBus.request(Aircraft.getClassApiAddress(), json, new DeliveryOptions().addHeader("action", "patchAircraftFuture")).onSuccess(c -> {
             JsonObject responseMessage = (JsonObject)c.body();
             Integer statusCode = responseMessage.getInteger("statusCode");
             if(statusCode.equals(200))
@@ -3893,7 +4347,7 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
         promise.complete();
       }
     } catch(Exception ex) {
-      LOG.error(String.format("refreshAirport failed. "), ex);
+      LOG.error(String.format("refreshAircraft failed. "), ex);
       promise.tryFail(ex);
     }
     return promise.future();
@@ -3906,39 +4360,51 @@ public class AirportEnUSGenApiServiceImpl extends BaseApiServiceImpl implements 
       Map<String, Object> result = (Map<String, Object>)ctx.get("result");
       SiteRequest siteRequest2 = (SiteRequest)siteRequest;
       String siteBaseUrl = config.getString(ComputateConfigKeys.SITE_BASE_URL);
-      Airport o = new Airport();
+      Aircraft o = new Aircraft();
       o.setSiteRequest_((SiteRequest)siteRequest);
 
-      o.persistForClass(Airport.VAR_name, Airport.staticSetName(siteRequest2, (String)result.get(Airport.VAR_name)));
-      o.persistForClass(Airport.VAR_address, Airport.staticSetAddress(siteRequest2, (String)result.get(Airport.VAR_address)));
-      o.persistForClass(Airport.VAR_description, Airport.staticSetDescription(siteRequest2, (String)result.get(Airport.VAR_description)));
-      o.persistForClass(Airport.VAR_alternateName, Airport.staticSetAlternateName(siteRequest2, (String)result.get(Airport.VAR_alternateName)));
-      o.persistForClass(Airport.VAR_location, Airport.staticSetLocation(siteRequest2, (String)result.get(Airport.VAR_location)));
-      o.persistForClass(Airport.VAR_created, Airport.staticSetCreated(siteRequest2, (String)result.get(Airport.VAR_created), Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC"))));
-      o.persistForClass(Airport.VAR_codeIATA, Airport.staticSetCodeIATA(siteRequest2, (String)result.get(Airport.VAR_codeIATA)));
-      o.persistForClass(Airport.VAR_id, Airport.staticSetId(siteRequest2, (String)result.get(Airport.VAR_id)));
-      o.persistForClass(Airport.VAR_codeICAO, Airport.staticSetCodeICAO(siteRequest2, (String)result.get(Airport.VAR_codeICAO)));
-      o.persistForClass(Airport.VAR_entityShortId, Airport.staticSetEntityShortId(siteRequest2, (String)result.get(Airport.VAR_entityShortId)));
-      o.persistForClass(Airport.VAR_archived, Airport.staticSetArchived(siteRequest2, (String)result.get(Airport.VAR_archived)));
-      o.persistForClass(Airport.VAR_dataProvider, Airport.staticSetDataProvider(siteRequest2, (String)result.get(Airport.VAR_dataProvider)));
-      o.persistForClass(Airport.VAR_ngsildTenant, Airport.staticSetNgsildTenant(siteRequest2, (String)result.get(Airport.VAR_ngsildTenant)));
-      o.persistForClass(Airport.VAR_dateCreated, Airport.staticSetDateCreated(siteRequest2, (String)result.get(Airport.VAR_dateCreated)));
-      o.persistForClass(Airport.VAR_ngsildPath, Airport.staticSetNgsildPath(siteRequest2, (String)result.get(Airport.VAR_ngsildPath)));
-      o.persistForClass(Airport.VAR_dateModified, Airport.staticSetDateModified(siteRequest2, (String)result.get(Airport.VAR_dateModified)));
-      o.persistForClass(Airport.VAR_ngsildContext, Airport.staticSetNgsildContext(siteRequest2, (String)result.get(Airport.VAR_ngsildContext)));
-      o.persistForClass(Airport.VAR_owner, Airport.staticSetOwner(siteRequest2, (String)result.get(Airport.VAR_owner)));
-      o.persistForClass(Airport.VAR_ngsildData, Airport.staticSetNgsildData(siteRequest2, (String)result.get(Airport.VAR_ngsildData)));
-      o.persistForClass(Airport.VAR_sessionId, Airport.staticSetSessionId(siteRequest2, (String)result.get(Airport.VAR_sessionId)));
-      o.persistForClass(Airport.VAR_seeAlso, Airport.staticSetSeeAlso(siteRequest2, (String)result.get(Airport.VAR_seeAlso)));
-      o.persistForClass(Airport.VAR_color, Airport.staticSetColor(siteRequest2, (String)result.get(Airport.VAR_color)));
-      o.persistForClass(Airport.VAR_userKey, Airport.staticSetUserKey(siteRequest2, (String)result.get(Airport.VAR_userKey)));
-      o.persistForClass(Airport.VAR_source, Airport.staticSetSource(siteRequest2, (String)result.get(Airport.VAR_source)));
-      o.persistForClass(Airport.VAR_objectTitle, Airport.staticSetObjectTitle(siteRequest2, (String)result.get(Airport.VAR_objectTitle)));
-      o.persistForClass(Airport.VAR_displayPage, Airport.staticSetDisplayPage(siteRequest2, (String)result.get(Airport.VAR_displayPage)));
-      o.persistForClass(Airport.VAR_areaServed, Airport.staticSetAreaServed(siteRequest2, (String)result.get(Airport.VAR_areaServed)));
-      o.persistForClass(Airport.VAR_editPage, Airport.staticSetEditPage(siteRequest2, (String)result.get(Airport.VAR_editPage)));
-      o.persistForClass(Airport.VAR_userPage, Airport.staticSetUserPage(siteRequest2, (String)result.get(Airport.VAR_userPage)));
-      o.persistForClass(Airport.VAR_download, Airport.staticSetDownload(siteRequest2, (String)result.get(Airport.VAR_download)));
+      o.persistForClass(Aircraft.VAR_name, Aircraft.staticSetName(siteRequest2, (String)result.get(Aircraft.VAR_name)));
+      o.persistForClass(Aircraft.VAR_timeZone, Aircraft.staticSetTimeZone(siteRequest2, (String)result.get(Aircraft.VAR_timeZone)));
+      o.persistForClass(Aircraft.VAR_description, Aircraft.staticSetDescription(siteRequest2, (String)result.get(Aircraft.VAR_description)));
+      o.persistForClass(Aircraft.VAR_airportId, Aircraft.staticSetAirportId(siteRequest2, (String)result.get(Aircraft.VAR_airportId)));
+      o.persistForClass(Aircraft.VAR_location, Aircraft.staticSetLocation(siteRequest2, (String)result.get(Aircraft.VAR_location)));
+      o.persistForClass(Aircraft.VAR_created, Aircraft.staticSetCreated(siteRequest2, (String)result.get(Aircraft.VAR_created), Optional.ofNullable(o.getTimeZone()).map(v -> ZoneId.of(v)).orElse(Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC")))));
+      o.persistForClass(Aircraft.VAR_departureDate, Aircraft.staticSetDepartureDate(siteRequest2, (String)result.get(Aircraft.VAR_departureDate), Optional.ofNullable(o.getTimeZone()).map(v -> ZoneId.of(v)).orElse(Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC")))));
+      o.persistForClass(Aircraft.VAR_id, Aircraft.staticSetId(siteRequest2, (String)result.get(Aircraft.VAR_id)));
+      o.persistForClass(Aircraft.VAR_arrivalDate, Aircraft.staticSetArrivalDate(siteRequest2, (String)result.get(Aircraft.VAR_arrivalDate), Optional.ofNullable(o.getTimeZone()).map(v -> ZoneId.of(v)).orElse(Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC")))));
+      o.persistForClass(Aircraft.VAR_entityShortId, Aircraft.staticSetEntityShortId(siteRequest2, (String)result.get(Aircraft.VAR_entityShortId)));
+      o.persistForClass(Aircraft.VAR_archived, Aircraft.staticSetArchived(siteRequest2, (String)result.get(Aircraft.VAR_archived)));
+      o.persistForClass(Aircraft.VAR_avgSpeedInMph, Aircraft.staticSetAvgSpeedInMph(siteRequest2, (String)result.get(Aircraft.VAR_avgSpeedInMph)));
+      o.persistForClass(Aircraft.VAR_ngsildTenant, Aircraft.staticSetNgsildTenant(siteRequest2, (String)result.get(Aircraft.VAR_ngsildTenant)));
+      o.persistForClass(Aircraft.VAR_address, Aircraft.staticSetAddress(siteRequest2, (String)result.get(Aircraft.VAR_address)));
+      o.persistForClass(Aircraft.VAR_ngsildPath, Aircraft.staticSetNgsildPath(siteRequest2, (String)result.get(Aircraft.VAR_ngsildPath)));
+      o.persistForClass(Aircraft.VAR_alternateName, Aircraft.staticSetAlternateName(siteRequest2, (String)result.get(Aircraft.VAR_alternateName)));
+      o.persistForClass(Aircraft.VAR_ngsildContext, Aircraft.staticSetNgsildContext(siteRequest2, (String)result.get(Aircraft.VAR_ngsildContext)));
+      o.persistForClass(Aircraft.VAR_belongsToAircraftModel, Aircraft.staticSetBelongsToAircraftModel(siteRequest2, (String)result.get(Aircraft.VAR_belongsToAircraftModel)));
+      o.persistForClass(Aircraft.VAR_ngsildData, Aircraft.staticSetNgsildData(siteRequest2, (String)result.get(Aircraft.VAR_ngsildData)));
+      o.persistForClass(Aircraft.VAR_sessionId, Aircraft.staticSetSessionId(siteRequest2, (String)result.get(Aircraft.VAR_sessionId)));
+      o.persistForClass(Aircraft.VAR_dataProvider, Aircraft.staticSetDataProvider(siteRequest2, (String)result.get(Aircraft.VAR_dataProvider)));
+      o.persistForClass(Aircraft.VAR_color, Aircraft.staticSetColor(siteRequest2, (String)result.get(Aircraft.VAR_color)));
+      o.persistForClass(Aircraft.VAR_userKey, Aircraft.staticSetUserKey(siteRequest2, (String)result.get(Aircraft.VAR_userKey)));
+      o.persistForClass(Aircraft.VAR_dateCreated, Aircraft.staticSetDateCreated(siteRequest2, (String)result.get(Aircraft.VAR_dateCreated)));
+      o.persistForClass(Aircraft.VAR_dateIssued, Aircraft.staticSetDateIssued(siteRequest2, (String)result.get(Aircraft.VAR_dateIssued)));
+      o.persistForClass(Aircraft.VAR_dateModified, Aircraft.staticSetDateModified(siteRequest2, (String)result.get(Aircraft.VAR_dateModified)));
+      o.persistForClass(Aircraft.VAR_objectTitle, Aircraft.staticSetObjectTitle(siteRequest2, (String)result.get(Aircraft.VAR_objectTitle)));
+      o.persistForClass(Aircraft.VAR_heading, Aircraft.staticSetHeading(siteRequest2, (String)result.get(Aircraft.VAR_heading)));
+      o.persistForClass(Aircraft.VAR_displayPage, Aircraft.staticSetDisplayPage(siteRequest2, (String)result.get(Aircraft.VAR_displayPage)));
+      o.persistForClass(Aircraft.VAR_isOnGround, Aircraft.staticSetIsOnGround(siteRequest2, (String)result.get(Aircraft.VAR_isOnGround)));
+      o.persistForClass(Aircraft.VAR_editPage, Aircraft.staticSetEditPage(siteRequest2, (String)result.get(Aircraft.VAR_editPage)));
+      o.persistForClass(Aircraft.VAR_owner, Aircraft.staticSetOwner(siteRequest2, (String)result.get(Aircraft.VAR_owner)));
+      o.persistForClass(Aircraft.VAR_userPage, Aircraft.staticSetUserPage(siteRequest2, (String)result.get(Aircraft.VAR_userPage)));
+      o.persistForClass(Aircraft.VAR_registration, Aircraft.staticSetRegistration(siteRequest2, (String)result.get(Aircraft.VAR_registration)));
+      o.persistForClass(Aircraft.VAR_download, Aircraft.staticSetDownload(siteRequest2, (String)result.get(Aircraft.VAR_download)));
+      o.persistForClass(Aircraft.VAR_seeAlso, Aircraft.staticSetSeeAlso(siteRequest2, (String)result.get(Aircraft.VAR_seeAlso)));
+      o.persistForClass(Aircraft.VAR_source, Aircraft.staticSetSource(siteRequest2, (String)result.get(Aircraft.VAR_source)));
+      o.persistForClass(Aircraft.VAR_speed, Aircraft.staticSetSpeed(siteRequest2, (String)result.get(Aircraft.VAR_speed)));
+      o.persistForClass(Aircraft.VAR_verticalSpeed, Aircraft.staticSetVerticalSpeed(siteRequest2, (String)result.get(Aircraft.VAR_verticalSpeed)));
+      o.persistForClass(Aircraft.VAR_path, Aircraft.staticSetPath(siteRequest2, (String)result.get(Aircraft.VAR_path)));
+      o.persistForClass(Aircraft.VAR_simulation, Aircraft.staticSetSimulation(siteRequest2, (String)result.get(Aircraft.VAR_simulation)));
+      o.persistForClass(Aircraft.VAR_simulationDelayMillis, Aircraft.staticSetSimulationDelayMillis(siteRequest2, (String)result.get(Aircraft.VAR_simulationDelayMillis)));
 
       o.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(o2 -> {
         try {
