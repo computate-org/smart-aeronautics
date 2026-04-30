@@ -7488,6 +7488,10 @@ components:
                     type: array
                     items:
                       type: string
+                  altitude:
+                    type: string
+                  rotation:
+                    type: string
     GETMapModelResponse:
       allOf:
         - type: object
@@ -7516,6 +7520,10 @@ components:
               type: array
               items:
                 type: string
+            altitude:
+              type: string
+            rotation:
+              type: string
     SearchPageMapModelResponse:
       allOf:
         - type: string

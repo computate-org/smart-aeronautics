@@ -24,6 +24,7 @@ import org.computate.search.serialize.ComputateZonedDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.computate.search.serialize.ComputateBigDecimalDeserializer;
 import java.math.MathContext;
 import org.apache.commons.lang3.math.NumberUtils;
 import java.text.NumberFormat;
@@ -152,7 +153,8 @@ public abstract class MapModelPageGen<DEV> extends MapModelGenPage {
   //////////////
 
   public Future<MapModelPageGen<DEV>> promiseDeepMapModelPage(SiteRequest siteRequest_) {
-    setSiteRequest_(siteRequest_);
+    if(this.siteRequest_ == null)
+      setSiteRequest_(siteRequest_);
     return promiseDeepMapModelPage();
   }
 

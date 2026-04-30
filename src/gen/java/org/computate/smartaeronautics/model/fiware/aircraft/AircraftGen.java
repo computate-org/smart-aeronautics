@@ -1,5 +1,22 @@
 package org.computate.smartaeronautics.model.fiware.aircraft;
 
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
+import org.computate.search.tool.SearchTool;
+import org.computate.search.wrap.Wrap;
+import org.computate.smartaeronautics.config.ConfigKeys;
+import org.computate.smartaeronautics.model.MapModel;
+import org.computate.vertx.search.list.SearchList;
+import org.computate.vertx.config.ComputateConfigKeys;
+import io.vertx.core.Promise;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import io.vertx.pgclient.data.Path;
+import io.vertx.pgclient.data.Point;
+import io.vertx.pgclient.data.Polygon;
 import org.computate.smartaeronautics.request.SiteRequest;
 import org.computate.smartaeronautics.model.MapModel;
 import org.computate.smartaeronautics.model.BaseModel;
@@ -27,6 +44,7 @@ import org.computate.search.serialize.ComputateZonedDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.computate.search.serialize.ComputateBigDecimalDeserializer;
 import java.math.MathContext;
 import org.apache.commons.lang3.math.NumberUtils;
 import java.text.NumberFormat;
@@ -2161,7 +2179,8 @@ public abstract class AircraftGen<DEV> extends MapModel {
   //////////////
 
   public Future<AircraftGen<DEV>> promiseDeepAircraft(SiteRequest siteRequest_) {
-    setSiteRequest_(siteRequest_);
+    if(this.siteRequest_ == null)
+      setSiteRequest_(siteRequest_);
     return promiseDeepAircraft();
   }
 
@@ -3638,7 +3657,7 @@ public abstract class AircraftGen<DEV> extends MapModel {
     return "%s/en-us/edit/aircraft/%s";
   }
 
-  public static String varJsonForClass(String var, Boolean patch) {
+  public static String varJson(String var, Boolean patch) {
     return Aircraft.varJsonAircraft(var, patch);
   }
   public static String varJsonAircraft(String var, Boolean patch) {

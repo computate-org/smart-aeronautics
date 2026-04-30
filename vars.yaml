@@ -409,6 +409,10 @@ SMART_DATA_MODELS_SRC: "{{ (PARENT_SRC + '/smart-data-models') | realpath }}"
 DEFAULT_MAP_LOCATION: '{ "coordinates": [ -86.00911511758058, 30.02832599643655 ], "type": "Point" }'
 # Map default zoom level. 
 DEFAULT_MAP_ZOOM: "8"
+# Map default pitch level. 
+DEFAULT_MAP_PITCH: "60"
+# Map default altitude unit. 
+DEFAULT_UNIT_ALTITUDE: "meters"
 # Mapbox token for address autosuggest. 
 MAPBOX_TOKEN: "{{ lookup('env', 'MAPBOX_TOKEN') | default('', true) }}"
 

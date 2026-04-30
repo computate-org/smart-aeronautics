@@ -1,5 +1,25 @@
 package org.computate.smartaeronautics.model;
 
+import java.math.BigDecimal;
+import java.util.List;
+import javax.measure.Quantity;
+import javax.measure.Unit;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
+import javax.measure.spi.SystemOfUnits;
+import org.apache.commons.lang3.StringUtils;
+import org.computate.search.wrap.Wrap;
+import org.computate.smartaeronautics.config.ConfigKeys;
+import org.computate.smartaeronautics.request.SiteRequest;
+import org.computate.vertx.config.ComputateConfigKeys;
+import io.vertx.core.json.JsonObject;
+import io.vertx.pgclient.data.Point;
+import io.vertx.pgclient.data.Polygon;
+import systems.uom.common.USCustomary;
+import tech.units.indriya.ComparableQuantity;
+import tech.units.indriya.format.SimpleUnitFormat;
+import tech.units.indriya.quantity.Quantities;
+import tech.units.indriya.unit.Units;
 import org.computate.smartaeronautics.request.SiteRequest;
 import org.computate.smartaeronautics.model.BaseModel;
 import io.vertx.core.json.JsonObject;
@@ -26,6 +46,7 @@ import org.computate.search.serialize.ComputateZonedDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.computate.search.serialize.ComputateBigDecimalDeserializer;
 import java.math.MathContext;
 import org.apache.commons.lang3.math.NumberUtils;
 import java.text.NumberFormat;
@@ -51,6 +72,14 @@ import java.util.stream.Collectors;
 import io.vertx.core.json.Json;
 import org.computate.vertx.serialize.vertx.JsonObjectDeserializer;
 import io.vertx.core.json.JsonArray;
+import javax.measure.Quantity;
+import javax.measure.quantity.Length;
+import tech.units.indriya.format.SimpleUnitFormat;
+import org.computate.vertx.tool.GeoTool;
+import org.computate.vertx.serialize.unit.QuantitySerializer;
+import org.computate.vertx.serialize.unit.QuantityDeserializer;
+import javax.measure.quantity.Angle;
+import java.lang.Double;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -892,12 +921,407 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     return color;
   }
 
+	//////////////
+  // altitude //
+	//////////////
+
+
+  /**
+   *  The entity altitude
+   *	 is defined as null before being initialized. 
+   */
+  @JsonProperty
+  @JsonDeserialize(using = QuantityDeserializer.class)
+  @JsonSerialize(using = QuantitySerializer.class)
+  @JsonInclude(Include.NON_NULL)
+  protected Quantity<Length> altitude;
+
+  /**
+   * <br> The entity altitude
+   *  is defined as null before being initialized. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.MapModel&fq=entiteVar_enUS_indexed_string:altitude">Find the entity altitude in Solr</a>
+   * <br>
+   * @param w is for wrapping a value to assign to this entity during initialization. 
+   **/
+  protected abstract void _altitude(Wrap<Quantity<Length>> w);
+
+  public Quantity<Length> getAltitude() {
+    return altitude;
+  }
+
+  public void setAltitude(Quantity<Length> altitude) {
+    this.altitude = altitude;
+  }
+  /** Example: 100 meters, 1 m, 2 feet, 1 ft **/
+  @JsonIgnore
+  public void setAltitude(String o) {
+    this.altitude = MapModel.staticSetAltitude(siteRequest_, o);
+  }
+  public static Quantity<Length> staticSetAltitude(String o) {
+    if(o != null)
+      return GeoTool.parseQuantity(o).asType(javax.measure.quantity.Length.class);
+    return null;
+  }
+  public static Quantity<Length> staticSetAltitude(SiteRequest siteRequest_, String o) {
+    if(o != null)
+      return GeoTool.parseQuantity(o).asType(javax.measure.quantity.Length.class);
+    return null;
+  }
+  protected MapModel altitudeInit() {
+    Wrap<Quantity<Length>> altitudeWrap = new Wrap<Quantity<Length>>().var("altitude");
+    if(altitude == null) {
+      _altitude(altitudeWrap);
+      Optional.ofNullable(altitudeWrap.getO()).ifPresent(o -> {
+        setAltitude(o);
+      });
+    }
+    return (MapModel)this;
+  }
+
+  public static String staticSearchAltitude(SiteRequest siteRequest_, Quantity o) {
+    return o.toString();
+  }
+
+  public static String staticSearchStrAltitude(SiteRequest siteRequest_, String o) {
+    return o == null ? null : o.toString();
+  }
+
+  public static String staticSearchFqAltitude(SiteRequest siteRequest_, String o) {
+    return MapModel.staticSearchAltitude(siteRequest_, MapModel.staticSetAltitude(siteRequest_, o)).toString();
+  }
+
+  public String sqlAltitude() {
+    return altitude.toString();
+  }
+
+  public static String staticJsonAltitude(Quantity<Length> altitude) {
+    return Optional.ofNullable(altitude).map(v -> v.toString()).orElse(null);
+  }
+
+	///////////
+  // pitch //
+	///////////
+
+
+  /**
+   *  The entity pitch
+   *	 is defined as null before being initialized. 
+   */
+  @JsonProperty
+  @JsonDeserialize(using = QuantityDeserializer.class)
+  @JsonSerialize(using = QuantitySerializer.class)
+  @JsonInclude(Include.NON_NULL)
+  protected Quantity<Angle> pitch;
+
+  /**
+   * <br> The entity pitch
+   *  is defined as null before being initialized. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.MapModel&fq=entiteVar_enUS_indexed_string:pitch">Find the entity pitch in Solr</a>
+   * <br>
+   * @param w is for wrapping a value to assign to this entity during initialization. 
+   **/
+  protected abstract void _pitch(Wrap<Quantity<Angle>> w);
+
+  public Quantity<Angle> getPitch() {
+    return pitch;
+  }
+
+  public void setPitch(Quantity<Angle> pitch) {
+    this.pitch = pitch;
+  }
+  /** Example: 100 meters, 1 m, 2 feet, 1 ft **/
+  @JsonIgnore
+  public void setPitch(String o) {
+    this.pitch = MapModel.staticSetPitch(siteRequest_, o);
+  }
+  public static Quantity<Angle> staticSetPitch(String o) {
+    if(o != null)
+      return GeoTool.parseQuantity(o).asType(javax.measure.quantity.Angle.class);
+    return null;
+  }
+  public static Quantity<Angle> staticSetPitch(SiteRequest siteRequest_, String o) {
+    if(o != null)
+      return GeoTool.parseQuantity(o).asType(javax.measure.quantity.Angle.class);
+    return null;
+  }
+  protected MapModel pitchInit() {
+    Wrap<Quantity<Angle>> pitchWrap = new Wrap<Quantity<Angle>>().var("pitch");
+    if(pitch == null) {
+      _pitch(pitchWrap);
+      Optional.ofNullable(pitchWrap.getO()).ifPresent(o -> {
+        setPitch(o);
+      });
+    }
+    return (MapModel)this;
+  }
+
+  public static String staticSearchPitch(SiteRequest siteRequest_, Quantity o) {
+    return o.toString();
+  }
+
+  public static String staticSearchStrPitch(SiteRequest siteRequest_, String o) {
+    return o == null ? null : o.toString();
+  }
+
+  public static String staticSearchFqPitch(SiteRequest siteRequest_, String o) {
+    return MapModel.staticSearchPitch(siteRequest_, MapModel.staticSetPitch(siteRequest_, o)).toString();
+  }
+
+  public String sqlPitch() {
+    return pitch.toString();
+  }
+
+  public static String staticJsonPitch(Quantity<Angle> pitch) {
+    return Optional.ofNullable(pitch).map(v -> v.toString()).orElse(null);
+  }
+
+	/////////
+  // yaw //
+	/////////
+
+
+  /**
+   *  The entity yaw
+   *	 is defined as null before being initialized. 
+   */
+  @JsonProperty
+  @JsonDeserialize(using = QuantityDeserializer.class)
+  @JsonSerialize(using = QuantitySerializer.class)
+  @JsonInclude(Include.NON_NULL)
+  protected Quantity<Angle> yaw;
+
+  /**
+   * <br> The entity yaw
+   *  is defined as null before being initialized. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.MapModel&fq=entiteVar_enUS_indexed_string:yaw">Find the entity yaw in Solr</a>
+   * <br>
+   * @param w is for wrapping a value to assign to this entity during initialization. 
+   **/
+  protected abstract void _yaw(Wrap<Quantity<Angle>> w);
+
+  public Quantity<Angle> getYaw() {
+    return yaw;
+  }
+
+  public void setYaw(Quantity<Angle> yaw) {
+    this.yaw = yaw;
+  }
+  /** Example: 100 meters, 1 m, 2 feet, 1 ft **/
+  @JsonIgnore
+  public void setYaw(String o) {
+    this.yaw = MapModel.staticSetYaw(siteRequest_, o);
+  }
+  public static Quantity<Angle> staticSetYaw(String o) {
+    if(o != null)
+      return GeoTool.parseQuantity(o).asType(javax.measure.quantity.Angle.class);
+    return null;
+  }
+  public static Quantity<Angle> staticSetYaw(SiteRequest siteRequest_, String o) {
+    if(o != null)
+      return GeoTool.parseQuantity(o).asType(javax.measure.quantity.Angle.class);
+    return null;
+  }
+  protected MapModel yawInit() {
+    Wrap<Quantity<Angle>> yawWrap = new Wrap<Quantity<Angle>>().var("yaw");
+    if(yaw == null) {
+      _yaw(yawWrap);
+      Optional.ofNullable(yawWrap.getO()).ifPresent(o -> {
+        setYaw(o);
+      });
+    }
+    return (MapModel)this;
+  }
+
+  public static String staticSearchYaw(SiteRequest siteRequest_, Quantity o) {
+    return o.toString();
+  }
+
+  public static String staticSearchStrYaw(SiteRequest siteRequest_, String o) {
+    return o == null ? null : o.toString();
+  }
+
+  public static String staticSearchFqYaw(SiteRequest siteRequest_, String o) {
+    return MapModel.staticSearchYaw(siteRequest_, MapModel.staticSetYaw(siteRequest_, o)).toString();
+  }
+
+  public String sqlYaw() {
+    return yaw.toString();
+  }
+
+  public static String staticJsonYaw(Quantity<Angle> yaw) {
+    return Optional.ofNullable(yaw).map(v -> v.toString()).orElse(null);
+  }
+
+	//////////
+  // roll //
+	//////////
+
+
+  /**
+   *  The entity roll
+   *	 is defined as null before being initialized. 
+   */
+  @JsonProperty
+  @JsonDeserialize(using = QuantityDeserializer.class)
+  @JsonSerialize(using = QuantitySerializer.class)
+  @JsonInclude(Include.NON_NULL)
+  protected Quantity<Angle> roll;
+
+  /**
+   * <br> The entity roll
+   *  is defined as null before being initialized. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.MapModel&fq=entiteVar_enUS_indexed_string:roll">Find the entity roll in Solr</a>
+   * <br>
+   * @param w is for wrapping a value to assign to this entity during initialization. 
+   **/
+  protected abstract void _roll(Wrap<Quantity<Angle>> w);
+
+  public Quantity<Angle> getRoll() {
+    return roll;
+  }
+
+  public void setRoll(Quantity<Angle> roll) {
+    this.roll = roll;
+  }
+  /** Example: 100 meters, 1 m, 2 feet, 1 ft **/
+  @JsonIgnore
+  public void setRoll(String o) {
+    this.roll = MapModel.staticSetRoll(siteRequest_, o);
+  }
+  public static Quantity<Angle> staticSetRoll(String o) {
+    if(o != null)
+      return GeoTool.parseQuantity(o).asType(javax.measure.quantity.Angle.class);
+    return null;
+  }
+  public static Quantity<Angle> staticSetRoll(SiteRequest siteRequest_, String o) {
+    if(o != null)
+      return GeoTool.parseQuantity(o).asType(javax.measure.quantity.Angle.class);
+    return null;
+  }
+  protected MapModel rollInit() {
+    Wrap<Quantity<Angle>> rollWrap = new Wrap<Quantity<Angle>>().var("roll");
+    if(roll == null) {
+      _roll(rollWrap);
+      Optional.ofNullable(rollWrap.getO()).ifPresent(o -> {
+        setRoll(o);
+      });
+    }
+    return (MapModel)this;
+  }
+
+  public static String staticSearchRoll(SiteRequest siteRequest_, Quantity o) {
+    return o.toString();
+  }
+
+  public static String staticSearchStrRoll(SiteRequest siteRequest_, String o) {
+    return o == null ? null : o.toString();
+  }
+
+  public static String staticSearchFqRoll(SiteRequest siteRequest_, String o) {
+    return MapModel.staticSearchRoll(siteRequest_, MapModel.staticSetRoll(siteRequest_, o)).toString();
+  }
+
+  public String sqlRoll() {
+    return roll.toString();
+  }
+
+  public static String staticJsonRoll(Quantity<Angle> roll) {
+    return Optional.ofNullable(roll).map(v -> v.toString()).orElse(null);
+  }
+
+	//////////////
+  // rotation //
+	//////////////
+
+
+  /**
+   *  The entity rotation
+   *	 It is constructed before being initialized with the constructor by default. 
+   */
+  @JsonProperty
+  @JsonFormat(shape = JsonFormat.Shape.ARRAY)
+  @JsonInclude(Include.NON_NULL)
+  protected List<Double> rotation = new ArrayList<Double>();
+
+  /**
+   * <br> The entity rotation
+   *  It is constructed before being initialized with the constructor by default. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.MapModel&fq=entiteVar_enUS_indexed_string:rotation">Find the entity rotation in Solr</a>
+   * <br>
+   * @param l is the entity already constructed. 
+   **/
+  protected abstract void _rotation(List<Double> l);
+
+  public List<Double> getRotation() {
+    return rotation;
+  }
+
+  public void setRotation(List<Double> rotation) {
+    this.rotation = rotation;
+  }
+  @JsonIgnore
+  public void setRotation(String o) {
+    Double l = MapModel.staticSetRotation(siteRequest_, o);
+    if(l != null)
+      addRotation(l);
+  }
+  public static Double staticSetRotation(SiteRequest siteRequest_, String o) {
+    if(NumberUtils.isParsable(o))
+      return Double.parseDouble(o);
+    return null;
+  }
+  public MapModel addRotation(Double...objects) {
+    for(Double o : objects) {
+      addRotation(o);
+    }
+    return (MapModel)this;
+  }
+  public MapModel addRotation(Double o) {
+    if(o != null)
+      this.rotation.add(o);
+    return (MapModel)this;
+  }
+  @JsonIgnore
+  public void setRotation(JsonArray objects) {
+    rotation.clear();
+    if(objects == null)
+      return;
+    for(int i = 0; i < objects.size(); i++) {
+      String o = objects.getString(i);
+      setRotation(o);
+    }
+  }
+  public MapModel addRotation(String o) {
+    if(NumberUtils.isParsable(o)) {
+      Double p = Double.parseDouble(o);
+      addRotation(p);
+    }
+    return (MapModel)this;
+  }
+  protected MapModel rotationInit() {
+    _rotation(rotation);
+    return (MapModel)this;
+  }
+
+  public static Double staticSearchRotation(SiteRequest siteRequest_, Double o) {
+    return o;
+  }
+
+  public static String staticSearchStrRotation(SiteRequest siteRequest_, Double o) {
+    return o == null ? null : o.toString();
+  }
+
+  public static String staticSearchFqRotation(SiteRequest siteRequest_, String o) {
+    return MapModel.staticSearchRotation(siteRequest_, MapModel.staticSetRotation(siteRequest_, o)).toString();
+  }
+
   //////////////
   // initDeep //
   //////////////
 
   public Future<MapModelGen<DEV>> promiseDeepMapModel(SiteRequest siteRequest_) {
-    setSiteRequest_(siteRequest_);
+    if(this.siteRequest_ == null)
+      setSiteRequest_(siteRequest_);
     return promiseDeepMapModel();
   }
 
@@ -931,6 +1355,11 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         ngsildContextInit();
         ngsildDataInit();
         colorInit();
+        altitudeInit();
+        pitchInit();
+        yawInit();
+        rollInit();
+        rotationInit();
         promise2.complete();
       } catch(Exception ex) {
         promise2.fail(ex);
@@ -1004,6 +1433,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return oMapModel.ngsildData;
       case "color":
         return oMapModel.color;
+      case "altitude":
+        return oMapModel.altitude;
+      case "pitch":
+        return oMapModel.pitch;
+      case "yaw":
+        return oMapModel.yaw;
+      case "roll":
+        return oMapModel.roll;
+      case "rotation":
+        return oMapModel.rotation;
       default:
         return super.obtainBaseModel(var);
     }
@@ -1063,6 +1502,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSetNgsildData(siteRequest_, v);
     case "color":
       return MapModel.staticSetColor(siteRequest_, v);
+    case "altitude":
+      return MapModel.staticSetAltitude(siteRequest_, v);
+    case "pitch":
+      return MapModel.staticSetPitch(siteRequest_, v);
+    case "yaw":
+      return MapModel.staticSetYaw(siteRequest_, v);
+    case "roll":
+      return MapModel.staticSetRoll(siteRequest_, v);
+    case "rotation":
+      return MapModel.staticSetRotation(siteRequest_, v);
       default:
         return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
     }
@@ -1127,6 +1576,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchNgsildData(siteRequest_, (JsonObject)o);
     case "color":
       return MapModel.staticSearchColor(siteRequest_, (String)o);
+    case "altitude":
+      return MapModel.staticSearchAltitude(siteRequest_, (Quantity<Length>)o);
+    case "pitch":
+      return MapModel.staticSearchPitch(siteRequest_, (Quantity<Angle>)o);
+    case "yaw":
+      return MapModel.staticSearchYaw(siteRequest_, (Quantity<Angle>)o);
+    case "roll":
+      return MapModel.staticSearchRoll(siteRequest_, (Quantity<Angle>)o);
+    case "rotation":
+      return MapModel.staticSearchRotation(siteRequest_, (Double)o);
       default:
         return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
     }
@@ -1161,6 +1620,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchStrNgsildData(siteRequest_, (String)o);
     case "color":
       return MapModel.staticSearchStrColor(siteRequest_, (String)o);
+    case "altitude":
+      return MapModel.staticSearchStrAltitude(siteRequest_, (String)o);
+    case "pitch":
+      return MapModel.staticSearchStrPitch(siteRequest_, (String)o);
+    case "yaw":
+      return MapModel.staticSearchStrYaw(siteRequest_, (String)o);
+    case "roll":
+      return MapModel.staticSearchStrRoll(siteRequest_, (String)o);
+    case "rotation":
+      return MapModel.staticSearchStrRotation(siteRequest_, (Double)o);
       default:
         return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
     }
@@ -1195,6 +1664,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchFqNgsildData(siteRequest_, o);
     case "color":
       return MapModel.staticSearchFqColor(siteRequest_, o);
+    case "altitude":
+      return MapModel.staticSearchFqAltitude(siteRequest_, o);
+    case "pitch":
+      return MapModel.staticSearchFqPitch(siteRequest_, o);
+    case "yaw":
+      return MapModel.staticSearchFqYaw(siteRequest_, o);
+    case "roll":
+      return MapModel.staticSearchFqRoll(siteRequest_, o);
+    case "rotation":
+      return MapModel.staticSearchFqRotation(siteRequest_, o);
       default:
         return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
     }
@@ -1291,6 +1770,38 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         }
         saves.add("color");
         return val;
+      } else if("altitude".equals(varLower)) {
+        if(val instanceof Quantity) {
+          setAltitude((Quantity<Length>)val);
+        } else {
+          setAltitude(val == null ? null : val.toString());
+        }
+        saves.add("altitude");
+        return val;
+      } else if("pitch".equals(varLower)) {
+        if(val instanceof Quantity) {
+          setPitch((Quantity<Angle>)val);
+        } else {
+          setPitch(val == null ? null : val.toString());
+        }
+        saves.add("pitch");
+        return val;
+      } else if("yaw".equals(varLower)) {
+        if(val instanceof Quantity) {
+          setYaw((Quantity<Angle>)val);
+        } else {
+          setYaw(val == null ? null : val.toString());
+        }
+        saves.add("yaw");
+        return val;
+      } else if("roll".equals(varLower)) {
+        if(val instanceof Quantity) {
+          setRoll((Quantity<Angle>)val);
+        } else {
+          setRoll(val == null ? null : val.toString());
+        }
+        saves.add("roll");
+        return val;
     } else {
       return super.persistBaseModel(var, val);
     }
@@ -1367,6 +1878,39 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         if(color != null)
           oMapModel.setColor(color);
       }
+
+      if(saves.contains("altitude")) {
+        String altitude = (String)doc.get("altitude_docvalues_string");
+        if(altitude != null)
+          oMapModel.setAltitude(altitude);
+      }
+
+      if(saves.contains("pitch")) {
+        String pitch = (String)doc.get("pitch_docvalues_string");
+        if(pitch != null)
+          oMapModel.setPitch(pitch);
+      }
+
+      if(saves.contains("yaw")) {
+        String yaw = (String)doc.get("yaw_docvalues_string");
+        if(yaw != null)
+          oMapModel.setYaw(yaw);
+      }
+
+      if(saves.contains("roll")) {
+        String roll = (String)doc.get("roll_docvalues_string");
+        if(roll != null)
+          oMapModel.setRoll(roll);
+      }
+
+      if(saves.contains("rotation")) {
+        List<Double> rotation = (List<Double>)doc.get("rotation_docvalues_doubles");
+        if(rotation != null) {
+          rotation.stream().forEach( v -> {
+            oMapModel.rotation.add(v);
+          });
+        }
+      }
     }
 
     super.populateBaseModel(doc);
@@ -1403,6 +1947,25 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     if(color != null) {
       doc.put("color_docvalues_string", color);
     }
+    if(altitude != null) {
+      doc.put("altitude_docvalues_string", altitude.toString());
+    }
+    if(pitch != null) {
+      doc.put("pitch_docvalues_string", pitch.toString());
+    }
+    if(yaw != null) {
+      doc.put("yaw_docvalues_string", yaw.toString());
+    }
+    if(roll != null) {
+      doc.put("roll_docvalues_string", roll.toString());
+    }
+    if(rotation != null) {
+      JsonArray l = new JsonArray();
+      doc.put("rotation_docvalues_doubles", l);
+      for(Double o : rotation) {
+        l.add(MapModel.staticSearchRotation(siteRequest_, o));
+      }
+    }
     super.indexBaseModel(doc);
 
 	}
@@ -1429,6 +1992,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "ngsildData_docvalues_string";
       case "color":
         return "color_docvalues_string";
+      case "altitude":
+        return "altitude_docvalues_string";
+      case "pitch":
+        return "pitch_docvalues_string";
+      case "yaw":
+        return "yaw_docvalues_string";
+      case "roll":
+        return "roll_docvalues_string";
+      case "rotation":
+        return "rotation_docvalues_doubles";
       default:
         return BaseModel.varStoredBaseModel(entityVar);
     }
@@ -1456,6 +2029,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "ngsildData_docvalues_string";
       case "color":
         return "color_docvalues_string";
+      case "altitude":
+        return "altitude_docvalues_string";
+      case "pitch":
+        return "pitch_docvalues_string";
+      case "yaw":
+        return "yaw_docvalues_string";
+      case "roll":
+        return "roll_docvalues_string";
+      case "rotation":
+        return "rotation_docvalues_doubles";
       default:
         return BaseModel.varIndexedBaseModel(entityVar);
     }
@@ -1483,6 +2066,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "ngsildData";
       case "color_docvalues_string":
         return "color";
+      case "altitude_docvalues_string":
+        return "altitude";
+      case "pitch_docvalues_string":
+        return "pitch";
+      case "yaw_docvalues_string":
+        return "yaw";
+      case "roll_docvalues_string":
+        return "roll";
+      case "rotation_docvalues_doubles":
+        return "rotation";
       default:
         return BaseModel.searchVarBaseModel(searchVar);
     }
@@ -1523,6 +2116,13 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     oMapModel.setNgsildContext(Optional.ofNullable(doc.get("ngsildContext_docvalues_string")).map(v -> v.toString()).orElse(null));
     oMapModel.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
     oMapModel.setColor(Optional.ofNullable(doc.get("color_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oMapModel.setAltitude(Optional.ofNullable(doc.get("altitude_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oMapModel.setPitch(Optional.ofNullable(doc.get("pitch_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oMapModel.setYaw(Optional.ofNullable(doc.get("yaw_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oMapModel.setRoll(Optional.ofNullable(doc.get("roll_docvalues_string")).map(v -> v.toString()).orElse(null));
+    Optional.ofNullable((List<?>)doc.get("rotation_docvalues_doubles")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
+      oMapModel.addRotation(MapModel.staticSetRotation(siteRequest, v.toString()));
+    });
 
     super.storeBaseModel(doc);
   }
@@ -1556,6 +2156,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         apiRequest.addVars("ngsildData");
       if(!Objects.equals(color, original.getColor()))
         apiRequest.addVars("color");
+      if(!Objects.equals(altitude, original.getAltitude()))
+        apiRequest.addVars("altitude");
+      if(!Objects.equals(pitch, original.getPitch()))
+        apiRequest.addVars("pitch");
+      if(!Objects.equals(yaw, original.getYaw()))
+        apiRequest.addVars("yaw");
+      if(!Objects.equals(roll, original.getRoll()))
+        apiRequest.addVars("roll");
+      if(!Objects.equals(rotation, original.getRotation()))
+        apiRequest.addVars("rotation");
       super.apiRequestBaseModel();
     }
   }
@@ -1577,6 +2187,11 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     sb.append(Optional.ofNullable(ngsildContext).map(v -> "ngsildContext: \"" + v + "\"\n" ).orElse(""));
     sb.append(Optional.ofNullable(ngsildData).map(v -> "ngsildData: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(color).map(v -> "color: \"" + v + "\"\n" ).orElse(""));
+    sb.append(Optional.ofNullable(altitude).map(v -> "altitude: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(pitch).map(v -> "pitch: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(yaw).map(v -> "yaw: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(roll).map(v -> "roll: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(rotation).map(v -> "rotation: " + v + "\n").orElse(""));
     return sb.toString();
   }
 
@@ -1607,6 +2222,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
   public static final String SET_ngsildData = "setNgsildData";
   public static final String VAR_color = "color";
   public static final String SET_color = "setColor";
+  public static final String VAR_altitude = "altitude";
+  public static final String SET_altitude = "setAltitude";
+  public static final String VAR_pitch = "pitch";
+  public static final String SET_pitch = "setPitch";
+  public static final String VAR_yaw = "yaw";
+  public static final String SET_yaw = "setYaw";
+  public static final String VAR_roll = "roll";
+  public static final String SET_roll = "setRoll";
+  public static final String VAR_rotation = "rotation";
+  public static final String SET_rotation = "setRotation";
 
   public static List<String> varsQForClass() {
     return MapModel.varsQMapModel(new ArrayList<String>());
@@ -1630,6 +2255,10 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     vars.add(VAR_ngsildContext);
     vars.add(VAR_ngsildData);
     vars.add(VAR_color);
+    vars.add(VAR_altitude);
+    vars.add(VAR_pitch);
+    vars.add(VAR_yaw);
+    vars.add(VAR_roll);
     BaseModel.varsFqBaseModel(vars);
     return vars;
   }
@@ -1654,6 +2283,11 @@ public abstract class MapModelGen<DEV> extends BaseModel {
   public static final String DISPLAY_NAME_ngsildContext = "NGSILD context";
   public static final String DISPLAY_NAME_ngsildData = "NGSILD data";
   public static final String DISPLAY_NAME_color = "color";
+  public static final String DISPLAY_NAME_altitude = "altitude";
+  public static final String DISPLAY_NAME_pitch = "pitch";
+  public static final String DISPLAY_NAME_yaw = "yaw";
+  public static final String DISPLAY_NAME_roll = "roll";
+  public static final String DISPLAY_NAME_rotation = "yaw";
 
   @Override
   public String idForClass() {
@@ -1680,7 +2314,7 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     return description;
   }
 
-  public static String varJsonForClass(String var, Boolean patch) {
+  public static String varJson(String var, Boolean patch) {
     return MapModel.varJsonMapModel(var, patch);
   }
   public static String varJsonMapModel(String var, Boolean patch) {
@@ -1705,6 +2339,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return patch ? SET_ngsildData : VAR_ngsildData;
     case VAR_color:
       return patch ? SET_color : VAR_color;
+    case VAR_altitude:
+      return patch ? SET_altitude : VAR_altitude;
+    case VAR_pitch:
+      return patch ? SET_pitch : VAR_pitch;
+    case VAR_yaw:
+      return patch ? SET_yaw : VAR_yaw;
+    case VAR_roll:
+      return patch ? SET_roll : VAR_roll;
+    case VAR_rotation:
+      return patch ? SET_rotation : VAR_rotation;
     default:
       return BaseModel.varJsonBaseModel(var, patch);
     }
@@ -1735,6 +2379,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return DISPLAY_NAME_ngsildData;
     case VAR_color:
       return DISPLAY_NAME_color;
+    case VAR_altitude:
+      return DISPLAY_NAME_altitude;
+    case VAR_pitch:
+      return DISPLAY_NAME_pitch;
+    case VAR_yaw:
+      return DISPLAY_NAME_yaw;
+    case VAR_roll:
+      return DISPLAY_NAME_roll;
+    case VAR_rotation:
+      return DISPLAY_NAME_rotation;
     default:
       return BaseModel.displayNameBaseModel(var);
     }
@@ -1764,6 +2418,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return "The NGSILD data with @context from the context broker";
     case VAR_color:
       return "The color of the map item";
+    case VAR_altitude:
+      return "The altitude of the model. ";
+    case VAR_pitch:
+      return "Rotation around the side-to-side (lateral) axis (e.g., tilting the nose up or down). ";
+    case VAR_yaw:
+      return "Rotation around the vertical axis (e.g., turning the nose left or right). ";
+    case VAR_roll:
+      return "Rotation around the front-to-back (longitudinal) axis (e.g., tilting wings left or right). ";
+    case VAR_rotation:
+      return "Rotation around the vertical axis (e.g., turning the nose left or right). ";
       default:
         return BaseModel.descriptionBaseModel(var);
     }
@@ -1791,6 +2455,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return "JsonObject";
     case VAR_color:
       return "String";
+    case VAR_altitude:
+      return "Quantity";
+    case VAR_pitch:
+      return "Quantity";
+    case VAR_yaw:
+      return "Quantity";
+    case VAR_roll:
+      return "Quantity";
+    case VAR_rotation:
+      return "List";
       default:
         return BaseModel.classSimpleNameBaseModel(var);
     }
@@ -1817,6 +2491,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     case VAR_ngsildData:
       return "Property";
     case VAR_color:
+      return "Property";
+    case VAR_altitude:
+      return "Property";
+    case VAR_pitch:
+      return "Property";
+    case VAR_yaw:
+      return "Property";
+    case VAR_roll:
+      return "Property";
+    case VAR_rotation:
       return "Property";
       default:
         return null;
@@ -1845,6 +2529,16 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return o.getNgsildData();
     case VAR_color:
       return o.getColor();
+    case VAR_altitude:
+      return o.getAltitude();
+    case VAR_pitch:
+      return o.getPitch();
+    case VAR_yaw:
+      return o.getYaw();
+    case VAR_roll:
+      return o.getRoll();
+    case VAR_rotation:
+      return o.getRotation();
       default:
         return null;
     }
@@ -1881,6 +2575,14 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return 5;
     case VAR_color:
       return 4;
+    case VAR_altitude:
+      return 6;
+    case VAR_pitch:
+      return 6;
+    case VAR_yaw:
+      return 6;
+    case VAR_roll:
+      return 6;
       default:
         return BaseModel.htmRowBaseModel(var);
     }
@@ -1905,6 +2607,14 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     case VAR_ngsildData:
       return 4;
     case VAR_color:
+      return 3;
+    case VAR_altitude:
+      return 0;
+    case VAR_pitch:
+      return 1;
+    case VAR_yaw:
+      return 2;
+    case VAR_roll:
       return 3;
       default:
         return BaseModel.htmCellBaseModel(var);

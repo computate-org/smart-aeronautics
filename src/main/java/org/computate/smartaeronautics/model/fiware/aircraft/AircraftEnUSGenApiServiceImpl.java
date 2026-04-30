@@ -825,14 +825,6 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               }));
             });
             break;
-          case "setLocation":
-              o2.setLocation(jsonObject.getJsonObject(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Aircraft.VAR_location + "=$" + num);
-              num++;
-              bParams.add(o2.sqlLocation());
-            break;
           case "setCreated":
               o2.setCreated(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
@@ -840,6 +832,14 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               bSql.append(Aircraft.VAR_created + "=$" + num);
               num++;
               bParams.add(o2.sqlCreated());
+            break;
+          case "setLocation":
+              o2.setLocation(jsonObject.getJsonObject(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_location + "=$" + num);
+              num++;
+              bParams.add(o2.sqlLocation());
             break;
           case "setDepartureDate":
               o2.setDepartureDate(jsonObject.getString(entityVar));
@@ -865,14 +865,6 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               num++;
               bParams.add(o2.sqlArrivalDate());
             break;
-          case "setEntityShortId":
-              o2.setEntityShortId(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Aircraft.VAR_entityShortId + "=$" + num);
-              num++;
-              bParams.add(o2.sqlEntityShortId());
-            break;
           case "setArchived":
               o2.setArchived(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
@@ -880,6 +872,14 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               bSql.append(Aircraft.VAR_archived + "=$" + num);
               num++;
               bParams.add(o2.sqlArchived());
+            break;
+          case "setEntityShortId":
+              o2.setEntityShortId(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_entityShortId + "=$" + num);
+              num++;
+              bParams.add(o2.sqlEntityShortId());
             break;
           case "setAvgSpeedInMph":
               o2.setAvgSpeedInMph(jsonObject.getString(entityVar));
@@ -937,14 +937,6 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               num++;
               bParams.add(o2.sqlBelongsToAircraftModel());
             break;
-          case "setNgsildData":
-              o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Aircraft.VAR_ngsildData + "=$" + num);
-              num++;
-              bParams.add(o2.sqlNgsildData());
-            break;
           case "setSessionId":
               o2.setSessionId(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
@@ -952,6 +944,14 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               bSql.append(Aircraft.VAR_sessionId + "=$" + num);
               num++;
               bParams.add(o2.sqlSessionId());
+            break;
+          case "setNgsildData":
+              o2.setNgsildData(jsonObject.getJsonObject(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_ngsildData + "=$" + num);
+              num++;
+              bParams.add(o2.sqlNgsildData());
             break;
           case "setDataProvider":
               o2.setDataProvider(jsonObject.getString(entityVar));
@@ -961,14 +961,6 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               num++;
               bParams.add(o2.sqlDataProvider());
             break;
-          case "setColor":
-              o2.setColor(jsonObject.getString(entityVar));
-              if(bParams.size() > 0)
-                bSql.append(", ");
-              bSql.append(Aircraft.VAR_color + "=$" + num);
-              num++;
-              bParams.add(o2.sqlColor());
-            break;
           case "setUserKey":
               o2.setUserKey(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
@@ -976,6 +968,14 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               bSql.append(Aircraft.VAR_userKey + "=$" + num);
               num++;
               bParams.add(o2.sqlUserKey());
+            break;
+          case "setColor":
+              o2.setColor(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_color + "=$" + num);
+              num++;
+              bParams.add(o2.sqlColor());
             break;
           case "setDateCreated":
               o2.setDateCreated(jsonObject.getString(entityVar));
@@ -993,6 +993,14 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               num++;
               bParams.add(o2.sqlDateIssued());
             break;
+          case "setAltitude":
+              o2.setAltitude(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_altitude + "=$" + num);
+              num++;
+              bParams.add(o2.sqlAltitude());
+            break;
           case "setDateModified":
               o2.setDateModified(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
@@ -1008,6 +1016,14 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               bSql.append(Aircraft.VAR_objectTitle + "=$" + num);
               num++;
               bParams.add(o2.sqlObjectTitle());
+            break;
+          case "setPitch":
+              o2.setPitch(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_pitch + "=$" + num);
+              num++;
+              bParams.add(o2.sqlPitch());
             break;
           case "setHeading":
               o2.setHeading(jsonObject.getString(entityVar));
@@ -1025,6 +1041,14 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               num++;
               bParams.add(o2.sqlDisplayPage());
             break;
+          case "setYaw":
+              o2.setYaw(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_yaw + "=$" + num);
+              num++;
+              bParams.add(o2.sqlYaw());
+            break;
           case "setIsOnGround":
               o2.setIsOnGround(jsonObject.getString(entityVar));
               if(bParams.size() > 0)
@@ -1040,6 +1064,14 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               bSql.append(Aircraft.VAR_editPage + "=$" + num);
               num++;
               bParams.add(o2.sqlEditPage());
+            break;
+          case "setRoll":
+              o2.setRoll(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Aircraft.VAR_roll + "=$" + num);
+              num++;
+              bParams.add(o2.sqlRoll());
             break;
           case "setOwner":
               o2.setOwner(jsonObject.getJsonObject(entityVar));
@@ -1538,15 +1570,6 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               }));
             });
             break;
-          case Aircraft.VAR_location:
-            o2.setLocation(jsonObject.getJsonObject(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Aircraft.VAR_location + "=$" + num);
-            num++;
-            bParams.add(o2.sqlLocation());
-            break;
           case Aircraft.VAR_created:
             o2.setCreated(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
@@ -1555,6 +1578,15 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             bSql.append(Aircraft.VAR_created + "=$" + num);
             num++;
             bParams.add(o2.sqlCreated());
+            break;
+          case Aircraft.VAR_location:
+            o2.setLocation(jsonObject.getJsonObject(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_location + "=$" + num);
+            num++;
+            bParams.add(o2.sqlLocation());
             break;
           case Aircraft.VAR_departureDate:
             o2.setDepartureDate(jsonObject.getString(entityVar));
@@ -1583,15 +1615,6 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             num++;
             bParams.add(o2.sqlArrivalDate());
             break;
-          case Aircraft.VAR_entityShortId:
-            o2.setEntityShortId(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Aircraft.VAR_entityShortId + "=$" + num);
-            num++;
-            bParams.add(o2.sqlEntityShortId());
-            break;
           case Aircraft.VAR_archived:
             o2.setArchived(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
@@ -1600,6 +1623,15 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             bSql.append(Aircraft.VAR_archived + "=$" + num);
             num++;
             bParams.add(o2.sqlArchived());
+            break;
+          case Aircraft.VAR_entityShortId:
+            o2.setEntityShortId(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_entityShortId + "=$" + num);
+            num++;
+            bParams.add(o2.sqlEntityShortId());
             break;
           case Aircraft.VAR_avgSpeedInMph:
             o2.setAvgSpeedInMph(jsonObject.getString(entityVar));
@@ -1664,15 +1696,6 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             num++;
             bParams.add(o2.sqlBelongsToAircraftModel());
             break;
-          case Aircraft.VAR_ngsildData:
-            o2.setNgsildData(jsonObject.getJsonObject(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Aircraft.VAR_ngsildData + "=$" + num);
-            num++;
-            bParams.add(o2.sqlNgsildData());
-            break;
           case Aircraft.VAR_sessionId:
             o2.setSessionId(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
@@ -1681,6 +1704,15 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             bSql.append(Aircraft.VAR_sessionId + "=$" + num);
             num++;
             bParams.add(o2.sqlSessionId());
+            break;
+          case Aircraft.VAR_ngsildData:
+            o2.setNgsildData(jsonObject.getJsonObject(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_ngsildData + "=$" + num);
+            num++;
+            bParams.add(o2.sqlNgsildData());
             break;
           case Aircraft.VAR_dataProvider:
             o2.setDataProvider(jsonObject.getString(entityVar));
@@ -1691,15 +1723,6 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             num++;
             bParams.add(o2.sqlDataProvider());
             break;
-          case Aircraft.VAR_color:
-            o2.setColor(jsonObject.getString(entityVar));
-            if(bParams.size() > 0) {
-              bSql.append(", ");
-            }
-            bSql.append(Aircraft.VAR_color + "=$" + num);
-            num++;
-            bParams.add(o2.sqlColor());
-            break;
           case Aircraft.VAR_userKey:
             o2.setUserKey(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
@@ -1708,6 +1731,15 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             bSql.append(Aircraft.VAR_userKey + "=$" + num);
             num++;
             bParams.add(o2.sqlUserKey());
+            break;
+          case Aircraft.VAR_color:
+            o2.setColor(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_color + "=$" + num);
+            num++;
+            bParams.add(o2.sqlColor());
             break;
           case Aircraft.VAR_dateCreated:
             o2.setDateCreated(jsonObject.getString(entityVar));
@@ -1727,6 +1759,15 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             num++;
             bParams.add(o2.sqlDateIssued());
             break;
+          case Aircraft.VAR_altitude:
+            o2.setAltitude(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_altitude + "=$" + num);
+            num++;
+            bParams.add(o2.sqlAltitude());
+            break;
           case Aircraft.VAR_dateModified:
             o2.setDateModified(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
@@ -1744,6 +1785,15 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             bSql.append(Aircraft.VAR_objectTitle + "=$" + num);
             num++;
             bParams.add(o2.sqlObjectTitle());
+            break;
+          case Aircraft.VAR_pitch:
+            o2.setPitch(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_pitch + "=$" + num);
+            num++;
+            bParams.add(o2.sqlPitch());
             break;
           case Aircraft.VAR_heading:
             o2.setHeading(jsonObject.getString(entityVar));
@@ -1763,6 +1813,15 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             num++;
             bParams.add(o2.sqlDisplayPage());
             break;
+          case Aircraft.VAR_yaw:
+            o2.setYaw(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_yaw + "=$" + num);
+            num++;
+            bParams.add(o2.sqlYaw());
+            break;
           case Aircraft.VAR_isOnGround:
             o2.setIsOnGround(jsonObject.getString(entityVar));
             if(bParams.size() > 0) {
@@ -1780,6 +1839,15 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             bSql.append(Aircraft.VAR_editPage + "=$" + num);
             num++;
             bParams.add(o2.sqlEditPage());
+            break;
+          case Aircraft.VAR_roll:
+            o2.setRoll(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Aircraft.VAR_roll + "=$" + num);
+            num++;
+            bParams.add(o2.sqlRoll());
             break;
           case Aircraft.VAR_owner:
             o2.setOwner(jsonObject.getJsonObject(entityVar));
@@ -3910,7 +3978,7 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
       SiteRequest siteRequest = o.getSiteRequest_();
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Long pk = o.getPk();
-      sqlConnection.preparedQuery("SELECT name, timeZone, description, airportId, location, created, departureDate, id, arrivalDate, entityShortId, archived, avgSpeedInMph, ngsildTenant, address, ngsildPath, alternateName, ngsildContext, belongsToAircraftModel, ngsildData, sessionId, dataProvider, color, userKey, dateCreated, dateIssued, dateModified, objectTitle, heading, displayPage, isOnGround, editPage, owner, userPage, registration, download, seeAlso, source, speed, verticalSpeed, path, simulation, simulationDelayMillis FROM Aircraft WHERE pk=$1")
+      sqlConnection.preparedQuery("SELECT name, timeZone, description, airportId, created, location, departureDate, id, arrivalDate, archived, entityShortId, avgSpeedInMph, ngsildTenant, address, ngsildPath, alternateName, ngsildContext, belongsToAircraftModel, sessionId, ngsildData, dataProvider, userKey, color, dateCreated, dateIssued, altitude, dateModified, objectTitle, pitch, heading, displayPage, yaw, isOnGround, editPage, roll, owner, userPage, registration, download, seeAlso, source, speed, verticalSpeed, path, simulation, simulationDelayMillis FROM Aircraft WHERE pk=$1")
           .collecting(Collectors.toList())
           .execute(Tuple.of(pk)
           ).onSuccess(result -> {
@@ -4367,13 +4435,13 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
       o.persistForClass(Aircraft.VAR_timeZone, Aircraft.staticSetTimeZone(siteRequest2, (String)result.get(Aircraft.VAR_timeZone)));
       o.persistForClass(Aircraft.VAR_description, Aircraft.staticSetDescription(siteRequest2, (String)result.get(Aircraft.VAR_description)));
       o.persistForClass(Aircraft.VAR_airportId, Aircraft.staticSetAirportId(siteRequest2, (String)result.get(Aircraft.VAR_airportId)));
-      o.persistForClass(Aircraft.VAR_location, Aircraft.staticSetLocation(siteRequest2, (String)result.get(Aircraft.VAR_location)));
       o.persistForClass(Aircraft.VAR_created, Aircraft.staticSetCreated(siteRequest2, (String)result.get(Aircraft.VAR_created), Optional.ofNullable(o.getTimeZone()).map(v -> ZoneId.of(v)).orElse(Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC")))));
+      o.persistForClass(Aircraft.VAR_location, Aircraft.staticSetLocation(siteRequest2, (String)result.get(Aircraft.VAR_location)));
       o.persistForClass(Aircraft.VAR_departureDate, Aircraft.staticSetDepartureDate(siteRequest2, (String)result.get(Aircraft.VAR_departureDate), Optional.ofNullable(o.getTimeZone()).map(v -> ZoneId.of(v)).orElse(Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC")))));
       o.persistForClass(Aircraft.VAR_id, Aircraft.staticSetId(siteRequest2, (String)result.get(Aircraft.VAR_id)));
       o.persistForClass(Aircraft.VAR_arrivalDate, Aircraft.staticSetArrivalDate(siteRequest2, (String)result.get(Aircraft.VAR_arrivalDate), Optional.ofNullable(o.getTimeZone()).map(v -> ZoneId.of(v)).orElse(Optional.ofNullable(siteRequest).map(r -> r.getConfig()).map(config -> config.getString(ConfigKeys.SITE_ZONE)).map(z -> ZoneId.of(z)).orElse(ZoneId.of("UTC")))));
-      o.persistForClass(Aircraft.VAR_entityShortId, Aircraft.staticSetEntityShortId(siteRequest2, (String)result.get(Aircraft.VAR_entityShortId)));
       o.persistForClass(Aircraft.VAR_archived, Aircraft.staticSetArchived(siteRequest2, (String)result.get(Aircraft.VAR_archived)));
+      o.persistForClass(Aircraft.VAR_entityShortId, Aircraft.staticSetEntityShortId(siteRequest2, (String)result.get(Aircraft.VAR_entityShortId)));
       o.persistForClass(Aircraft.VAR_avgSpeedInMph, Aircraft.staticSetAvgSpeedInMph(siteRequest2, (String)result.get(Aircraft.VAR_avgSpeedInMph)));
       o.persistForClass(Aircraft.VAR_ngsildTenant, Aircraft.staticSetNgsildTenant(siteRequest2, (String)result.get(Aircraft.VAR_ngsildTenant)));
       o.persistForClass(Aircraft.VAR_address, Aircraft.staticSetAddress(siteRequest2, (String)result.get(Aircraft.VAR_address)));
@@ -4381,19 +4449,23 @@ public class AircraftEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
       o.persistForClass(Aircraft.VAR_alternateName, Aircraft.staticSetAlternateName(siteRequest2, (String)result.get(Aircraft.VAR_alternateName)));
       o.persistForClass(Aircraft.VAR_ngsildContext, Aircraft.staticSetNgsildContext(siteRequest2, (String)result.get(Aircraft.VAR_ngsildContext)));
       o.persistForClass(Aircraft.VAR_belongsToAircraftModel, Aircraft.staticSetBelongsToAircraftModel(siteRequest2, (String)result.get(Aircraft.VAR_belongsToAircraftModel)));
-      o.persistForClass(Aircraft.VAR_ngsildData, Aircraft.staticSetNgsildData(siteRequest2, (String)result.get(Aircraft.VAR_ngsildData)));
       o.persistForClass(Aircraft.VAR_sessionId, Aircraft.staticSetSessionId(siteRequest2, (String)result.get(Aircraft.VAR_sessionId)));
+      o.persistForClass(Aircraft.VAR_ngsildData, Aircraft.staticSetNgsildData(siteRequest2, (String)result.get(Aircraft.VAR_ngsildData)));
       o.persistForClass(Aircraft.VAR_dataProvider, Aircraft.staticSetDataProvider(siteRequest2, (String)result.get(Aircraft.VAR_dataProvider)));
-      o.persistForClass(Aircraft.VAR_color, Aircraft.staticSetColor(siteRequest2, (String)result.get(Aircraft.VAR_color)));
       o.persistForClass(Aircraft.VAR_userKey, Aircraft.staticSetUserKey(siteRequest2, (String)result.get(Aircraft.VAR_userKey)));
+      o.persistForClass(Aircraft.VAR_color, Aircraft.staticSetColor(siteRequest2, (String)result.get(Aircraft.VAR_color)));
       o.persistForClass(Aircraft.VAR_dateCreated, Aircraft.staticSetDateCreated(siteRequest2, (String)result.get(Aircraft.VAR_dateCreated)));
       o.persistForClass(Aircraft.VAR_dateIssued, Aircraft.staticSetDateIssued(siteRequest2, (String)result.get(Aircraft.VAR_dateIssued)));
+      o.persistForClass(Aircraft.VAR_altitude, Aircraft.staticSetAltitude(siteRequest2, (String)result.get(Aircraft.VAR_altitude)));
       o.persistForClass(Aircraft.VAR_dateModified, Aircraft.staticSetDateModified(siteRequest2, (String)result.get(Aircraft.VAR_dateModified)));
       o.persistForClass(Aircraft.VAR_objectTitle, Aircraft.staticSetObjectTitle(siteRequest2, (String)result.get(Aircraft.VAR_objectTitle)));
+      o.persistForClass(Aircraft.VAR_pitch, Aircraft.staticSetPitch(siteRequest2, (String)result.get(Aircraft.VAR_pitch)));
       o.persistForClass(Aircraft.VAR_heading, Aircraft.staticSetHeading(siteRequest2, (String)result.get(Aircraft.VAR_heading)));
       o.persistForClass(Aircraft.VAR_displayPage, Aircraft.staticSetDisplayPage(siteRequest2, (String)result.get(Aircraft.VAR_displayPage)));
+      o.persistForClass(Aircraft.VAR_yaw, Aircraft.staticSetYaw(siteRequest2, (String)result.get(Aircraft.VAR_yaw)));
       o.persistForClass(Aircraft.VAR_isOnGround, Aircraft.staticSetIsOnGround(siteRequest2, (String)result.get(Aircraft.VAR_isOnGround)));
       o.persistForClass(Aircraft.VAR_editPage, Aircraft.staticSetEditPage(siteRequest2, (String)result.get(Aircraft.VAR_editPage)));
+      o.persistForClass(Aircraft.VAR_roll, Aircraft.staticSetRoll(siteRequest2, (String)result.get(Aircraft.VAR_roll)));
       o.persistForClass(Aircraft.VAR_owner, Aircraft.staticSetOwner(siteRequest2, (String)result.get(Aircraft.VAR_owner)));
       o.persistForClass(Aircraft.VAR_userPage, Aircraft.staticSetUserPage(siteRequest2, (String)result.get(Aircraft.VAR_userPage)));
       o.persistForClass(Aircraft.VAR_registration, Aircraft.staticSetRegistration(siteRequest2, (String)result.get(Aircraft.VAR_registration)));

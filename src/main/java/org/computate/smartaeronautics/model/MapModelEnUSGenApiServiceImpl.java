@@ -924,7 +924,7 @@ public class MapModelEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
       SiteRequest siteRequest = o.getSiteRequest_();
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Long pk = o.getPk();
-      sqlConnection.preparedQuery("SELECT name, description, created, location, id, archived, entityShortId, ngsildTenant, ngsildPath, ngsildContext, sessionId, ngsildData, userKey, color, objectTitle, displayPage, editPage, userPage, download FROM MapModel WHERE pk=$1")
+      sqlConnection.preparedQuery("SELECT name, description, created, location, id, archived, entityShortId, ngsildTenant, ngsildPath, ngsildContext, sessionId, ngsildData, userKey, color, altitude, objectTitle, pitch, displayPage, yaw, editPage, roll, userPage, download FROM MapModel WHERE pk=$1")
           .collecting(Collectors.toList())
           .execute(Tuple.of(pk)
           ).onSuccess(result -> {
@@ -1231,9 +1231,13 @@ public class MapModelEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
       o.persistForClass(MapModel.VAR_ngsildData, MapModel.staticSetNgsildData(siteRequest2, (String)result.get(MapModel.VAR_ngsildData)));
       o.persistForClass(MapModel.VAR_userKey, MapModel.staticSetUserKey(siteRequest2, (String)result.get(MapModel.VAR_userKey)));
       o.persistForClass(MapModel.VAR_color, MapModel.staticSetColor(siteRequest2, (String)result.get(MapModel.VAR_color)));
+      o.persistForClass(MapModel.VAR_altitude, MapModel.staticSetAltitude(siteRequest2, (String)result.get(MapModel.VAR_altitude)));
       o.persistForClass(MapModel.VAR_objectTitle, MapModel.staticSetObjectTitle(siteRequest2, (String)result.get(MapModel.VAR_objectTitle)));
+      o.persistForClass(MapModel.VAR_pitch, MapModel.staticSetPitch(siteRequest2, (String)result.get(MapModel.VAR_pitch)));
       o.persistForClass(MapModel.VAR_displayPage, MapModel.staticSetDisplayPage(siteRequest2, (String)result.get(MapModel.VAR_displayPage)));
+      o.persistForClass(MapModel.VAR_yaw, MapModel.staticSetYaw(siteRequest2, (String)result.get(MapModel.VAR_yaw)));
       o.persistForClass(MapModel.VAR_editPage, MapModel.staticSetEditPage(siteRequest2, (String)result.get(MapModel.VAR_editPage)));
+      o.persistForClass(MapModel.VAR_roll, MapModel.staticSetRoll(siteRequest2, (String)result.get(MapModel.VAR_roll)));
       o.persistForClass(MapModel.VAR_userPage, MapModel.staticSetUserPage(siteRequest2, (String)result.get(MapModel.VAR_userPage)));
       o.persistForClass(MapModel.VAR_download, MapModel.staticSetDownload(siteRequest2, (String)result.get(MapModel.VAR_download)));
 

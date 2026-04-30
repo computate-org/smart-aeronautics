@@ -108,6 +108,8 @@
     <snakeyaml.version>2.6</snakeyaml.version>
     <opentelemetry.version>1.18.0</opentelemetry.version>
     <geotools.version>34.0</geotools.version>
+    <indriya.version>2.2.3</indriya.version>
+    <systems-common.version>2.2</systems-common.version>
 
     <computate.version>4.5.24.1</computate.version>
   </properties>
@@ -401,6 +403,16 @@
       <groupId>org.geotools</groupId>
       <artifactId>gt-geojson</artifactId>
       <version>${geotools.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>tech.units</groupId>
+      <artifactId>indriya</artifactId>
+      <version>${indriya.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-common</artifactId>
+      <version>${systems-common.version}</version>
     </dependency>
 
     <!-- ############ -->
