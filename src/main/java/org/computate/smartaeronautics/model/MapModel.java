@@ -246,6 +246,17 @@ public class MapModel extends MapModelGen<BaseModel> {
   /**
    * {@inheritDoc}
    * DocValues: true
+   * Facet: true
+   * AltitudeMeters: true
+   **/
+  protected void _altitudeMeters(Wrap<Double> w) {
+    if(altitude != null)
+      w.o(altitude.to(Units.METRE).getValue().doubleValue());
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
    * Persist: true
    * DisplayName.enUS: pitch
    * Description.enUS: Rotation around the side-to-side (lateral) axis (e.g., tilting the nose up or down). 
@@ -255,7 +266,7 @@ public class MapModel extends MapModelGen<BaseModel> {
    * Pitch: true
    **/
   protected void _pitch(Wrap<Quantity<Angle>> w) {
-    w.o(Quantities.getQuantity(BigDecimal.ZERO, Units.RADIAN));
+    w.o(Quantities.getQuantity(Math.PI / 2, Units.RADIAN));
   }
 
   /**
@@ -285,7 +296,7 @@ public class MapModel extends MapModelGen<BaseModel> {
    * Roll: true
    **/
   protected void _roll(Wrap<Quantity<Angle>> w) {
-    w.o(Quantities.getQuantity(Math.PI * 2, Units.RADIAN));
+    w.o(Quantities.getQuantity(BigDecimal.ZERO, Units.RADIAN));
   }
 
   /**
@@ -299,5 +310,19 @@ public class MapModel extends MapModelGen<BaseModel> {
     l.add(pitch.to(Units.RADIAN).getValue().doubleValue());
     l.add(yaw.to(Units.RADIAN).getValue().doubleValue());
     l.add(roll.to(Units.RADIAN).getValue().doubleValue());
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName.enUS: GLTF path
+   * Description.enUS: The path within the static content where the 3D GLTF file for this model is found. 
+   * HtmRow: 6
+   * HtmCell: 4
+   * Facet: true
+   * GLTF: true
+   **/
+  protected void _gltfPath(Wrap<String> w) {
   }
 }

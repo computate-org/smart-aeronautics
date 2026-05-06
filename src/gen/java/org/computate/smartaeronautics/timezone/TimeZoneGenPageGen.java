@@ -1,5 +1,50 @@
 package org.computate.smartaeronautics.timezone;
 
+import org.computate.smartaeronautics.timezone.TimeZone;
+import java.lang.String;
+import org.computate.smartaeronautics.page.PageLayout;
+import org.computate.smartaeronautics.request.SiteRequest;
+import org.computate.smartaeronautics.user.SiteUser;
+import java.io.IOException;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
+import org.computate.vertx.search.list.SearchList;
+import org.computate.search.wrap.Wrap;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Locale;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.api.service.ServiceRequest;
+import io.vertx.core.json.JsonArray;
+import java.net.URLDecoder;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
+import java.util.Map;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.math.MathContext;
+import java.util.Objects;
+import io.vertx.core.Promise;
+import org.computate.smartaeronautics.config.ConfigKeys;
+import org.computate.search.response.solr.SolrResponse;
+import java.util.HashMap;
+import org.computate.search.tool.TimeTool;
+import org.computate.search.tool.SearchTool;
+import java.time.ZoneId;
+import io.vertx.pgclient.data.Point;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.computate.smartaeronautics.request.SiteRequest;
 import org.computate.smartaeronautics.page.PageLayout;
 import org.computate.smartaeronautics.model.BaseModel;
@@ -24,6 +69,7 @@ import org.computate.search.serialize.ComputateZonedDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.computate.search.serialize.ComputateBigDecimalDeserializer;
 import java.math.MathContext;
 import org.apache.commons.lang3.math.NumberUtils;
 import java.text.NumberFormat;
@@ -488,7 +534,8 @@ public abstract class TimeZoneGenPageGen<DEV> extends PageLayout {
   //////////////
 
   public Future<TimeZoneGenPageGen<DEV>> promiseDeepTimeZoneGenPage(SiteRequest siteRequest_) {
-    setSiteRequest_(siteRequest_);
+    if(this.siteRequest_ == null)
+      setSiteRequest_(siteRequest_);
     return promiseDeepTimeZoneGenPage();
   }
 

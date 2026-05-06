@@ -7490,7 +7490,19 @@ components:
                       type: string
                   altitude:
                     type: string
+                  altitudeMeters:
+                    type: string
+                  pitch:
+                    type: string
+                  yaw:
+                    type: string
+                  roll:
+                    type: string
                   rotation:
+                    type: array
+                    items:
+                      type: string
+                  gltfPath:
                     type: string
     GETMapModelResponse:
       allOf:
@@ -7522,7 +7534,19 @@ components:
                 type: string
             altitude:
               type: string
+            altitudeMeters:
+              type: string
+            pitch:
+              type: string
+            yaw:
+              type: string
+            roll:
+              type: string
             rotation:
+              type: array
+              items:
+                type: string
+            gltfPath:
               type: string
     SearchPageMapModelResponse:
       allOf:
@@ -7598,6 +7622,98 @@ components:
                         - type: string
                         - type: boolean
                   cumulativeInvestmentChart:
+                    type: object
+                  architectsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  remoteDevelopersPerYear:
+                    type: array
+                    items:
+                      type: string
+                  onsiteDevelopersPerYear:
+                    type: array
+                    items:
+                      type: string
+                  instructorsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  remoteDeveloperPayPerYear:
+                    type: string
+                  onsiteDeveloperPayPerYear:
+                    type: string
+                  architectPayPerYear:
+                    type: string
+                  instructorPayPerYear:
+                    type: string
+                  subscriptionsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  subscriptionCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  totalSubscriptionCostPerYear:
+                    type: string
+                  employeeSubscriptionCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  employeesPerYearDataset:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  subscriptionCostsPerYearDataset:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  openshiftControlPlaneNodes:
+                    type: string
+                  openshiftControlPlaneCores:
+                    type: string
+                  totalOpenshiftControlPlaneCores:
+                    type: string
+                  openshiftControlPlaneHourlyPrice:
+                    type: string
+                  openshiftInfraNodes:
+                    type: string
+                  openshiftInfraCores:
+                    type: string
+                  totalOpenshiftInfraCores:
+                    type: string
+                  openshiftInfraHourlyPrice:
+                    type: string
+                  openshiftWorkerNodes:
+                    type: string
+                  openshiftWorkerCores:
+                    type: string
+                  totalOpenshiftWorkerCores:
+                    type: string
+                  openshiftWorkerHourlyPrice:
+                    type: string
+                  openshiftSSDStorageTiBPerYear:
+                    type: array
+                    items:
+                      type: string
+                  openshiftSSDStoragePrice:
+                    type: string
+                  openshiftCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  employeesPerYearChart:
+                    type: object
+                  projectExpensesChart:
                     type: object
                   economicOutputChart:
                     type: object
@@ -7811,6 +7927,349 @@ components:
             removeCumulativeInvestmentChart:
               type: object
             removeAllCumulativeInvestmentChart:
+              type: object
+            setArchitectsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeArchitectsPerYear:
+              type: string
+            removeAllArchitectsPerYear:
+              type: array
+              items:
+                type: string
+            addArchitectsPerYear:
+              type: string
+            addAllArchitectsPerYear:
+              type: array
+              items:
+                type: string
+            setRemoteDevelopersPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeRemoteDevelopersPerYear:
+              type: string
+            removeAllRemoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            addRemoteDevelopersPerYear:
+              type: string
+            addAllRemoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            setOnsiteDevelopersPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeOnsiteDevelopersPerYear:
+              type: string
+            removeAllOnsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            addOnsiteDevelopersPerYear:
+              type: string
+            addAllOnsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            setInstructorsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeInstructorsPerYear:
+              type: string
+            removeAllInstructorsPerYear:
+              type: array
+              items:
+                type: string
+            addInstructorsPerYear:
+              type: string
+            addAllInstructorsPerYear:
+              type: array
+              items:
+                type: string
+            setRemoteDeveloperPayPerYear:
+              type: string
+              nullable: true
+            removeRemoteDeveloperPayPerYear:
+              type: string
+            removeAllRemoteDeveloperPayPerYear:
+              type: string
+            setOnsiteDeveloperPayPerYear:
+              type: string
+              nullable: true
+            removeOnsiteDeveloperPayPerYear:
+              type: string
+            removeAllOnsiteDeveloperPayPerYear:
+              type: string
+            setArchitectPayPerYear:
+              type: string
+              nullable: true
+            removeArchitectPayPerYear:
+              type: string
+            removeAllArchitectPayPerYear:
+              type: string
+            setInstructorPayPerYear:
+              type: string
+              nullable: true
+            removeInstructorPayPerYear:
+              type: string
+            removeAllInstructorPayPerYear:
+              type: string
+            setSubscriptionsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeSubscriptionsPerYear:
+              type: string
+            removeAllSubscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            addSubscriptionsPerYear:
+              type: string
+            addAllSubscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            setSubscriptionCostsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeSubscriptionCostsPerYear:
+              type: string
+            removeAllSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            addSubscriptionCostsPerYear:
+              type: string
+            addAllSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            setTotalSubscriptionCostPerYear:
+              type: string
+              nullable: true
+            removeTotalSubscriptionCostPerYear:
+              type: string
+            removeAllTotalSubscriptionCostPerYear:
+              type: string
+            setEmployeeSubscriptionCostsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeEmployeeSubscriptionCostsPerYear:
+              type: string
+            removeAllEmployeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            addEmployeeSubscriptionCostsPerYear:
+              type: string
+            addAllEmployeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            setEmployeesPerYearDataset:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeEmployeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllEmployeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setSubscriptionCostsPerYearDataset:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeSubscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllSubscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setOpenshiftControlPlaneNodes:
+              type: string
+              nullable: true
+            removeOpenshiftControlPlaneNodes:
+              type: string
+            removeAllOpenshiftControlPlaneNodes:
+              type: string
+            setOpenshiftControlPlaneCores:
+              type: string
+              nullable: true
+            removeOpenshiftControlPlaneCores:
+              type: string
+            removeAllOpenshiftControlPlaneCores:
+              type: string
+            setTotalOpenshiftControlPlaneCores:
+              type: string
+              nullable: true
+            removeTotalOpenshiftControlPlaneCores:
+              type: string
+            removeAllTotalOpenshiftControlPlaneCores:
+              type: string
+            setOpenshiftControlPlaneHourlyPrice:
+              type: string
+              nullable: true
+            removeOpenshiftControlPlaneHourlyPrice:
+              type: string
+            removeAllOpenshiftControlPlaneHourlyPrice:
+              type: string
+            setOpenshiftInfraNodes:
+              type: string
+              nullable: true
+            removeOpenshiftInfraNodes:
+              type: string
+            removeAllOpenshiftInfraNodes:
+              type: string
+            setOpenshiftInfraCores:
+              type: string
+              nullable: true
+            removeOpenshiftInfraCores:
+              type: string
+            removeAllOpenshiftInfraCores:
+              type: string
+            setTotalOpenshiftInfraCores:
+              type: string
+              nullable: true
+            removeTotalOpenshiftInfraCores:
+              type: string
+            removeAllTotalOpenshiftInfraCores:
+              type: string
+            setOpenshiftInfraHourlyPrice:
+              type: string
+              nullable: true
+            removeOpenshiftInfraHourlyPrice:
+              type: string
+            removeAllOpenshiftInfraHourlyPrice:
+              type: string
+            setOpenshiftWorkerNodes:
+              type: string
+              nullable: true
+            removeOpenshiftWorkerNodes:
+              type: string
+            removeAllOpenshiftWorkerNodes:
+              type: string
+            setOpenshiftWorkerCores:
+              type: string
+              nullable: true
+            removeOpenshiftWorkerCores:
+              type: string
+            removeAllOpenshiftWorkerCores:
+              type: string
+            setTotalOpenshiftWorkerCores:
+              type: string
+              nullable: true
+            removeTotalOpenshiftWorkerCores:
+              type: string
+            removeAllTotalOpenshiftWorkerCores:
+              type: string
+            setOpenshiftWorkerHourlyPrice:
+              type: string
+              nullable: true
+            removeOpenshiftWorkerHourlyPrice:
+              type: string
+            removeAllOpenshiftWorkerHourlyPrice:
+              type: string
+            setOpenshiftSSDStorageTiBPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeOpenshiftSSDStorageTiBPerYear:
+              type: string
+            removeAllOpenshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            addOpenshiftSSDStorageTiBPerYear:
+              type: string
+            addAllOpenshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            setOpenshiftSSDStoragePrice:
+              type: string
+              nullable: true
+            removeOpenshiftSSDStoragePrice:
+              type: string
+            removeAllOpenshiftSSDStoragePrice:
+              type: string
+            setOpenshiftCostsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeOpenshiftCostsPerYear:
+              type: string
+            removeAllOpenshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            addOpenshiftCostsPerYear:
+              type: string
+            addAllOpenshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            setEmployeesPerYearChart:
+              type: object
+              nullable: true
+            removeEmployeesPerYearChart:
+              type: object
+            removeAllEmployeesPerYearChart:
+              type: object
+            setProjectExpensesChart:
+              type: object
+              nullable: true
+            removeProjectExpensesChart:
+              type: object
+            removeAllProjectExpensesChart:
               type: object
             setEconomicOutputChart:
               type: object
@@ -8030,6 +8489,349 @@ components:
               type: object
             removeAllCumulativeInvestmentChart:
               type: object
+            setArchitectsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeArchitectsPerYear:
+              type: string
+            removeAllArchitectsPerYear:
+              type: array
+              items:
+                type: string
+            addArchitectsPerYear:
+              type: string
+            addAllArchitectsPerYear:
+              type: array
+              items:
+                type: string
+            setRemoteDevelopersPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeRemoteDevelopersPerYear:
+              type: string
+            removeAllRemoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            addRemoteDevelopersPerYear:
+              type: string
+            addAllRemoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            setOnsiteDevelopersPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeOnsiteDevelopersPerYear:
+              type: string
+            removeAllOnsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            addOnsiteDevelopersPerYear:
+              type: string
+            addAllOnsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            setInstructorsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeInstructorsPerYear:
+              type: string
+            removeAllInstructorsPerYear:
+              type: array
+              items:
+                type: string
+            addInstructorsPerYear:
+              type: string
+            addAllInstructorsPerYear:
+              type: array
+              items:
+                type: string
+            setRemoteDeveloperPayPerYear:
+              type: string
+              nullable: true
+            removeRemoteDeveloperPayPerYear:
+              type: string
+            removeAllRemoteDeveloperPayPerYear:
+              type: string
+            setOnsiteDeveloperPayPerYear:
+              type: string
+              nullable: true
+            removeOnsiteDeveloperPayPerYear:
+              type: string
+            removeAllOnsiteDeveloperPayPerYear:
+              type: string
+            setArchitectPayPerYear:
+              type: string
+              nullable: true
+            removeArchitectPayPerYear:
+              type: string
+            removeAllArchitectPayPerYear:
+              type: string
+            setInstructorPayPerYear:
+              type: string
+              nullable: true
+            removeInstructorPayPerYear:
+              type: string
+            removeAllInstructorPayPerYear:
+              type: string
+            setSubscriptionsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeSubscriptionsPerYear:
+              type: string
+            removeAllSubscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            addSubscriptionsPerYear:
+              type: string
+            addAllSubscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            setSubscriptionCostsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeSubscriptionCostsPerYear:
+              type: string
+            removeAllSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            addSubscriptionCostsPerYear:
+              type: string
+            addAllSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            setTotalSubscriptionCostPerYear:
+              type: string
+              nullable: true
+            removeTotalSubscriptionCostPerYear:
+              type: string
+            removeAllTotalSubscriptionCostPerYear:
+              type: string
+            setEmployeeSubscriptionCostsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeEmployeeSubscriptionCostsPerYear:
+              type: string
+            removeAllEmployeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            addEmployeeSubscriptionCostsPerYear:
+              type: string
+            addAllEmployeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            setEmployeesPerYearDataset:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeEmployeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllEmployeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setSubscriptionCostsPerYearDataset:
+              type: array
+              nullable: true
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeSubscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllSubscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setOpenshiftControlPlaneNodes:
+              type: string
+              nullable: true
+            removeOpenshiftControlPlaneNodes:
+              type: string
+            removeAllOpenshiftControlPlaneNodes:
+              type: string
+            setOpenshiftControlPlaneCores:
+              type: string
+              nullable: true
+            removeOpenshiftControlPlaneCores:
+              type: string
+            removeAllOpenshiftControlPlaneCores:
+              type: string
+            setTotalOpenshiftControlPlaneCores:
+              type: string
+              nullable: true
+            removeTotalOpenshiftControlPlaneCores:
+              type: string
+            removeAllTotalOpenshiftControlPlaneCores:
+              type: string
+            setOpenshiftControlPlaneHourlyPrice:
+              type: string
+              nullable: true
+            removeOpenshiftControlPlaneHourlyPrice:
+              type: string
+            removeAllOpenshiftControlPlaneHourlyPrice:
+              type: string
+            setOpenshiftInfraNodes:
+              type: string
+              nullable: true
+            removeOpenshiftInfraNodes:
+              type: string
+            removeAllOpenshiftInfraNodes:
+              type: string
+            setOpenshiftInfraCores:
+              type: string
+              nullable: true
+            removeOpenshiftInfraCores:
+              type: string
+            removeAllOpenshiftInfraCores:
+              type: string
+            setTotalOpenshiftInfraCores:
+              type: string
+              nullable: true
+            removeTotalOpenshiftInfraCores:
+              type: string
+            removeAllTotalOpenshiftInfraCores:
+              type: string
+            setOpenshiftInfraHourlyPrice:
+              type: string
+              nullable: true
+            removeOpenshiftInfraHourlyPrice:
+              type: string
+            removeAllOpenshiftInfraHourlyPrice:
+              type: string
+            setOpenshiftWorkerNodes:
+              type: string
+              nullable: true
+            removeOpenshiftWorkerNodes:
+              type: string
+            removeAllOpenshiftWorkerNodes:
+              type: string
+            setOpenshiftWorkerCores:
+              type: string
+              nullable: true
+            removeOpenshiftWorkerCores:
+              type: string
+            removeAllOpenshiftWorkerCores:
+              type: string
+            setTotalOpenshiftWorkerCores:
+              type: string
+              nullable: true
+            removeTotalOpenshiftWorkerCores:
+              type: string
+            removeAllTotalOpenshiftWorkerCores:
+              type: string
+            setOpenshiftWorkerHourlyPrice:
+              type: string
+              nullable: true
+            removeOpenshiftWorkerHourlyPrice:
+              type: string
+            removeAllOpenshiftWorkerHourlyPrice:
+              type: string
+            setOpenshiftSSDStorageTiBPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeOpenshiftSSDStorageTiBPerYear:
+              type: string
+            removeAllOpenshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            addOpenshiftSSDStorageTiBPerYear:
+              type: string
+            addAllOpenshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            setOpenshiftSSDStoragePrice:
+              type: string
+              nullable: true
+            removeOpenshiftSSDStoragePrice:
+              type: string
+            removeAllOpenshiftSSDStoragePrice:
+              type: string
+            setOpenshiftCostsPerYear:
+              type: array
+              nullable: true
+              items:
+                type: string
+            removeOpenshiftCostsPerYear:
+              type: string
+            removeAllOpenshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            addOpenshiftCostsPerYear:
+              type: string
+            addAllOpenshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            setEmployeesPerYearChart:
+              type: object
+              nullable: true
+            removeEmployeesPerYearChart:
+              type: object
+            removeAllEmployeesPerYearChart:
+              type: object
+            setProjectExpensesChart:
+              type: object
+              nullable: true
+            removeProjectExpensesChart:
+              type: object
+            removeAllProjectExpensesChart:
+              type: object
             setEconomicOutputChart:
               type: object
               nullable: true
@@ -8095,6 +8897,98 @@ components:
                   - type: boolean
             cumulativeInvestmentChart:
               type: object
+            architectsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            onsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            instructorsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDeveloperPayPerYear:
+              type: string
+            onsiteDeveloperPayPerYear:
+              type: string
+            architectPayPerYear:
+              type: string
+            instructorPayPerYear:
+              type: string
+            subscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            subscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            totalSubscriptionCostPerYear:
+              type: string
+            employeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            subscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftControlPlaneNodes:
+              type: string
+            openshiftControlPlaneCores:
+              type: string
+            totalOpenshiftControlPlaneCores:
+              type: string
+            openshiftControlPlaneHourlyPrice:
+              type: string
+            openshiftInfraNodes:
+              type: string
+            openshiftInfraCores:
+              type: string
+            totalOpenshiftInfraCores:
+              type: string
+            openshiftInfraHourlyPrice:
+              type: string
+            openshiftWorkerNodes:
+              type: string
+            openshiftWorkerCores:
+              type: string
+            totalOpenshiftWorkerCores:
+              type: string
+            openshiftWorkerHourlyPrice:
+              type: string
+            openshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            openshiftSSDStoragePrice:
+              type: string
+            openshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearChart:
+              type: object
+            projectExpensesChart:
+              type: object
             economicOutputChart:
               type: object
     POSTContractResponse:
@@ -8155,6 +9049,98 @@ components:
                   - type: boolean
             cumulativeInvestmentChart:
               type: object
+            architectsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            onsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            instructorsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDeveloperPayPerYear:
+              type: string
+            onsiteDeveloperPayPerYear:
+              type: string
+            architectPayPerYear:
+              type: string
+            instructorPayPerYear:
+              type: string
+            subscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            subscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            totalSubscriptionCostPerYear:
+              type: string
+            employeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            subscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftControlPlaneNodes:
+              type: string
+            openshiftControlPlaneCores:
+              type: string
+            totalOpenshiftControlPlaneCores:
+              type: string
+            openshiftControlPlaneHourlyPrice:
+              type: string
+            openshiftInfraNodes:
+              type: string
+            openshiftInfraCores:
+              type: string
+            totalOpenshiftInfraCores:
+              type: string
+            openshiftInfraHourlyPrice:
+              type: string
+            openshiftWorkerNodes:
+              type: string
+            openshiftWorkerCores:
+              type: string
+            totalOpenshiftWorkerCores:
+              type: string
+            openshiftWorkerHourlyPrice:
+              type: string
+            openshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            openshiftSSDStoragePrice:
+              type: string
+            openshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearChart:
+              type: object
+            projectExpensesChart:
+              type: object
             economicOutputChart:
               type: object
     DELETEFilterContractResponse:
@@ -8214,6 +9200,98 @@ components:
                   - type: string
                   - type: boolean
             cumulativeInvestmentChart:
+              type: object
+            architectsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            onsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            instructorsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDeveloperPayPerYear:
+              type: string
+            onsiteDeveloperPayPerYear:
+              type: string
+            architectPayPerYear:
+              type: string
+            instructorPayPerYear:
+              type: string
+            subscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            subscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            totalSubscriptionCostPerYear:
+              type: string
+            employeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            subscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftControlPlaneNodes:
+              type: string
+            openshiftControlPlaneCores:
+              type: string
+            totalOpenshiftControlPlaneCores:
+              type: string
+            openshiftControlPlaneHourlyPrice:
+              type: string
+            openshiftInfraNodes:
+              type: string
+            openshiftInfraCores:
+              type: string
+            totalOpenshiftInfraCores:
+              type: string
+            openshiftInfraHourlyPrice:
+              type: string
+            openshiftWorkerNodes:
+              type: string
+            openshiftWorkerCores:
+              type: string
+            totalOpenshiftWorkerCores:
+              type: string
+            openshiftWorkerHourlyPrice:
+              type: string
+            openshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            openshiftSSDStoragePrice:
+              type: string
+            openshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearChart:
+              type: object
+            projectExpensesChart:
               type: object
             economicOutputChart:
               type: object
@@ -8280,6 +9358,98 @@ components:
                         - type: boolean
                   cumulativeInvestmentChart:
                     type: object
+                  architectsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  remoteDevelopersPerYear:
+                    type: array
+                    items:
+                      type: string
+                  onsiteDevelopersPerYear:
+                    type: array
+                    items:
+                      type: string
+                  instructorsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  remoteDeveloperPayPerYear:
+                    type: string
+                  onsiteDeveloperPayPerYear:
+                    type: string
+                  architectPayPerYear:
+                    type: string
+                  instructorPayPerYear:
+                    type: string
+                  subscriptionsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  subscriptionCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  totalSubscriptionCostPerYear:
+                    type: string
+                  employeeSubscriptionCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  employeesPerYearDataset:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  subscriptionCostsPerYearDataset:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  openshiftControlPlaneNodes:
+                    type: string
+                  openshiftControlPlaneCores:
+                    type: string
+                  totalOpenshiftControlPlaneCores:
+                    type: string
+                  openshiftControlPlaneHourlyPrice:
+                    type: string
+                  openshiftInfraNodes:
+                    type: string
+                  openshiftInfraCores:
+                    type: string
+                  totalOpenshiftInfraCores:
+                    type: string
+                  openshiftInfraHourlyPrice:
+                    type: string
+                  openshiftWorkerNodes:
+                    type: string
+                  openshiftWorkerCores:
+                    type: string
+                  totalOpenshiftWorkerCores:
+                    type: string
+                  openshiftWorkerHourlyPrice:
+                    type: string
+                  openshiftSSDStorageTiBPerYear:
+                    type: array
+                    items:
+                      type: string
+                  openshiftSSDStoragePrice:
+                    type: string
+                  openshiftCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  employeesPerYearChart:
+                    type: object
+                  projectExpensesChart:
+                    type: object
                   economicOutputChart:
                     type: object
     PUTImportContractResponse:
@@ -8339,6 +9509,98 @@ components:
                         - type: string
                         - type: boolean
                   cumulativeInvestmentChart:
+                    type: object
+                  architectsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  remoteDevelopersPerYear:
+                    type: array
+                    items:
+                      type: string
+                  onsiteDevelopersPerYear:
+                    type: array
+                    items:
+                      type: string
+                  instructorsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  remoteDeveloperPayPerYear:
+                    type: string
+                  onsiteDeveloperPayPerYear:
+                    type: string
+                  architectPayPerYear:
+                    type: string
+                  instructorPayPerYear:
+                    type: string
+                  subscriptionsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  subscriptionCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  totalSubscriptionCostPerYear:
+                    type: string
+                  employeeSubscriptionCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  employeesPerYearDataset:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  subscriptionCostsPerYearDataset:
+                    type: array
+                    items:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  openshiftControlPlaneNodes:
+                    type: string
+                  openshiftControlPlaneCores:
+                    type: string
+                  totalOpenshiftControlPlaneCores:
+                    type: string
+                  openshiftControlPlaneHourlyPrice:
+                    type: string
+                  openshiftInfraNodes:
+                    type: string
+                  openshiftInfraCores:
+                    type: string
+                  totalOpenshiftInfraCores:
+                    type: string
+                  openshiftInfraHourlyPrice:
+                    type: string
+                  openshiftWorkerNodes:
+                    type: string
+                  openshiftWorkerCores:
+                    type: string
+                  totalOpenshiftWorkerCores:
+                    type: string
+                  openshiftWorkerHourlyPrice:
+                    type: string
+                  openshiftSSDStorageTiBPerYear:
+                    type: array
+                    items:
+                      type: string
+                  openshiftSSDStoragePrice:
+                    type: string
+                  openshiftCostsPerYear:
+                    type: array
+                    items:
+                      type: string
+                  employeesPerYearChart:
+                    type: object
+                  projectExpensesChart:
                     type: object
                   economicOutputChart:
                     type: object
@@ -8400,6 +9662,98 @@ components:
                   - type: boolean
             cumulativeInvestmentChart:
               type: object
+            architectsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            onsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            instructorsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDeveloperPayPerYear:
+              type: string
+            onsiteDeveloperPayPerYear:
+              type: string
+            architectPayPerYear:
+              type: string
+            instructorPayPerYear:
+              type: string
+            subscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            subscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            totalSubscriptionCostPerYear:
+              type: string
+            employeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            subscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftControlPlaneNodes:
+              type: string
+            openshiftControlPlaneCores:
+              type: string
+            totalOpenshiftControlPlaneCores:
+              type: string
+            openshiftControlPlaneHourlyPrice:
+              type: string
+            openshiftInfraNodes:
+              type: string
+            openshiftInfraCores:
+              type: string
+            totalOpenshiftInfraCores:
+              type: string
+            openshiftInfraHourlyPrice:
+              type: string
+            openshiftWorkerNodes:
+              type: string
+            openshiftWorkerCores:
+              type: string
+            totalOpenshiftWorkerCores:
+              type: string
+            openshiftWorkerHourlyPrice:
+              type: string
+            openshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            openshiftSSDStoragePrice:
+              type: string
+            openshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearChart:
+              type: object
+            projectExpensesChart:
+              type: object
             economicOutputChart:
               type: object
     DELETEContractResponse:
@@ -8459,6 +9813,98 @@ components:
                   - type: string
                   - type: boolean
             cumulativeInvestmentChart:
+              type: object
+            architectsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            onsiteDevelopersPerYear:
+              type: array
+              items:
+                type: string
+            instructorsPerYear:
+              type: array
+              items:
+                type: string
+            remoteDeveloperPayPerYear:
+              type: string
+            onsiteDeveloperPayPerYear:
+              type: string
+            architectPayPerYear:
+              type: string
+            instructorPayPerYear:
+              type: string
+            subscriptionsPerYear:
+              type: array
+              items:
+                type: string
+            subscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            totalSubscriptionCostPerYear:
+              type: string
+            employeeSubscriptionCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            subscriptionCostsPerYearDataset:
+              type: array
+              items:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftControlPlaneNodes:
+              type: string
+            openshiftControlPlaneCores:
+              type: string
+            totalOpenshiftControlPlaneCores:
+              type: string
+            openshiftControlPlaneHourlyPrice:
+              type: string
+            openshiftInfraNodes:
+              type: string
+            openshiftInfraCores:
+              type: string
+            totalOpenshiftInfraCores:
+              type: string
+            openshiftInfraHourlyPrice:
+              type: string
+            openshiftWorkerNodes:
+              type: string
+            openshiftWorkerCores:
+              type: string
+            totalOpenshiftWorkerCores:
+              type: string
+            openshiftWorkerHourlyPrice:
+              type: string
+            openshiftSSDStorageTiBPerYear:
+              type: array
+              items:
+                type: string
+            openshiftSSDStoragePrice:
+              type: string
+            openshiftCostsPerYear:
+              type: array
+              items:
+                type: string
+            employeesPerYearChart:
+              type: object
+            projectExpensesChart:
               type: object
             economicOutputChart:
               type: object

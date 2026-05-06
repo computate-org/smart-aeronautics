@@ -896,6 +896,238 @@ public class ContractEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
               num++;
               bParams.add(o2.sqlDownload());
             break;
+          case "setArchitectsPerYear":
+              o2.setArchitectsPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_architectsPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlArchitectsPerYear());
+            break;
+          case "setRemoteDevelopersPerYear":
+              o2.setRemoteDevelopersPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_remoteDevelopersPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlRemoteDevelopersPerYear());
+            break;
+          case "setOnsiteDevelopersPerYear":
+              o2.setOnsiteDevelopersPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_onsiteDevelopersPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOnsiteDevelopersPerYear());
+            break;
+          case "setInstructorsPerYear":
+              o2.setInstructorsPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_instructorsPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlInstructorsPerYear());
+            break;
+          case "setRemoteDeveloperPayPerYear":
+              o2.setRemoteDeveloperPayPerYear(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_remoteDeveloperPayPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlRemoteDeveloperPayPerYear());
+            break;
+          case "setOnsiteDeveloperPayPerYear":
+              o2.setOnsiteDeveloperPayPerYear(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_onsiteDeveloperPayPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOnsiteDeveloperPayPerYear());
+            break;
+          case "setArchitectPayPerYear":
+              o2.setArchitectPayPerYear(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_architectPayPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlArchitectPayPerYear());
+            break;
+          case "setInstructorPayPerYear":
+              o2.setInstructorPayPerYear(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_instructorPayPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlInstructorPayPerYear());
+            break;
+          case "setSubscriptionsPerYear":
+              o2.setSubscriptionsPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_subscriptionsPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlSubscriptionsPerYear());
+            break;
+          case "setSubscriptionCostsPerYear":
+              o2.setSubscriptionCostsPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_subscriptionCostsPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlSubscriptionCostsPerYear());
+            break;
+          case "setTotalSubscriptionCostPerYear":
+              o2.setTotalSubscriptionCostPerYear(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_totalSubscriptionCostPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlTotalSubscriptionCostPerYear());
+            break;
+          case "setEmployeeSubscriptionCostsPerYear":
+              o2.setEmployeeSubscriptionCostsPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_employeeSubscriptionCostsPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlEmployeeSubscriptionCostsPerYear());
+            break;
+          case "setEmployeesPerYearDataset":
+              o2.setEmployeesPerYearDataset(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_employeesPerYearDataset + "=$" + num);
+              num++;
+              bParams.add(o2.sqlEmployeesPerYearDataset());
+            break;
+          case "setSubscriptionCostsPerYearDataset":
+              o2.setSubscriptionCostsPerYearDataset(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_subscriptionCostsPerYearDataset + "=$" + num);
+              num++;
+              bParams.add(o2.sqlSubscriptionCostsPerYearDataset());
+            break;
+          case "setOpenshiftControlPlaneNodes":
+              o2.setOpenshiftControlPlaneNodes(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftControlPlaneNodes + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftControlPlaneNodes());
+            break;
+          case "setOpenshiftControlPlaneCores":
+              o2.setOpenshiftControlPlaneCores(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftControlPlaneCores + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftControlPlaneCores());
+            break;
+          case "setTotalOpenshiftControlPlaneCores":
+              o2.setTotalOpenshiftControlPlaneCores(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_totalOpenshiftControlPlaneCores + "=$" + num);
+              num++;
+              bParams.add(o2.sqlTotalOpenshiftControlPlaneCores());
+            break;
+          case "setOpenshiftControlPlaneHourlyPrice":
+              o2.setOpenshiftControlPlaneHourlyPrice(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftControlPlaneHourlyPrice + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftControlPlaneHourlyPrice());
+            break;
+          case "setOpenshiftInfraNodes":
+              o2.setOpenshiftInfraNodes(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftInfraNodes + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftInfraNodes());
+            break;
+          case "setOpenshiftInfraCores":
+              o2.setOpenshiftInfraCores(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftInfraCores + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftInfraCores());
+            break;
+          case "setTotalOpenshiftInfraCores":
+              o2.setTotalOpenshiftInfraCores(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_totalOpenshiftInfraCores + "=$" + num);
+              num++;
+              bParams.add(o2.sqlTotalOpenshiftInfraCores());
+            break;
+          case "setOpenshiftInfraHourlyPrice":
+              o2.setOpenshiftInfraHourlyPrice(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftInfraHourlyPrice + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftInfraHourlyPrice());
+            break;
+          case "setOpenshiftWorkerNodes":
+              o2.setOpenshiftWorkerNodes(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftWorkerNodes + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftWorkerNodes());
+            break;
+          case "setOpenshiftWorkerCores":
+              o2.setOpenshiftWorkerCores(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftWorkerCores + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftWorkerCores());
+            break;
+          case "setTotalOpenshiftWorkerCores":
+              o2.setTotalOpenshiftWorkerCores(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_totalOpenshiftWorkerCores + "=$" + num);
+              num++;
+              bParams.add(o2.sqlTotalOpenshiftWorkerCores());
+            break;
+          case "setOpenshiftWorkerHourlyPrice":
+              o2.setOpenshiftWorkerHourlyPrice(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftWorkerHourlyPrice + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftWorkerHourlyPrice());
+            break;
+          case "setOpenshiftSSDStorageTiBPerYear":
+              o2.setOpenshiftSSDStorageTiBPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftSSDStorageTiBPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftSSDStorageTiBPerYear());
+            break;
+          case "setOpenshiftSSDStoragePrice":
+              o2.setOpenshiftSSDStoragePrice(jsonObject.getString(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftSSDStoragePrice + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftSSDStoragePrice());
+            break;
+          case "setOpenshiftCostsPerYear":
+              o2.setOpenshiftCostsPerYear(jsonObject.getJsonArray(entityVar));
+              if(bParams.size() > 0)
+                bSql.append(", ");
+              bSql.append(Contract.VAR_openshiftCostsPerYear + "=$" + num);
+              num++;
+              bParams.add(o2.sqlOpenshiftCostsPerYear());
+            break;
         }
       }
       bSql.append(" WHERE pk=$" + num);
@@ -1471,6 +1703,267 @@ public class ContractEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
             bSql.append(Contract.VAR_download + "=$" + num);
             num++;
             bParams.add(o2.sqlDownload());
+            break;
+          case Contract.VAR_architectsPerYear:
+            o2.setArchitectsPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_architectsPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlArchitectsPerYear());
+            break;
+          case Contract.VAR_remoteDevelopersPerYear:
+            o2.setRemoteDevelopersPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_remoteDevelopersPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlRemoteDevelopersPerYear());
+            break;
+          case Contract.VAR_onsiteDevelopersPerYear:
+            o2.setOnsiteDevelopersPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_onsiteDevelopersPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOnsiteDevelopersPerYear());
+            break;
+          case Contract.VAR_instructorsPerYear:
+            o2.setInstructorsPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_instructorsPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlInstructorsPerYear());
+            break;
+          case Contract.VAR_remoteDeveloperPayPerYear:
+            o2.setRemoteDeveloperPayPerYear(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_remoteDeveloperPayPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlRemoteDeveloperPayPerYear());
+            break;
+          case Contract.VAR_onsiteDeveloperPayPerYear:
+            o2.setOnsiteDeveloperPayPerYear(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_onsiteDeveloperPayPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOnsiteDeveloperPayPerYear());
+            break;
+          case Contract.VAR_architectPayPerYear:
+            o2.setArchitectPayPerYear(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_architectPayPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlArchitectPayPerYear());
+            break;
+          case Contract.VAR_instructorPayPerYear:
+            o2.setInstructorPayPerYear(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_instructorPayPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlInstructorPayPerYear());
+            break;
+          case Contract.VAR_subscriptionsPerYear:
+            o2.setSubscriptionsPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_subscriptionsPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlSubscriptionsPerYear());
+            break;
+          case Contract.VAR_subscriptionCostsPerYear:
+            o2.setSubscriptionCostsPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_subscriptionCostsPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlSubscriptionCostsPerYear());
+            break;
+          case Contract.VAR_totalSubscriptionCostPerYear:
+            o2.setTotalSubscriptionCostPerYear(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_totalSubscriptionCostPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlTotalSubscriptionCostPerYear());
+            break;
+          case Contract.VAR_employeeSubscriptionCostsPerYear:
+            o2.setEmployeeSubscriptionCostsPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_employeeSubscriptionCostsPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlEmployeeSubscriptionCostsPerYear());
+            break;
+          case Contract.VAR_employeesPerYearDataset:
+            o2.setEmployeesPerYearDataset(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_employeesPerYearDataset + "=$" + num);
+            num++;
+            bParams.add(o2.sqlEmployeesPerYearDataset());
+            break;
+          case Contract.VAR_subscriptionCostsPerYearDataset:
+            o2.setSubscriptionCostsPerYearDataset(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_subscriptionCostsPerYearDataset + "=$" + num);
+            num++;
+            bParams.add(o2.sqlSubscriptionCostsPerYearDataset());
+            break;
+          case Contract.VAR_openshiftControlPlaneNodes:
+            o2.setOpenshiftControlPlaneNodes(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftControlPlaneNodes + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftControlPlaneNodes());
+            break;
+          case Contract.VAR_openshiftControlPlaneCores:
+            o2.setOpenshiftControlPlaneCores(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftControlPlaneCores + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftControlPlaneCores());
+            break;
+          case Contract.VAR_totalOpenshiftControlPlaneCores:
+            o2.setTotalOpenshiftControlPlaneCores(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_totalOpenshiftControlPlaneCores + "=$" + num);
+            num++;
+            bParams.add(o2.sqlTotalOpenshiftControlPlaneCores());
+            break;
+          case Contract.VAR_openshiftControlPlaneHourlyPrice:
+            o2.setOpenshiftControlPlaneHourlyPrice(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftControlPlaneHourlyPrice + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftControlPlaneHourlyPrice());
+            break;
+          case Contract.VAR_openshiftInfraNodes:
+            o2.setOpenshiftInfraNodes(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftInfraNodes + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftInfraNodes());
+            break;
+          case Contract.VAR_openshiftInfraCores:
+            o2.setOpenshiftInfraCores(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftInfraCores + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftInfraCores());
+            break;
+          case Contract.VAR_totalOpenshiftInfraCores:
+            o2.setTotalOpenshiftInfraCores(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_totalOpenshiftInfraCores + "=$" + num);
+            num++;
+            bParams.add(o2.sqlTotalOpenshiftInfraCores());
+            break;
+          case Contract.VAR_openshiftInfraHourlyPrice:
+            o2.setOpenshiftInfraHourlyPrice(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftInfraHourlyPrice + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftInfraHourlyPrice());
+            break;
+          case Contract.VAR_openshiftWorkerNodes:
+            o2.setOpenshiftWorkerNodes(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftWorkerNodes + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftWorkerNodes());
+            break;
+          case Contract.VAR_openshiftWorkerCores:
+            o2.setOpenshiftWorkerCores(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftWorkerCores + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftWorkerCores());
+            break;
+          case Contract.VAR_totalOpenshiftWorkerCores:
+            o2.setTotalOpenshiftWorkerCores(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_totalOpenshiftWorkerCores + "=$" + num);
+            num++;
+            bParams.add(o2.sqlTotalOpenshiftWorkerCores());
+            break;
+          case Contract.VAR_openshiftWorkerHourlyPrice:
+            o2.setOpenshiftWorkerHourlyPrice(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftWorkerHourlyPrice + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftWorkerHourlyPrice());
+            break;
+          case Contract.VAR_openshiftSSDStorageTiBPerYear:
+            o2.setOpenshiftSSDStorageTiBPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftSSDStorageTiBPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftSSDStorageTiBPerYear());
+            break;
+          case Contract.VAR_openshiftSSDStoragePrice:
+            o2.setOpenshiftSSDStoragePrice(jsonObject.getString(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftSSDStoragePrice + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftSSDStoragePrice());
+            break;
+          case Contract.VAR_openshiftCostsPerYear:
+            o2.setOpenshiftCostsPerYear(jsonObject.getJsonArray(entityVar));
+            if(bParams.size() > 0) {
+              bSql.append(", ");
+            }
+            bSql.append(Contract.VAR_openshiftCostsPerYear + "=$" + num);
+            num++;
+            bParams.add(o2.sqlOpenshiftCostsPerYear());
             break;
           }
         }
@@ -3404,7 +3897,7 @@ public class ContractEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
       SiteRequest siteRequest = o.getSiteRequest_();
       SqlConnection sqlConnection = siteRequest.getSqlConnection();
       Long pk = o.getPk();
-      sqlConnection.preparedQuery("SELECT region, name, created, abbreviation, displayName, archived, contractId, startDate, investmentYearsTotal, investmentYears, sessionId, investmentsPerYear, userKey, investmentsPerYearCumulative, assetClasses, assetClassesTargetIrr, objectTitle, revenueStreams, displayPage, economicOutputProjections, editPage, totalGdpImpact, userPage, economicOutputProjectionsDataset, download FROM Contract WHERE pk=$1")
+      sqlConnection.preparedQuery("SELECT region, name, created, abbreviation, displayName, archived, contractId, startDate, investmentYearsTotal, investmentYears, sessionId, investmentsPerYear, userKey, investmentsPerYearCumulative, assetClasses, assetClassesTargetIrr, objectTitle, revenueStreams, displayPage, economicOutputProjections, editPage, totalGdpImpact, userPage, economicOutputProjectionsDataset, download, architectsPerYear, remoteDevelopersPerYear, onsiteDevelopersPerYear, instructorsPerYear, remoteDeveloperPayPerYear, onsiteDeveloperPayPerYear, architectPayPerYear, instructorPayPerYear, subscriptionsPerYear, subscriptionCostsPerYear, totalSubscriptionCostPerYear, employeeSubscriptionCostsPerYear, employeesPerYearDataset, subscriptionCostsPerYearDataset, openshiftControlPlaneNodes, openshiftControlPlaneCores, totalOpenshiftControlPlaneCores, openshiftControlPlaneHourlyPrice, openshiftInfraNodes, openshiftInfraCores, totalOpenshiftInfraCores, openshiftInfraHourlyPrice, openshiftWorkerNodes, openshiftWorkerCores, totalOpenshiftWorkerCores, openshiftWorkerHourlyPrice, openshiftSSDStorageTiBPerYear, openshiftSSDStoragePrice, openshiftCostsPerYear FROM Contract WHERE pk=$1")
           .collecting(Collectors.toList())
           .execute(Tuple.of(pk)
           ).onSuccess(result -> {
@@ -3634,6 +4127,35 @@ public class ContractEnUSGenApiServiceImpl extends BaseApiServiceImpl implements
       o.persistForClass(Contract.VAR_userPage, Contract.staticSetUserPage(siteRequest2, (String)result.get(Contract.VAR_userPage)));
       o.persistForClass(Contract.VAR_economicOutputProjectionsDataset, Contract.staticSetEconomicOutputProjectionsDataset(siteRequest2, (String)result.get(Contract.VAR_economicOutputProjectionsDataset)));
       o.persistForClass(Contract.VAR_download, Contract.staticSetDownload(siteRequest2, (String)result.get(Contract.VAR_download)));
+      o.persistForClass(Contract.VAR_architectsPerYear, Contract.staticSetArchitectsPerYear(siteRequest2, (String)result.get(Contract.VAR_architectsPerYear)));
+      o.persistForClass(Contract.VAR_remoteDevelopersPerYear, Contract.staticSetRemoteDevelopersPerYear(siteRequest2, (String)result.get(Contract.VAR_remoteDevelopersPerYear)));
+      o.persistForClass(Contract.VAR_onsiteDevelopersPerYear, Contract.staticSetOnsiteDevelopersPerYear(siteRequest2, (String)result.get(Contract.VAR_onsiteDevelopersPerYear)));
+      o.persistForClass(Contract.VAR_instructorsPerYear, Contract.staticSetInstructorsPerYear(siteRequest2, (String)result.get(Contract.VAR_instructorsPerYear)));
+      o.persistForClass(Contract.VAR_remoteDeveloperPayPerYear, Contract.staticSetRemoteDeveloperPayPerYear(siteRequest2, (String)result.get(Contract.VAR_remoteDeveloperPayPerYear)));
+      o.persistForClass(Contract.VAR_onsiteDeveloperPayPerYear, Contract.staticSetOnsiteDeveloperPayPerYear(siteRequest2, (String)result.get(Contract.VAR_onsiteDeveloperPayPerYear)));
+      o.persistForClass(Contract.VAR_architectPayPerYear, Contract.staticSetArchitectPayPerYear(siteRequest2, (String)result.get(Contract.VAR_architectPayPerYear)));
+      o.persistForClass(Contract.VAR_instructorPayPerYear, Contract.staticSetInstructorPayPerYear(siteRequest2, (String)result.get(Contract.VAR_instructorPayPerYear)));
+      o.persistForClass(Contract.VAR_subscriptionsPerYear, Contract.staticSetSubscriptionsPerYear(siteRequest2, (String)result.get(Contract.VAR_subscriptionsPerYear)));
+      o.persistForClass(Contract.VAR_subscriptionCostsPerYear, Contract.staticSetSubscriptionCostsPerYear(siteRequest2, (String)result.get(Contract.VAR_subscriptionCostsPerYear)));
+      o.persistForClass(Contract.VAR_totalSubscriptionCostPerYear, Contract.staticSetTotalSubscriptionCostPerYear(siteRequest2, (String)result.get(Contract.VAR_totalSubscriptionCostPerYear)));
+      o.persistForClass(Contract.VAR_employeeSubscriptionCostsPerYear, Contract.staticSetEmployeeSubscriptionCostsPerYear(siteRequest2, (String)result.get(Contract.VAR_employeeSubscriptionCostsPerYear)));
+      o.persistForClass(Contract.VAR_employeesPerYearDataset, Contract.staticSetEmployeesPerYearDataset(siteRequest2, (String)result.get(Contract.VAR_employeesPerYearDataset)));
+      o.persistForClass(Contract.VAR_subscriptionCostsPerYearDataset, Contract.staticSetSubscriptionCostsPerYearDataset(siteRequest2, (String)result.get(Contract.VAR_subscriptionCostsPerYearDataset)));
+      o.persistForClass(Contract.VAR_openshiftControlPlaneNodes, Contract.staticSetOpenshiftControlPlaneNodes(siteRequest2, (String)result.get(Contract.VAR_openshiftControlPlaneNodes)));
+      o.persistForClass(Contract.VAR_openshiftControlPlaneCores, Contract.staticSetOpenshiftControlPlaneCores(siteRequest2, (String)result.get(Contract.VAR_openshiftControlPlaneCores)));
+      o.persistForClass(Contract.VAR_totalOpenshiftControlPlaneCores, Contract.staticSetTotalOpenshiftControlPlaneCores(siteRequest2, (String)result.get(Contract.VAR_totalOpenshiftControlPlaneCores)));
+      o.persistForClass(Contract.VAR_openshiftControlPlaneHourlyPrice, Contract.staticSetOpenshiftControlPlaneHourlyPrice(siteRequest2, (String)result.get(Contract.VAR_openshiftControlPlaneHourlyPrice)));
+      o.persistForClass(Contract.VAR_openshiftInfraNodes, Contract.staticSetOpenshiftInfraNodes(siteRequest2, (String)result.get(Contract.VAR_openshiftInfraNodes)));
+      o.persistForClass(Contract.VAR_openshiftInfraCores, Contract.staticSetOpenshiftInfraCores(siteRequest2, (String)result.get(Contract.VAR_openshiftInfraCores)));
+      o.persistForClass(Contract.VAR_totalOpenshiftInfraCores, Contract.staticSetTotalOpenshiftInfraCores(siteRequest2, (String)result.get(Contract.VAR_totalOpenshiftInfraCores)));
+      o.persistForClass(Contract.VAR_openshiftInfraHourlyPrice, Contract.staticSetOpenshiftInfraHourlyPrice(siteRequest2, (String)result.get(Contract.VAR_openshiftInfraHourlyPrice)));
+      o.persistForClass(Contract.VAR_openshiftWorkerNodes, Contract.staticSetOpenshiftWorkerNodes(siteRequest2, (String)result.get(Contract.VAR_openshiftWorkerNodes)));
+      o.persistForClass(Contract.VAR_openshiftWorkerCores, Contract.staticSetOpenshiftWorkerCores(siteRequest2, (String)result.get(Contract.VAR_openshiftWorkerCores)));
+      o.persistForClass(Contract.VAR_totalOpenshiftWorkerCores, Contract.staticSetTotalOpenshiftWorkerCores(siteRequest2, (String)result.get(Contract.VAR_totalOpenshiftWorkerCores)));
+      o.persistForClass(Contract.VAR_openshiftWorkerHourlyPrice, Contract.staticSetOpenshiftWorkerHourlyPrice(siteRequest2, (String)result.get(Contract.VAR_openshiftWorkerHourlyPrice)));
+      o.persistForClass(Contract.VAR_openshiftSSDStorageTiBPerYear, Contract.staticSetOpenshiftSSDStorageTiBPerYear(siteRequest2, (String)result.get(Contract.VAR_openshiftSSDStorageTiBPerYear)));
+      o.persistForClass(Contract.VAR_openshiftSSDStoragePrice, Contract.staticSetOpenshiftSSDStoragePrice(siteRequest2, (String)result.get(Contract.VAR_openshiftSSDStoragePrice)));
+      o.persistForClass(Contract.VAR_openshiftCostsPerYear, Contract.staticSetOpenshiftCostsPerYear(siteRequest2, (String)result.get(Contract.VAR_openshiftCostsPerYear)));
 
       o.promiseDeepForClass((SiteRequest)siteRequest).onSuccess(o2 -> {
         try {

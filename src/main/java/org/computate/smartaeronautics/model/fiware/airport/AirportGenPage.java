@@ -405,14 +405,14 @@ public class AirportGenPage extends AirportGenPageGen<PageLayout> {
   }
 
   @Override
-  protected void _DEFAULT_MAP_LOCATION(Wrap<JsonObject> w) {
-    Point point = Airport.staticSetLocation(siteRequest_, Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_DEFAULT_MAP_LOCATION)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_LOCATION)));
+  protected void _location(Wrap<JsonObject> w) {
+    Point point = Airport.staticSetLocation(siteRequest_, Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_location)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_LOCATION)));
     w.o(new JsonObject().put("type", "Point").put("coordinates", new JsonArray().add(Double.valueOf(point.getX())).add(Double.valueOf(point.getY()))));
   }
 
   @Override
-  protected void _DEFAULT_MAP_ZOOM(Wrap<BigDecimal> w) {
-    String s = Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_DEFAULT_MAP_ZOOM)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_ZOOM));
+  protected void _zoom(Wrap<BigDecimal> w) {
+    String s = Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_zoom)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_ZOOM));
     if(s != null)
       w.o(new BigDecimal(s));
   }

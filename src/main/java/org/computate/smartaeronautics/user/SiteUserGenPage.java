@@ -405,12 +405,12 @@ public class SiteUserGenPage extends SiteUserGenPageGen<PageLayout> {
   }
 
   @Override
-  protected void _DEFAULT_MAP_LOCATION(Wrap<JsonObject> w) {
+  protected void _location(Wrap<JsonObject> w) {
   }
 
   @Override
-  protected void _DEFAULT_MAP_ZOOM(Wrap<BigDecimal> w) {
-    String s = Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_DEFAULT_MAP_ZOOM)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_ZOOM));
+  protected void _zoom(Wrap<BigDecimal> w) {
+    String s = Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_zoom)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_ZOOM));
     if(s != null)
       w.o(new BigDecimal(s));
   }

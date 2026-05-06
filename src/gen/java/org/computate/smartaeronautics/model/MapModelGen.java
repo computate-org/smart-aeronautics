@@ -78,8 +78,8 @@ import tech.units.indriya.format.SimpleUnitFormat;
 import org.computate.vertx.tool.GeoTool;
 import org.computate.vertx.serialize.unit.QuantitySerializer;
 import org.computate.vertx.serialize.unit.QuantityDeserializer;
-import javax.measure.quantity.Angle;
 import java.lang.Double;
+import javax.measure.quantity.Angle;
 import org.computate.search.wrap.Wrap;
 import io.vertx.core.Promise;
 import io.vertx.core.Future;
@@ -998,6 +998,68 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     return Optional.ofNullable(altitude).map(v -> v.toString()).orElse(null);
   }
 
+	////////////////////
+  // altitudeMeters //
+	////////////////////
+
+
+  /**
+   *  The entity altitudeMeters
+   *	 is defined as null before being initialized. 
+   */
+  @JsonProperty
+  @JsonSerialize(using = ToStringSerializer.class)
+  @JsonInclude(Include.NON_NULL)
+  protected Double altitudeMeters;
+
+  /**
+   * <br> The entity altitudeMeters
+   *  is defined as null before being initialized. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.MapModel&fq=entiteVar_enUS_indexed_string:altitudeMeters">Find the entity altitudeMeters in Solr</a>
+   * <br>
+   * @param w is for wrapping a value to assign to this entity during initialization. 
+   **/
+  protected abstract void _altitudeMeters(Wrap<Double> w);
+
+  public Double getAltitudeMeters() {
+    return altitudeMeters;
+  }
+
+  public void setAltitudeMeters(Double altitudeMeters) {
+    this.altitudeMeters = altitudeMeters;
+  }
+  @JsonIgnore
+  public void setAltitudeMeters(String o) {
+    this.altitudeMeters = MapModel.staticSetAltitudeMeters(siteRequest_, o);
+  }
+  public static Double staticSetAltitudeMeters(SiteRequest siteRequest_, String o) {
+    if(NumberUtils.isParsable(o))
+      return Double.parseDouble(o);
+    return null;
+  }
+  protected MapModel altitudeMetersInit() {
+    Wrap<Double> altitudeMetersWrap = new Wrap<Double>().var("altitudeMeters");
+    if(altitudeMeters == null) {
+      _altitudeMeters(altitudeMetersWrap);
+      Optional.ofNullable(altitudeMetersWrap.getO()).ifPresent(o -> {
+        setAltitudeMeters(o);
+      });
+    }
+    return (MapModel)this;
+  }
+
+  public static Double staticSearchAltitudeMeters(SiteRequest siteRequest_, Double o) {
+    return o;
+  }
+
+  public static String staticSearchStrAltitudeMeters(SiteRequest siteRequest_, Double o) {
+    return o == null ? null : o.toString();
+  }
+
+  public static String staticSearchFqAltitudeMeters(SiteRequest siteRequest_, String o) {
+    return MapModel.staticSearchAltitudeMeters(siteRequest_, MapModel.staticSetAltitudeMeters(siteRequest_, o)).toString();
+  }
+
 	///////////
   // pitch //
 	///////////
@@ -1315,6 +1377,68 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     return MapModel.staticSearchRotation(siteRequest_, MapModel.staticSetRotation(siteRequest_, o)).toString();
   }
 
+	//////////////
+  // gltfPath //
+	//////////////
+
+
+  /**
+   *  The entity gltfPath
+   *	 is defined as null before being initialized. 
+   */
+  @JsonProperty
+  @JsonInclude(Include.NON_NULL)
+  protected String gltfPath;
+
+  /**
+   * <br> The entity gltfPath
+   *  is defined as null before being initialized. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.MapModel&fq=entiteVar_enUS_indexed_string:gltfPath">Find the entity gltfPath in Solr</a>
+   * <br>
+   * @param w is for wrapping a value to assign to this entity during initialization. 
+   **/
+  protected abstract void _gltfPath(Wrap<String> w);
+
+  public String getGltfPath() {
+    return gltfPath;
+  }
+  public void setGltfPath(String o) {
+    this.gltfPath = MapModel.staticSetGltfPath(siteRequest_, o);
+  }
+  public static String staticSetGltfPath(SiteRequest siteRequest_, String o) {
+    return o;
+  }
+  protected MapModel gltfPathInit() {
+    Wrap<String> gltfPathWrap = new Wrap<String>().var("gltfPath");
+    if(gltfPath == null) {
+      _gltfPath(gltfPathWrap);
+      Optional.ofNullable(gltfPathWrap.getO()).ifPresent(o -> {
+        setGltfPath(o);
+      });
+    }
+    return (MapModel)this;
+  }
+
+  public static String staticSearchGltfPath(SiteRequest siteRequest_, String o) {
+    return o;
+  }
+
+  public static String staticSearchStrGltfPath(SiteRequest siteRequest_, String o) {
+    return o == null ? null : o.toString();
+  }
+
+  public static String staticSearchFqGltfPath(SiteRequest siteRequest_, String o) {
+    return MapModel.staticSearchGltfPath(siteRequest_, MapModel.staticSetGltfPath(siteRequest_, o)).toString();
+  }
+
+  public String sqlGltfPath() {
+    return gltfPath;
+  }
+
+  public static String staticJsonGltfPath(String gltfPath) {
+    return gltfPath;
+  }
+
   //////////////
   // initDeep //
   //////////////
@@ -1356,10 +1480,12 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         ngsildDataInit();
         colorInit();
         altitudeInit();
+        altitudeMetersInit();
         pitchInit();
         yawInit();
         rollInit();
         rotationInit();
+        gltfPathInit();
         promise2.complete();
       } catch(Exception ex) {
         promise2.fail(ex);
@@ -1435,6 +1561,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return oMapModel.color;
       case "altitude":
         return oMapModel.altitude;
+      case "altitudeMeters":
+        return oMapModel.altitudeMeters;
       case "pitch":
         return oMapModel.pitch;
       case "yaw":
@@ -1443,6 +1571,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return oMapModel.roll;
       case "rotation":
         return oMapModel.rotation;
+      case "gltfPath":
+        return oMapModel.gltfPath;
       default:
         return super.obtainBaseModel(var);
     }
@@ -1504,6 +1634,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSetColor(siteRequest_, v);
     case "altitude":
       return MapModel.staticSetAltitude(siteRequest_, v);
+    case "altitudeMeters":
+      return MapModel.staticSetAltitudeMeters(siteRequest_, v);
     case "pitch":
       return MapModel.staticSetPitch(siteRequest_, v);
     case "yaw":
@@ -1512,6 +1644,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSetRoll(siteRequest_, v);
     case "rotation":
       return MapModel.staticSetRotation(siteRequest_, v);
+    case "gltfPath":
+      return MapModel.staticSetGltfPath(siteRequest_, v);
       default:
         return BaseModel.staticSetBaseModel(entityVar,  siteRequest_, v, o);
     }
@@ -1578,6 +1712,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchColor(siteRequest_, (String)o);
     case "altitude":
       return MapModel.staticSearchAltitude(siteRequest_, (Quantity<Length>)o);
+    case "altitudeMeters":
+      return MapModel.staticSearchAltitudeMeters(siteRequest_, (Double)o);
     case "pitch":
       return MapModel.staticSearchPitch(siteRequest_, (Quantity<Angle>)o);
     case "yaw":
@@ -1586,6 +1722,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchRoll(siteRequest_, (Quantity<Angle>)o);
     case "rotation":
       return MapModel.staticSearchRotation(siteRequest_, (Double)o);
+    case "gltfPath":
+      return MapModel.staticSearchGltfPath(siteRequest_, (String)o);
       default:
         return BaseModel.staticSearchBaseModel(entityVar,  siteRequest_, o);
     }
@@ -1622,6 +1760,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchStrColor(siteRequest_, (String)o);
     case "altitude":
       return MapModel.staticSearchStrAltitude(siteRequest_, (String)o);
+    case "altitudeMeters":
+      return MapModel.staticSearchStrAltitudeMeters(siteRequest_, (Double)o);
     case "pitch":
       return MapModel.staticSearchStrPitch(siteRequest_, (String)o);
     case "yaw":
@@ -1630,6 +1770,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchStrRoll(siteRequest_, (String)o);
     case "rotation":
       return MapModel.staticSearchStrRotation(siteRequest_, (Double)o);
+    case "gltfPath":
+      return MapModel.staticSearchStrGltfPath(siteRequest_, (String)o);
       default:
         return BaseModel.staticSearchStrBaseModel(entityVar,  siteRequest_, o);
     }
@@ -1666,6 +1808,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchFqColor(siteRequest_, o);
     case "altitude":
       return MapModel.staticSearchFqAltitude(siteRequest_, o);
+    case "altitudeMeters":
+      return MapModel.staticSearchFqAltitudeMeters(siteRequest_, o);
     case "pitch":
       return MapModel.staticSearchFqPitch(siteRequest_, o);
     case "yaw":
@@ -1674,6 +1818,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return MapModel.staticSearchFqRoll(siteRequest_, o);
     case "rotation":
       return MapModel.staticSearchFqRotation(siteRequest_, o);
+    case "gltfPath":
+      return MapModel.staticSearchFqGltfPath(siteRequest_, o);
       default:
         return BaseModel.staticSearchFqBaseModel(entityVar,  siteRequest_, o);
     }
@@ -1802,6 +1948,12 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         }
         saves.add("roll");
         return val;
+      } else if("gltfpath".equals(varLower)) {
+        if(val instanceof String) {
+          setGltfPath((String)val);
+        }
+        saves.add("gltfPath");
+        return val;
     } else {
       return super.persistBaseModel(var, val);
     }
@@ -1885,6 +2037,12 @@ public abstract class MapModelGen<DEV> extends BaseModel {
           oMapModel.setAltitude(altitude);
       }
 
+      if(saves.contains("altitudeMeters")) {
+        Double altitudeMeters = (Double)doc.get("altitudeMeters_docvalues_double");
+        if(altitudeMeters != null)
+          oMapModel.setAltitudeMeters(altitudeMeters);
+      }
+
       if(saves.contains("pitch")) {
         String pitch = (String)doc.get("pitch_docvalues_string");
         if(pitch != null)
@@ -1910,6 +2068,12 @@ public abstract class MapModelGen<DEV> extends BaseModel {
             oMapModel.rotation.add(v);
           });
         }
+      }
+
+      if(saves.contains("gltfPath")) {
+        String gltfPath = (String)doc.get("gltfPath_docvalues_string");
+        if(gltfPath != null)
+          oMapModel.setGltfPath(gltfPath);
       }
     }
 
@@ -1950,6 +2114,9 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     if(altitude != null) {
       doc.put("altitude_docvalues_string", altitude.toString());
     }
+    if(altitudeMeters != null) {
+      doc.put("altitudeMeters_docvalues_double", altitudeMeters);
+    }
     if(pitch != null) {
       doc.put("pitch_docvalues_string", pitch.toString());
     }
@@ -1965,6 +2132,9 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       for(Double o : rotation) {
         l.add(MapModel.staticSearchRotation(siteRequest_, o));
       }
+    }
+    if(gltfPath != null) {
+      doc.put("gltfPath_docvalues_string", gltfPath);
     }
     super.indexBaseModel(doc);
 
@@ -1994,6 +2164,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "color_docvalues_string";
       case "altitude":
         return "altitude_docvalues_string";
+      case "altitudeMeters":
+        return "altitudeMeters_docvalues_double";
       case "pitch":
         return "pitch_docvalues_string";
       case "yaw":
@@ -2002,6 +2174,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "roll_docvalues_string";
       case "rotation":
         return "rotation_docvalues_doubles";
+      case "gltfPath":
+        return "gltfPath_docvalues_string";
       default:
         return BaseModel.varStoredBaseModel(entityVar);
     }
@@ -2031,6 +2205,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "color_docvalues_string";
       case "altitude":
         return "altitude_docvalues_string";
+      case "altitudeMeters":
+        return "altitudeMeters_docvalues_double";
       case "pitch":
         return "pitch_docvalues_string";
       case "yaw":
@@ -2039,6 +2215,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "roll_docvalues_string";
       case "rotation":
         return "rotation_docvalues_doubles";
+      case "gltfPath":
+        return "gltfPath_docvalues_string";
       default:
         return BaseModel.varIndexedBaseModel(entityVar);
     }
@@ -2068,6 +2246,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "color";
       case "altitude_docvalues_string":
         return "altitude";
+      case "altitudeMeters_docvalues_double":
+        return "altitudeMeters";
       case "pitch_docvalues_string":
         return "pitch";
       case "yaw_docvalues_string":
@@ -2076,6 +2256,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         return "roll";
       case "rotation_docvalues_doubles":
         return "rotation";
+      case "gltfPath_docvalues_string":
+        return "gltfPath";
       default:
         return BaseModel.searchVarBaseModel(searchVar);
     }
@@ -2117,12 +2299,14 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     oMapModel.setNgsildData(Optional.ofNullable(doc.get("ngsildData_docvalues_string")).map(v -> v.toString()).orElse(null));
     oMapModel.setColor(Optional.ofNullable(doc.get("color_docvalues_string")).map(v -> v.toString()).orElse(null));
     oMapModel.setAltitude(Optional.ofNullable(doc.get("altitude_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oMapModel.setAltitudeMeters(Optional.ofNullable(doc.get("altitudeMeters_docvalues_double")).map(v -> v.toString()).orElse(null));
     oMapModel.setPitch(Optional.ofNullable(doc.get("pitch_docvalues_string")).map(v -> v.toString()).orElse(null));
     oMapModel.setYaw(Optional.ofNullable(doc.get("yaw_docvalues_string")).map(v -> v.toString()).orElse(null));
     oMapModel.setRoll(Optional.ofNullable(doc.get("roll_docvalues_string")).map(v -> v.toString()).orElse(null));
     Optional.ofNullable((List<?>)doc.get("rotation_docvalues_doubles")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
       oMapModel.addRotation(MapModel.staticSetRotation(siteRequest, v.toString()));
     });
+    oMapModel.setGltfPath(Optional.ofNullable(doc.get("gltfPath_docvalues_string")).map(v -> v.toString()).orElse(null));
 
     super.storeBaseModel(doc);
   }
@@ -2158,6 +2342,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         apiRequest.addVars("color");
       if(!Objects.equals(altitude, original.getAltitude()))
         apiRequest.addVars("altitude");
+      if(!Objects.equals(altitudeMeters, original.getAltitudeMeters()))
+        apiRequest.addVars("altitudeMeters");
       if(!Objects.equals(pitch, original.getPitch()))
         apiRequest.addVars("pitch");
       if(!Objects.equals(yaw, original.getYaw()))
@@ -2166,6 +2352,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
         apiRequest.addVars("roll");
       if(!Objects.equals(rotation, original.getRotation()))
         apiRequest.addVars("rotation");
+      if(!Objects.equals(gltfPath, original.getGltfPath()))
+        apiRequest.addVars("gltfPath");
       super.apiRequestBaseModel();
     }
   }
@@ -2188,10 +2376,12 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     sb.append(Optional.ofNullable(ngsildData).map(v -> "ngsildData: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(color).map(v -> "color: \"" + v + "\"\n" ).orElse(""));
     sb.append(Optional.ofNullable(altitude).map(v -> "altitude: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(altitudeMeters).map(v -> "altitudeMeters: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(pitch).map(v -> "pitch: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(yaw).map(v -> "yaw: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(roll).map(v -> "roll: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(rotation).map(v -> "rotation: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(gltfPath).map(v -> "gltfPath: \"" + v + "\"\n" ).orElse(""));
     return sb.toString();
   }
 
@@ -2224,6 +2414,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
   public static final String SET_color = "setColor";
   public static final String VAR_altitude = "altitude";
   public static final String SET_altitude = "setAltitude";
+  public static final String VAR_altitudeMeters = "altitudeMeters";
+  public static final String SET_altitudeMeters = "setAltitudeMeters";
   public static final String VAR_pitch = "pitch";
   public static final String SET_pitch = "setPitch";
   public static final String VAR_yaw = "yaw";
@@ -2232,6 +2424,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
   public static final String SET_roll = "setRoll";
   public static final String VAR_rotation = "rotation";
   public static final String SET_rotation = "setRotation";
+  public static final String VAR_gltfPath = "gltfPath";
+  public static final String SET_gltfPath = "setGltfPath";
 
   public static List<String> varsQForClass() {
     return MapModel.varsQMapModel(new ArrayList<String>());
@@ -2256,9 +2450,11 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     vars.add(VAR_ngsildData);
     vars.add(VAR_color);
     vars.add(VAR_altitude);
+    vars.add(VAR_altitudeMeters);
     vars.add(VAR_pitch);
     vars.add(VAR_yaw);
     vars.add(VAR_roll);
+    vars.add(VAR_gltfPath);
     BaseModel.varsFqBaseModel(vars);
     return vars;
   }
@@ -2269,6 +2465,7 @@ public abstract class MapModelGen<DEV> extends BaseModel {
   public static List<String> varsRangeMapModel(List<String> vars) {
     vars.add(VAR_location);
     vars.add(VAR_ngsildData);
+    vars.add(VAR_altitudeMeters);
     BaseModel.varsRangeBaseModel(vars);
     return vars;
   }
@@ -2284,10 +2481,12 @@ public abstract class MapModelGen<DEV> extends BaseModel {
   public static final String DISPLAY_NAME_ngsildData = "NGSILD data";
   public static final String DISPLAY_NAME_color = "color";
   public static final String DISPLAY_NAME_altitude = "altitude";
+  public static final String DISPLAY_NAME_altitudeMeters = "";
   public static final String DISPLAY_NAME_pitch = "pitch";
   public static final String DISPLAY_NAME_yaw = "yaw";
   public static final String DISPLAY_NAME_roll = "roll";
   public static final String DISPLAY_NAME_rotation = "yaw";
+  public static final String DISPLAY_NAME_gltfPath = "GLTF path";
 
   @Override
   public String idForClass() {
@@ -2341,6 +2540,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return patch ? SET_color : VAR_color;
     case VAR_altitude:
       return patch ? SET_altitude : VAR_altitude;
+    case VAR_altitudeMeters:
+      return patch ? SET_altitudeMeters : VAR_altitudeMeters;
     case VAR_pitch:
       return patch ? SET_pitch : VAR_pitch;
     case VAR_yaw:
@@ -2349,6 +2550,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return patch ? SET_roll : VAR_roll;
     case VAR_rotation:
       return patch ? SET_rotation : VAR_rotation;
+    case VAR_gltfPath:
+      return patch ? SET_gltfPath : VAR_gltfPath;
     default:
       return BaseModel.varJsonBaseModel(var, patch);
     }
@@ -2381,6 +2584,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return DISPLAY_NAME_color;
     case VAR_altitude:
       return DISPLAY_NAME_altitude;
+    case VAR_altitudeMeters:
+      return DISPLAY_NAME_altitudeMeters;
     case VAR_pitch:
       return DISPLAY_NAME_pitch;
     case VAR_yaw:
@@ -2389,6 +2594,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return DISPLAY_NAME_roll;
     case VAR_rotation:
       return DISPLAY_NAME_rotation;
+    case VAR_gltfPath:
+      return DISPLAY_NAME_gltfPath;
     default:
       return BaseModel.displayNameBaseModel(var);
     }
@@ -2428,6 +2635,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return "Rotation around the front-to-back (longitudinal) axis (e.g., tilting wings left or right). ";
     case VAR_rotation:
       return "Rotation around the vertical axis (e.g., turning the nose left or right). ";
+    case VAR_gltfPath:
+      return "The path within the static content where the 3D GLTF file for this model is found. ";
       default:
         return BaseModel.descriptionBaseModel(var);
     }
@@ -2457,6 +2666,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return "String";
     case VAR_altitude:
       return "Quantity";
+    case VAR_altitudeMeters:
+      return "Double";
     case VAR_pitch:
       return "Quantity";
     case VAR_yaw:
@@ -2465,6 +2676,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return "Quantity";
     case VAR_rotation:
       return "List";
+    case VAR_gltfPath:
+      return "String";
       default:
         return BaseModel.classSimpleNameBaseModel(var);
     }
@@ -2494,6 +2707,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return "Property";
     case VAR_altitude:
       return "Property";
+    case VAR_altitudeMeters:
+      return "Property";
     case VAR_pitch:
       return "Property";
     case VAR_yaw:
@@ -2501,6 +2716,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
     case VAR_roll:
       return "Property";
     case VAR_rotation:
+      return "Property";
+    case VAR_gltfPath:
       return "Property";
       default:
         return null;
@@ -2531,6 +2748,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return o.getColor();
     case VAR_altitude:
       return o.getAltitude();
+    case VAR_altitudeMeters:
+      return o.getAltitudeMeters();
     case VAR_pitch:
       return o.getPitch();
     case VAR_yaw:
@@ -2539,6 +2758,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return o.getRoll();
     case VAR_rotation:
       return o.getRotation();
+    case VAR_gltfPath:
+      return o.getGltfPath();
       default:
         return null;
     }
@@ -2583,6 +2804,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return 6;
     case VAR_roll:
       return 6;
+    case VAR_gltfPath:
+      return 6;
       default:
         return BaseModel.htmRowBaseModel(var);
     }
@@ -2616,6 +2839,8 @@ public abstract class MapModelGen<DEV> extends BaseModel {
       return 2;
     case VAR_roll:
       return 3;
+    case VAR_gltfPath:
+      return 4;
       default:
         return BaseModel.htmCellBaseModel(var);
     }
