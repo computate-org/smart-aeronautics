@@ -33,6 +33,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.util.Arrays;
+import javax.measure.Quantity;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.math.MathContext;
@@ -403,17 +406,6 @@ public class SitePageGenPage extends SitePageGenPageGen<PageLayout> {
   @Override
   protected void _defaultPivotMinCount(Wrap<Integer> w) {
     w.o(Optional.ofNullable(searchListSitePage_.getFacetPivotMinCount()).orElse(0));
-  }
-
-  @Override
-  protected void _location(Wrap<JsonObject> w) {
-  }
-
-  @Override
-  protected void _zoom(Wrap<BigDecimal> w) {
-    String s = Optional.ofNullable(siteRequest_.getRequestVars().get(VAR_zoom)).orElse(siteRequest_.getConfig().getString(ConfigKeys.DEFAULT_MAP_ZOOM));
-    if(s != null)
-      w.o(new BigDecimal(s));
   }
 
   @Override

@@ -7677,13 +7677,15 @@ components:
                         - type: number
                         - type: string
                         - type: boolean
+                  employeesPerYearChart:
+                    type: object
                   openshiftControlPlaneNodes:
                     type: string
                   openshiftControlPlaneCores:
                     type: string
                   totalOpenshiftControlPlaneCores:
                     type: string
-                  openshiftControlPlaneHourlyPrice:
+                  openshiftControlPlaneHourlyPricePerCore:
                     type: string
                   openshiftInfraNodes:
                     type: string
@@ -7691,7 +7693,7 @@ components:
                     type: string
                   totalOpenshiftInfraCores:
                     type: string
-                  openshiftInfraHourlyPrice:
+                  openshiftInfraHourlyPricePerCore:
                     type: string
                   openshiftWorkerNodes:
                     type: string
@@ -7699,19 +7701,23 @@ components:
                     type: string
                   totalOpenshiftWorkerCores:
                     type: string
-                  openshiftWorkerHourlyPrice:
+                  openshiftWorkerHourlyPricePerCore:
                     type: string
                   openshiftSSDStorageTiBPerYear:
                     type: array
                     items:
                       type: string
-                  openshiftSSDStoragePrice:
+                  openshiftSSDStoragePricePerGiB:
                     type: string
-                  openshiftCostsPerYear:
+                  openshiftCostsPerYearDataset:
                     type: array
                     items:
-                      type: string
-                  employeesPerYearChart:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  openshiftCostsPerYearChart:
                     type: object
                   projectExpensesChart:
                     type: object
@@ -8132,6 +8138,13 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            setEmployeesPerYearChart:
+              type: object
+              nullable: true
+            removeEmployeesPerYearChart:
+              type: object
+            removeAllEmployeesPerYearChart:
+              type: object
             setOpenshiftControlPlaneNodes:
               type: string
               nullable: true
@@ -8153,12 +8166,12 @@ components:
               type: string
             removeAllTotalOpenshiftControlPlaneCores:
               type: string
-            setOpenshiftControlPlaneHourlyPrice:
+            setOpenshiftControlPlaneHourlyPricePerCore:
               type: string
               nullable: true
-            removeOpenshiftControlPlaneHourlyPrice:
+            removeOpenshiftControlPlaneHourlyPricePerCore:
               type: string
-            removeAllOpenshiftControlPlaneHourlyPrice:
+            removeAllOpenshiftControlPlaneHourlyPricePerCore:
               type: string
             setOpenshiftInfraNodes:
               type: string
@@ -8181,12 +8194,12 @@ components:
               type: string
             removeAllTotalOpenshiftInfraCores:
               type: string
-            setOpenshiftInfraHourlyPrice:
+            setOpenshiftInfraHourlyPricePerCore:
               type: string
               nullable: true
-            removeOpenshiftInfraHourlyPrice:
+            removeOpenshiftInfraHourlyPricePerCore:
               type: string
-            removeAllOpenshiftInfraHourlyPrice:
+            removeAllOpenshiftInfraHourlyPricePerCore:
               type: string
             setOpenshiftWorkerNodes:
               type: string
@@ -8209,12 +8222,12 @@ components:
               type: string
             removeAllTotalOpenshiftWorkerCores:
               type: string
-            setOpenshiftWorkerHourlyPrice:
+            setOpenshiftWorkerHourlyPricePerCore:
               type: string
               nullable: true
-            removeOpenshiftWorkerHourlyPrice:
+            removeOpenshiftWorkerHourlyPricePerCore:
               type: string
-            removeAllOpenshiftWorkerHourlyPrice:
+            removeAllOpenshiftWorkerHourlyPricePerCore:
               type: string
             setOpenshiftSSDStorageTiBPerYear:
               type: array
@@ -8233,36 +8246,44 @@ components:
               type: array
               items:
                 type: string
-            setOpenshiftSSDStoragePrice:
+            setOpenshiftSSDStoragePricePerGiB:
               type: string
               nullable: true
-            removeOpenshiftSSDStoragePrice:
+            removeOpenshiftSSDStoragePricePerGiB:
               type: string
-            removeAllOpenshiftSSDStoragePrice:
+            removeAllOpenshiftSSDStoragePricePerGiB:
               type: string
-            setOpenshiftCostsPerYear:
+            setOpenshiftCostsPerYearDataset:
               type: array
               nullable: true
               items:
-                type: string
-            removeOpenshiftCostsPerYear:
-              type: string
-            removeAllOpenshiftCostsPerYear:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeOpenshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            addOpenshiftCostsPerYear:
-              type: string
-            addAllOpenshiftCostsPerYear:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllOpenshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            setEmployeesPerYearChart:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setOpenshiftCostsPerYearChart:
               type: object
               nullable: true
-            removeEmployeesPerYearChart:
+            removeOpenshiftCostsPerYearChart:
               type: object
-            removeAllEmployeesPerYearChart:
+            removeAllOpenshiftCostsPerYearChart:
               type: object
             setProjectExpensesChart:
               type: object
@@ -8693,6 +8714,13 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            setEmployeesPerYearChart:
+              type: object
+              nullable: true
+            removeEmployeesPerYearChart:
+              type: object
+            removeAllEmployeesPerYearChart:
+              type: object
             setOpenshiftControlPlaneNodes:
               type: string
               nullable: true
@@ -8714,12 +8742,12 @@ components:
               type: string
             removeAllTotalOpenshiftControlPlaneCores:
               type: string
-            setOpenshiftControlPlaneHourlyPrice:
+            setOpenshiftControlPlaneHourlyPricePerCore:
               type: string
               nullable: true
-            removeOpenshiftControlPlaneHourlyPrice:
+            removeOpenshiftControlPlaneHourlyPricePerCore:
               type: string
-            removeAllOpenshiftControlPlaneHourlyPrice:
+            removeAllOpenshiftControlPlaneHourlyPricePerCore:
               type: string
             setOpenshiftInfraNodes:
               type: string
@@ -8742,12 +8770,12 @@ components:
               type: string
             removeAllTotalOpenshiftInfraCores:
               type: string
-            setOpenshiftInfraHourlyPrice:
+            setOpenshiftInfraHourlyPricePerCore:
               type: string
               nullable: true
-            removeOpenshiftInfraHourlyPrice:
+            removeOpenshiftInfraHourlyPricePerCore:
               type: string
-            removeAllOpenshiftInfraHourlyPrice:
+            removeAllOpenshiftInfraHourlyPricePerCore:
               type: string
             setOpenshiftWorkerNodes:
               type: string
@@ -8770,12 +8798,12 @@ components:
               type: string
             removeAllTotalOpenshiftWorkerCores:
               type: string
-            setOpenshiftWorkerHourlyPrice:
+            setOpenshiftWorkerHourlyPricePerCore:
               type: string
               nullable: true
-            removeOpenshiftWorkerHourlyPrice:
+            removeOpenshiftWorkerHourlyPricePerCore:
               type: string
-            removeAllOpenshiftWorkerHourlyPrice:
+            removeAllOpenshiftWorkerHourlyPricePerCore:
               type: string
             setOpenshiftSSDStorageTiBPerYear:
               type: array
@@ -8794,36 +8822,44 @@ components:
               type: array
               items:
                 type: string
-            setOpenshiftSSDStoragePrice:
+            setOpenshiftSSDStoragePricePerGiB:
               type: string
               nullable: true
-            removeOpenshiftSSDStoragePrice:
+            removeOpenshiftSSDStoragePricePerGiB:
               type: string
-            removeAllOpenshiftSSDStoragePrice:
+            removeAllOpenshiftSSDStoragePricePerGiB:
               type: string
-            setOpenshiftCostsPerYear:
+            setOpenshiftCostsPerYearDataset:
               type: array
               nullable: true
               items:
-                type: string
-            removeOpenshiftCostsPerYear:
-              type: string
-            removeAllOpenshiftCostsPerYear:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeOpenshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            addOpenshiftCostsPerYear:
-              type: string
-            addAllOpenshiftCostsPerYear:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            removeAllOpenshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            setEmployeesPerYearChart:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            setOpenshiftCostsPerYearChart:
               type: object
               nullable: true
-            removeEmployeesPerYearChart:
+            removeOpenshiftCostsPerYearChart:
               type: object
-            removeAllEmployeesPerYearChart:
+            removeAllOpenshiftCostsPerYearChart:
               type: object
             setProjectExpensesChart:
               type: object
@@ -8951,13 +8987,15 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            employeesPerYearChart:
+              type: object
             openshiftControlPlaneNodes:
               type: string
             openshiftControlPlaneCores:
               type: string
             totalOpenshiftControlPlaneCores:
               type: string
-            openshiftControlPlaneHourlyPrice:
+            openshiftControlPlaneHourlyPricePerCore:
               type: string
             openshiftInfraNodes:
               type: string
@@ -8965,7 +9003,7 @@ components:
               type: string
             totalOpenshiftInfraCores:
               type: string
-            openshiftInfraHourlyPrice:
+            openshiftInfraHourlyPricePerCore:
               type: string
             openshiftWorkerNodes:
               type: string
@@ -8973,19 +9011,23 @@ components:
               type: string
             totalOpenshiftWorkerCores:
               type: string
-            openshiftWorkerHourlyPrice:
+            openshiftWorkerHourlyPricePerCore:
               type: string
             openshiftSSDStorageTiBPerYear:
               type: array
               items:
                 type: string
-            openshiftSSDStoragePrice:
+            openshiftSSDStoragePricePerGiB:
               type: string
-            openshiftCostsPerYear:
+            openshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            employeesPerYearChart:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftCostsPerYearChart:
               type: object
             projectExpensesChart:
               type: object
@@ -9103,13 +9145,15 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            employeesPerYearChart:
+              type: object
             openshiftControlPlaneNodes:
               type: string
             openshiftControlPlaneCores:
               type: string
             totalOpenshiftControlPlaneCores:
               type: string
-            openshiftControlPlaneHourlyPrice:
+            openshiftControlPlaneHourlyPricePerCore:
               type: string
             openshiftInfraNodes:
               type: string
@@ -9117,7 +9161,7 @@ components:
               type: string
             totalOpenshiftInfraCores:
               type: string
-            openshiftInfraHourlyPrice:
+            openshiftInfraHourlyPricePerCore:
               type: string
             openshiftWorkerNodes:
               type: string
@@ -9125,19 +9169,23 @@ components:
               type: string
             totalOpenshiftWorkerCores:
               type: string
-            openshiftWorkerHourlyPrice:
+            openshiftWorkerHourlyPricePerCore:
               type: string
             openshiftSSDStorageTiBPerYear:
               type: array
               items:
                 type: string
-            openshiftSSDStoragePrice:
+            openshiftSSDStoragePricePerGiB:
               type: string
-            openshiftCostsPerYear:
+            openshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            employeesPerYearChart:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftCostsPerYearChart:
               type: object
             projectExpensesChart:
               type: object
@@ -9255,13 +9303,15 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            employeesPerYearChart:
+              type: object
             openshiftControlPlaneNodes:
               type: string
             openshiftControlPlaneCores:
               type: string
             totalOpenshiftControlPlaneCores:
               type: string
-            openshiftControlPlaneHourlyPrice:
+            openshiftControlPlaneHourlyPricePerCore:
               type: string
             openshiftInfraNodes:
               type: string
@@ -9269,7 +9319,7 @@ components:
               type: string
             totalOpenshiftInfraCores:
               type: string
-            openshiftInfraHourlyPrice:
+            openshiftInfraHourlyPricePerCore:
               type: string
             openshiftWorkerNodes:
               type: string
@@ -9277,19 +9327,23 @@ components:
               type: string
             totalOpenshiftWorkerCores:
               type: string
-            openshiftWorkerHourlyPrice:
+            openshiftWorkerHourlyPricePerCore:
               type: string
             openshiftSSDStorageTiBPerYear:
               type: array
               items:
                 type: string
-            openshiftSSDStoragePrice:
+            openshiftSSDStoragePricePerGiB:
               type: string
-            openshiftCostsPerYear:
+            openshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            employeesPerYearChart:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftCostsPerYearChart:
               type: object
             projectExpensesChart:
               type: object
@@ -9412,13 +9466,15 @@ components:
                         - type: number
                         - type: string
                         - type: boolean
+                  employeesPerYearChart:
+                    type: object
                   openshiftControlPlaneNodes:
                     type: string
                   openshiftControlPlaneCores:
                     type: string
                   totalOpenshiftControlPlaneCores:
                     type: string
-                  openshiftControlPlaneHourlyPrice:
+                  openshiftControlPlaneHourlyPricePerCore:
                     type: string
                   openshiftInfraNodes:
                     type: string
@@ -9426,7 +9482,7 @@ components:
                     type: string
                   totalOpenshiftInfraCores:
                     type: string
-                  openshiftInfraHourlyPrice:
+                  openshiftInfraHourlyPricePerCore:
                     type: string
                   openshiftWorkerNodes:
                     type: string
@@ -9434,19 +9490,23 @@ components:
                     type: string
                   totalOpenshiftWorkerCores:
                     type: string
-                  openshiftWorkerHourlyPrice:
+                  openshiftWorkerHourlyPricePerCore:
                     type: string
                   openshiftSSDStorageTiBPerYear:
                     type: array
                     items:
                       type: string
-                  openshiftSSDStoragePrice:
+                  openshiftSSDStoragePricePerGiB:
                     type: string
-                  openshiftCostsPerYear:
+                  openshiftCostsPerYearDataset:
                     type: array
                     items:
-                      type: string
-                  employeesPerYearChart:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  openshiftCostsPerYearChart:
                     type: object
                   projectExpensesChart:
                     type: object
@@ -9564,13 +9624,15 @@ components:
                         - type: number
                         - type: string
                         - type: boolean
+                  employeesPerYearChart:
+                    type: object
                   openshiftControlPlaneNodes:
                     type: string
                   openshiftControlPlaneCores:
                     type: string
                   totalOpenshiftControlPlaneCores:
                     type: string
-                  openshiftControlPlaneHourlyPrice:
+                  openshiftControlPlaneHourlyPricePerCore:
                     type: string
                   openshiftInfraNodes:
                     type: string
@@ -9578,7 +9640,7 @@ components:
                     type: string
                   totalOpenshiftInfraCores:
                     type: string
-                  openshiftInfraHourlyPrice:
+                  openshiftInfraHourlyPricePerCore:
                     type: string
                   openshiftWorkerNodes:
                     type: string
@@ -9586,19 +9648,23 @@ components:
                     type: string
                   totalOpenshiftWorkerCores:
                     type: string
-                  openshiftWorkerHourlyPrice:
+                  openshiftWorkerHourlyPricePerCore:
                     type: string
                   openshiftSSDStorageTiBPerYear:
                     type: array
                     items:
                       type: string
-                  openshiftSSDStoragePrice:
+                  openshiftSSDStoragePricePerGiB:
                     type: string
-                  openshiftCostsPerYear:
+                  openshiftCostsPerYearDataset:
                     type: array
                     items:
-                      type: string
-                  employeesPerYearChart:
+                      anyOf:
+                        - type: string
+                        - type: number
+                        - type: string
+                        - type: boolean
+                  openshiftCostsPerYearChart:
                     type: object
                   projectExpensesChart:
                     type: object
@@ -9716,13 +9782,15 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            employeesPerYearChart:
+              type: object
             openshiftControlPlaneNodes:
               type: string
             openshiftControlPlaneCores:
               type: string
             totalOpenshiftControlPlaneCores:
               type: string
-            openshiftControlPlaneHourlyPrice:
+            openshiftControlPlaneHourlyPricePerCore:
               type: string
             openshiftInfraNodes:
               type: string
@@ -9730,7 +9798,7 @@ components:
               type: string
             totalOpenshiftInfraCores:
               type: string
-            openshiftInfraHourlyPrice:
+            openshiftInfraHourlyPricePerCore:
               type: string
             openshiftWorkerNodes:
               type: string
@@ -9738,19 +9806,23 @@ components:
               type: string
             totalOpenshiftWorkerCores:
               type: string
-            openshiftWorkerHourlyPrice:
+            openshiftWorkerHourlyPricePerCore:
               type: string
             openshiftSSDStorageTiBPerYear:
               type: array
               items:
                 type: string
-            openshiftSSDStoragePrice:
+            openshiftSSDStoragePricePerGiB:
               type: string
-            openshiftCostsPerYear:
+            openshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            employeesPerYearChart:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftCostsPerYearChart:
               type: object
             projectExpensesChart:
               type: object
@@ -9868,13 +9940,15 @@ components:
                   - type: number
                   - type: string
                   - type: boolean
+            employeesPerYearChart:
+              type: object
             openshiftControlPlaneNodes:
               type: string
             openshiftControlPlaneCores:
               type: string
             totalOpenshiftControlPlaneCores:
               type: string
-            openshiftControlPlaneHourlyPrice:
+            openshiftControlPlaneHourlyPricePerCore:
               type: string
             openshiftInfraNodes:
               type: string
@@ -9882,7 +9956,7 @@ components:
               type: string
             totalOpenshiftInfraCores:
               type: string
-            openshiftInfraHourlyPrice:
+            openshiftInfraHourlyPricePerCore:
               type: string
             openshiftWorkerNodes:
               type: string
@@ -9890,19 +9964,23 @@ components:
               type: string
             totalOpenshiftWorkerCores:
               type: string
-            openshiftWorkerHourlyPrice:
+            openshiftWorkerHourlyPricePerCore:
               type: string
             openshiftSSDStorageTiBPerYear:
               type: array
               items:
                 type: string
-            openshiftSSDStoragePrice:
+            openshiftSSDStoragePricePerGiB:
               type: string
-            openshiftCostsPerYear:
+            openshiftCostsPerYearDataset:
               type: array
               items:
-                type: string
-            employeesPerYearChart:
+                anyOf:
+                  - type: string
+                  - type: number
+                  - type: string
+                  - type: boolean
+            openshiftCostsPerYearChart:
               type: object
             projectExpensesChart:
               type: object
@@ -9990,6 +10068,8 @@ components:
                   simulation:
                     type: boolean
                   simulationDelayMillis:
+                    type: string
+                  gltfPath:
                     type: string
     PATCHAircraftRequest:
       allOf:
@@ -10207,6 +10287,13 @@ components:
               type: string
             removeAllSimulationDelayMillis:
               type: string
+            setGltfPath:
+              type: string
+              nullable: true
+            removeGltfPath:
+              type: string
+            removeAllGltfPath:
+              type: string
     PATCHAircraftResponse:
       allOf:
         - type: object
@@ -10423,6 +10510,13 @@ components:
               type: string
             removeAllSimulationDelayMillis:
               type: string
+            setGltfPath:
+              type: string
+              nullable: true
+            removeGltfPath:
+              type: string
+            removeAllGltfPath:
+              type: string
     POSTAircraftRequest:
       allOf:
         - type: object
@@ -10484,6 +10578,8 @@ components:
             simulation:
               type: boolean
             simulationDelayMillis:
+              type: string
+            gltfPath:
               type: string
     POSTAircraftResponse:
       allOf:
@@ -10547,6 +10643,8 @@ components:
               type: boolean
             simulationDelayMillis:
               type: string
+            gltfPath:
+              type: string
     DELETEFilterAircraftResponse:
       allOf:
         - type: object
@@ -10608,6 +10706,8 @@ components:
             simulation:
               type: boolean
             simulationDelayMillis:
+              type: string
+            gltfPath:
               type: string
     PUTImportAircraftRequest:
       allOf:
@@ -10676,6 +10776,8 @@ components:
                     type: boolean
                   simulationDelayMillis:
                     type: string
+                  gltfPath:
+                    type: string
     PUTImportAircraftResponse:
       allOf:
         - type: object
@@ -10737,6 +10839,8 @@ components:
                   simulation:
                     type: boolean
                   simulationDelayMillis:
+                    type: string
+                  gltfPath:
                     type: string
     GETAircraftResponse:
       allOf:
@@ -10801,6 +10905,8 @@ components:
               type: boolean
             simulationDelayMillis:
               type: string
+            gltfPath:
+              type: string
     DELETEAircraftResponse:
       allOf:
         - type: object
@@ -10862,6 +10968,8 @@ components:
             simulation:
               type: boolean
             simulationDelayMillis:
+              type: string
+            gltfPath:
               type: string
     EditPageAircraftResponse:
       allOf:

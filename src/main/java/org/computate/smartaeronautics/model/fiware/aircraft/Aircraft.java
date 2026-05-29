@@ -426,5 +426,10 @@ public class Aircraft extends AircraftGen<MapModel> {
   protected void _simulationDelayMillis(Wrap<Long> w) {
     w.o(499L);
   }
+
+  @Override
+  protected void _gltfPath(Wrap<String> w) {
+    w.o(String.format("%s%s", siteRequest_.getConfig().getString(ConfigKeys.STATIC_BASE_URL), "/glb/aircraft/airplane.glb"));
+  }
 }
 

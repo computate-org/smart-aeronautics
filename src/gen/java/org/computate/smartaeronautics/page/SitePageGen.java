@@ -1,5 +1,33 @@
 package org.computate.smartaeronautics.page;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.Normalizer;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.computate.search.tool.SearchTool;
+import org.computate.search.wrap.Wrap;
+import org.computate.smartaeronautics.config.ConfigKeys;
+import org.computate.smartaeronautics.model.BaseModel;
+import org.computate.smartaeronautics.result.BaseResult;
+import org.computate.smartaeronautics.request.SiteRequest;
+import org.computate.vertx.config.ComputateConfigKeys;
+import org.computate.vertx.search.list.SearchList;
+import io.vertx.core.Promise;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import org.computate.smartaeronautics.request.SiteRequest;
 import org.computate.smartaeronautics.result.BaseResult;
 import org.computate.smartaeronautics.model.BaseModel;
@@ -24,6 +52,7 @@ import org.computate.search.serialize.ComputateZonedDateTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.computate.search.serialize.ComputateBigDecimalDeserializer;
 import java.math.MathContext;
 import org.apache.commons.lang3.math.NumberUtils;
 import java.text.NumberFormat;
@@ -2328,7 +2357,8 @@ public abstract class SitePageGen<DEV> extends BaseResult {
   //////////////
 
   public Future<SitePageGen<DEV>> promiseDeepSitePage(SiteRequest siteRequest_) {
-    setSiteRequest_(siteRequest_);
+    if(this.siteRequest_ == null)
+      setSiteRequest_(siteRequest_);
     return promiseDeepSitePage();
   }
 
@@ -3726,7 +3756,7 @@ public abstract class SitePageGen<DEV> extends BaseResult {
     return "%s/en-us/view/article/%s";
   }
 
-  public static String varJsonForClass(String var, Boolean patch) {
+  public static String varJson(String var, Boolean patch) {
     return SitePage.varJsonSitePage(var, patch);
   }
   public static String varJsonSitePage(String var, Boolean patch) {

@@ -3071,6 +3071,69 @@ public abstract class ContractGen<DEV> extends BaseModel {
     return subscriptionCostsPerYearDataset;
   }
 
+	///////////////////////////
+  // employeesPerYearChart //
+	///////////////////////////
+
+
+  /**
+   *  The entity employeesPerYearChart
+   *	 is defined as null before being initialized. 
+   */
+  @JsonProperty
+  @JsonDeserialize(using = JsonObjectDeserializer.class)
+  @JsonInclude(Include.NON_NULL)
+  protected JsonObject employeesPerYearChart;
+
+  /**
+   * <br> The entity employeesPerYearChart
+   *  is defined as null before being initialized. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:employeesPerYearChart">Find the entity employeesPerYearChart in Solr</a>
+   * <br>
+   * @param w is for wrapping a value to assign to this entity during initialization. 
+   **/
+  protected abstract void _employeesPerYearChart(Wrap<JsonObject> w);
+
+  public JsonObject getEmployeesPerYearChart() {
+    return employeesPerYearChart;
+  }
+
+  public void setEmployeesPerYearChart(JsonObject employeesPerYearChart) {
+    this.employeesPerYearChart = employeesPerYearChart;
+  }
+  @JsonIgnore
+  public void setEmployeesPerYearChart(String o) {
+    this.employeesPerYearChart = Contract.staticSetEmployeesPerYearChart(siteRequest_, o);
+  }
+  public static JsonObject staticSetEmployeesPerYearChart(SiteRequest siteRequest_, String o) {
+    if(o != null) {
+        return new JsonObject(o);
+    }
+    return null;
+  }
+  protected Contract employeesPerYearChartInit() {
+    Wrap<JsonObject> employeesPerYearChartWrap = new Wrap<JsonObject>().var("employeesPerYearChart");
+    if(employeesPerYearChart == null) {
+      _employeesPerYearChart(employeesPerYearChartWrap);
+      Optional.ofNullable(employeesPerYearChartWrap.getO()).ifPresent(o -> {
+        setEmployeesPerYearChart(o);
+      });
+    }
+    return (Contract)this;
+  }
+
+  public static String staticSearchEmployeesPerYearChart(SiteRequest siteRequest_, JsonObject o) {
+    return o.toString();
+  }
+
+  public static String staticSearchStrEmployeesPerYearChart(SiteRequest siteRequest_, String o) {
+    return o == null ? null : o.toString();
+  }
+
+  public static String staticSearchFqEmployeesPerYearChart(SiteRequest siteRequest_, String o) {
+    return Contract.staticSearchEmployeesPerYearChart(siteRequest_, Contract.staticSetEmployeesPerYearChart(siteRequest_, o)).toString();
+  }
+
 	////////////////////////////////
   // openshiftControlPlaneNodes //
 	////////////////////////////////
@@ -3281,93 +3344,93 @@ public abstract class ContractGen<DEV> extends BaseModel {
     return Optional.ofNullable(totalOpenshiftControlPlaneCores).map(v -> v.toString()).orElse(null);
   }
 
-	//////////////////////////////////////
-  // openshiftControlPlaneHourlyPrice //
-	//////////////////////////////////////
+	/////////////////////////////////////////////
+  // openshiftControlPlaneHourlyPricePerCore //
+	/////////////////////////////////////////////
 
 
   /**
-   *  The entity openshiftControlPlaneHourlyPrice
+   *  The entity openshiftControlPlaneHourlyPricePerCore
    *	 is defined as null before being initialized. 
    */
   @JsonProperty
   @JsonSerialize(using = ToStringSerializer.class)
   @JsonInclude(Include.NON_NULL)
-  protected BigDecimal openshiftControlPlaneHourlyPrice;
+  protected BigDecimal openshiftControlPlaneHourlyPricePerCore;
 
   /**
-   * <br> The entity openshiftControlPlaneHourlyPrice
+   * <br> The entity openshiftControlPlaneHourlyPricePerCore
    *  is defined as null before being initialized. 
-   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftControlPlaneHourlyPrice">Find the entity openshiftControlPlaneHourlyPrice in Solr</a>
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftControlPlaneHourlyPricePerCore">Find the entity openshiftControlPlaneHourlyPricePerCore in Solr</a>
    * <br>
    * @param w is for wrapping a value to assign to this entity during initialization. 
    **/
-  protected abstract void _openshiftControlPlaneHourlyPrice(Wrap<BigDecimal> w);
+  protected abstract void _openshiftControlPlaneHourlyPricePerCore(Wrap<BigDecimal> w);
 
-  public BigDecimal getOpenshiftControlPlaneHourlyPrice() {
-    return openshiftControlPlaneHourlyPrice;
+  public BigDecimal getOpenshiftControlPlaneHourlyPricePerCore() {
+    return openshiftControlPlaneHourlyPricePerCore;
   }
 
-  public void setOpenshiftControlPlaneHourlyPrice(BigDecimal openshiftControlPlaneHourlyPrice) {
-    this.openshiftControlPlaneHourlyPrice = openshiftControlPlaneHourlyPrice;
+  public void setOpenshiftControlPlaneHourlyPricePerCore(BigDecimal openshiftControlPlaneHourlyPricePerCore) {
+    this.openshiftControlPlaneHourlyPricePerCore = openshiftControlPlaneHourlyPricePerCore;
   }
   @JsonIgnore
-  public void setOpenshiftControlPlaneHourlyPrice(String o) {
-    this.openshiftControlPlaneHourlyPrice = Contract.staticSetOpenshiftControlPlaneHourlyPrice(siteRequest_, o);
+  public void setOpenshiftControlPlaneHourlyPricePerCore(String o) {
+    this.openshiftControlPlaneHourlyPricePerCore = Contract.staticSetOpenshiftControlPlaneHourlyPricePerCore(siteRequest_, o);
   }
-  public static Integer staticScaleOpenshiftControlPlaneHourlyPrice() {
+  public static Integer staticScaleOpenshiftControlPlaneHourlyPricePerCore() {
     return 6;
   }
-  public static MathContext staticMathContextOpenshiftControlPlaneHourlyPrice() {
+  public static MathContext staticMathContextOpenshiftControlPlaneHourlyPricePerCore() {
     return new MathContext(0, RoundingMode.valueOf("HALF_UP"));
   }
-  public static BigDecimal staticSetOpenshiftControlPlaneHourlyPrice(SiteRequest siteRequest_, String o) {
+  public static BigDecimal staticSetOpenshiftControlPlaneHourlyPricePerCore(SiteRequest siteRequest_, String o) {
     o = StringUtils.removeAll(o, "[^\\d\\.-]");
     if(NumberUtils.isParsable(o))
-      return new BigDecimal(o, staticMathContextOpenshiftControlPlaneHourlyPrice()).setScale(staticScaleOpenshiftControlPlaneHourlyPrice(), RoundingMode.valueOf("HALF_UP"));
+      return new BigDecimal(o, staticMathContextOpenshiftControlPlaneHourlyPricePerCore()).setScale(staticScaleOpenshiftControlPlaneHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP"));
     return null;
   }
   @JsonIgnore
-  public void setOpenshiftControlPlaneHourlyPrice(Double o) {
-    setOpenshiftControlPlaneHourlyPrice(new BigDecimal(o, staticMathContextOpenshiftControlPlaneHourlyPrice()).setScale(staticScaleOpenshiftControlPlaneHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftControlPlaneHourlyPricePerCore(Double o) {
+    setOpenshiftControlPlaneHourlyPricePerCore(new BigDecimal(o, staticMathContextOpenshiftControlPlaneHourlyPricePerCore()).setScale(staticScaleOpenshiftControlPlaneHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
   @JsonIgnore
-  public void setOpenshiftControlPlaneHourlyPrice(Integer o) {
-    setOpenshiftControlPlaneHourlyPrice(new BigDecimal(o, staticMathContextOpenshiftControlPlaneHourlyPrice()).setScale(staticScaleOpenshiftControlPlaneHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftControlPlaneHourlyPricePerCore(Integer o) {
+    setOpenshiftControlPlaneHourlyPricePerCore(new BigDecimal(o, staticMathContextOpenshiftControlPlaneHourlyPricePerCore()).setScale(staticScaleOpenshiftControlPlaneHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
   @JsonIgnore
-  public void setOpenshiftControlPlaneHourlyPrice(Number o) {
-    setOpenshiftControlPlaneHourlyPrice(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftControlPlaneHourlyPrice()).setScale(staticScaleOpenshiftControlPlaneHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftControlPlaneHourlyPricePerCore(Number o) {
+    setOpenshiftControlPlaneHourlyPricePerCore(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftControlPlaneHourlyPricePerCore()).setScale(staticScaleOpenshiftControlPlaneHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
-  protected Contract openshiftControlPlaneHourlyPriceInit() {
-    Wrap<BigDecimal> openshiftControlPlaneHourlyPriceWrap = new Wrap<BigDecimal>().var("openshiftControlPlaneHourlyPrice");
-    if(openshiftControlPlaneHourlyPrice == null) {
-      _openshiftControlPlaneHourlyPrice(openshiftControlPlaneHourlyPriceWrap);
-      Optional.ofNullable(openshiftControlPlaneHourlyPriceWrap.getO()).ifPresent(o -> {
-        setOpenshiftControlPlaneHourlyPrice(o);
+  protected Contract openshiftControlPlaneHourlyPricePerCoreInit() {
+    Wrap<BigDecimal> openshiftControlPlaneHourlyPricePerCoreWrap = new Wrap<BigDecimal>().var("openshiftControlPlaneHourlyPricePerCore");
+    if(openshiftControlPlaneHourlyPricePerCore == null) {
+      _openshiftControlPlaneHourlyPricePerCore(openshiftControlPlaneHourlyPricePerCoreWrap);
+      Optional.ofNullable(openshiftControlPlaneHourlyPricePerCoreWrap.getO()).ifPresent(o -> {
+        setOpenshiftControlPlaneHourlyPricePerCore(o);
       });
     }
     return (Contract)this;
   }
 
-  public static String staticSearchOpenshiftControlPlaneHourlyPrice(SiteRequest siteRequest_, BigDecimal o) {
+  public static String staticSearchOpenshiftControlPlaneHourlyPricePerCore(SiteRequest siteRequest_, BigDecimal o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchStrOpenshiftControlPlaneHourlyPrice(SiteRequest siteRequest_, String o) {
+  public static String staticSearchStrOpenshiftControlPlaneHourlyPricePerCore(SiteRequest siteRequest_, String o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchFqOpenshiftControlPlaneHourlyPrice(SiteRequest siteRequest_, String o) {
-    return Contract.staticSearchOpenshiftControlPlaneHourlyPrice(siteRequest_, Contract.staticSetOpenshiftControlPlaneHourlyPrice(siteRequest_, o)).toString();
+  public static String staticSearchFqOpenshiftControlPlaneHourlyPricePerCore(SiteRequest siteRequest_, String o) {
+    return Contract.staticSearchOpenshiftControlPlaneHourlyPricePerCore(siteRequest_, Contract.staticSetOpenshiftControlPlaneHourlyPricePerCore(siteRequest_, o)).toString();
   }
 
-  public BigDecimal sqlOpenshiftControlPlaneHourlyPrice() {
-    return openshiftControlPlaneHourlyPrice;
+  public BigDecimal sqlOpenshiftControlPlaneHourlyPricePerCore() {
+    return openshiftControlPlaneHourlyPricePerCore;
   }
 
-  public static String staticJsonOpenshiftControlPlaneHourlyPrice(BigDecimal openshiftControlPlaneHourlyPrice) {
-    return Optional.ofNullable(openshiftControlPlaneHourlyPrice).map(v -> v.toString()).orElse(null);
+  public static String staticJsonOpenshiftControlPlaneHourlyPricePerCore(BigDecimal openshiftControlPlaneHourlyPricePerCore) {
+    return Optional.ofNullable(openshiftControlPlaneHourlyPricePerCore).map(v -> v.toString()).orElse(null);
   }
 
 	/////////////////////////
@@ -3580,93 +3643,93 @@ public abstract class ContractGen<DEV> extends BaseModel {
     return Optional.ofNullable(totalOpenshiftInfraCores).map(v -> v.toString()).orElse(null);
   }
 
-	///////////////////////////////
-  // openshiftInfraHourlyPrice //
-	///////////////////////////////
+	//////////////////////////////////////
+  // openshiftInfraHourlyPricePerCore //
+	//////////////////////////////////////
 
 
   /**
-   *  The entity openshiftInfraHourlyPrice
+   *  The entity openshiftInfraHourlyPricePerCore
    *	 is defined as null before being initialized. 
    */
   @JsonProperty
   @JsonSerialize(using = ToStringSerializer.class)
   @JsonInclude(Include.NON_NULL)
-  protected BigDecimal openshiftInfraHourlyPrice;
+  protected BigDecimal openshiftInfraHourlyPricePerCore;
 
   /**
-   * <br> The entity openshiftInfraHourlyPrice
+   * <br> The entity openshiftInfraHourlyPricePerCore
    *  is defined as null before being initialized. 
-   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftInfraHourlyPrice">Find the entity openshiftInfraHourlyPrice in Solr</a>
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftInfraHourlyPricePerCore">Find the entity openshiftInfraHourlyPricePerCore in Solr</a>
    * <br>
    * @param w is for wrapping a value to assign to this entity during initialization. 
    **/
-  protected abstract void _openshiftInfraHourlyPrice(Wrap<BigDecimal> w);
+  protected abstract void _openshiftInfraHourlyPricePerCore(Wrap<BigDecimal> w);
 
-  public BigDecimal getOpenshiftInfraHourlyPrice() {
-    return openshiftInfraHourlyPrice;
+  public BigDecimal getOpenshiftInfraHourlyPricePerCore() {
+    return openshiftInfraHourlyPricePerCore;
   }
 
-  public void setOpenshiftInfraHourlyPrice(BigDecimal openshiftInfraHourlyPrice) {
-    this.openshiftInfraHourlyPrice = openshiftInfraHourlyPrice;
+  public void setOpenshiftInfraHourlyPricePerCore(BigDecimal openshiftInfraHourlyPricePerCore) {
+    this.openshiftInfraHourlyPricePerCore = openshiftInfraHourlyPricePerCore;
   }
   @JsonIgnore
-  public void setOpenshiftInfraHourlyPrice(String o) {
-    this.openshiftInfraHourlyPrice = Contract.staticSetOpenshiftInfraHourlyPrice(siteRequest_, o);
+  public void setOpenshiftInfraHourlyPricePerCore(String o) {
+    this.openshiftInfraHourlyPricePerCore = Contract.staticSetOpenshiftInfraHourlyPricePerCore(siteRequest_, o);
   }
-  public static Integer staticScaleOpenshiftInfraHourlyPrice() {
+  public static Integer staticScaleOpenshiftInfraHourlyPricePerCore() {
     return 6;
   }
-  public static MathContext staticMathContextOpenshiftInfraHourlyPrice() {
+  public static MathContext staticMathContextOpenshiftInfraHourlyPricePerCore() {
     return new MathContext(0, RoundingMode.valueOf("HALF_UP"));
   }
-  public static BigDecimal staticSetOpenshiftInfraHourlyPrice(SiteRequest siteRequest_, String o) {
+  public static BigDecimal staticSetOpenshiftInfraHourlyPricePerCore(SiteRequest siteRequest_, String o) {
     o = StringUtils.removeAll(o, "[^\\d\\.-]");
     if(NumberUtils.isParsable(o))
-      return new BigDecimal(o, staticMathContextOpenshiftInfraHourlyPrice()).setScale(staticScaleOpenshiftInfraHourlyPrice(), RoundingMode.valueOf("HALF_UP"));
+      return new BigDecimal(o, staticMathContextOpenshiftInfraHourlyPricePerCore()).setScale(staticScaleOpenshiftInfraHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP"));
     return null;
   }
   @JsonIgnore
-  public void setOpenshiftInfraHourlyPrice(Double o) {
-    setOpenshiftInfraHourlyPrice(new BigDecimal(o, staticMathContextOpenshiftInfraHourlyPrice()).setScale(staticScaleOpenshiftInfraHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftInfraHourlyPricePerCore(Double o) {
+    setOpenshiftInfraHourlyPricePerCore(new BigDecimal(o, staticMathContextOpenshiftInfraHourlyPricePerCore()).setScale(staticScaleOpenshiftInfraHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
   @JsonIgnore
-  public void setOpenshiftInfraHourlyPrice(Integer o) {
-    setOpenshiftInfraHourlyPrice(new BigDecimal(o, staticMathContextOpenshiftInfraHourlyPrice()).setScale(staticScaleOpenshiftInfraHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftInfraHourlyPricePerCore(Integer o) {
+    setOpenshiftInfraHourlyPricePerCore(new BigDecimal(o, staticMathContextOpenshiftInfraHourlyPricePerCore()).setScale(staticScaleOpenshiftInfraHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
   @JsonIgnore
-  public void setOpenshiftInfraHourlyPrice(Number o) {
-    setOpenshiftInfraHourlyPrice(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftInfraHourlyPrice()).setScale(staticScaleOpenshiftInfraHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftInfraHourlyPricePerCore(Number o) {
+    setOpenshiftInfraHourlyPricePerCore(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftInfraHourlyPricePerCore()).setScale(staticScaleOpenshiftInfraHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
-  protected Contract openshiftInfraHourlyPriceInit() {
-    Wrap<BigDecimal> openshiftInfraHourlyPriceWrap = new Wrap<BigDecimal>().var("openshiftInfraHourlyPrice");
-    if(openshiftInfraHourlyPrice == null) {
-      _openshiftInfraHourlyPrice(openshiftInfraHourlyPriceWrap);
-      Optional.ofNullable(openshiftInfraHourlyPriceWrap.getO()).ifPresent(o -> {
-        setOpenshiftInfraHourlyPrice(o);
+  protected Contract openshiftInfraHourlyPricePerCoreInit() {
+    Wrap<BigDecimal> openshiftInfraHourlyPricePerCoreWrap = new Wrap<BigDecimal>().var("openshiftInfraHourlyPricePerCore");
+    if(openshiftInfraHourlyPricePerCore == null) {
+      _openshiftInfraHourlyPricePerCore(openshiftInfraHourlyPricePerCoreWrap);
+      Optional.ofNullable(openshiftInfraHourlyPricePerCoreWrap.getO()).ifPresent(o -> {
+        setOpenshiftInfraHourlyPricePerCore(o);
       });
     }
     return (Contract)this;
   }
 
-  public static String staticSearchOpenshiftInfraHourlyPrice(SiteRequest siteRequest_, BigDecimal o) {
+  public static String staticSearchOpenshiftInfraHourlyPricePerCore(SiteRequest siteRequest_, BigDecimal o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchStrOpenshiftInfraHourlyPrice(SiteRequest siteRequest_, String o) {
+  public static String staticSearchStrOpenshiftInfraHourlyPricePerCore(SiteRequest siteRequest_, String o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchFqOpenshiftInfraHourlyPrice(SiteRequest siteRequest_, String o) {
-    return Contract.staticSearchOpenshiftInfraHourlyPrice(siteRequest_, Contract.staticSetOpenshiftInfraHourlyPrice(siteRequest_, o)).toString();
+  public static String staticSearchFqOpenshiftInfraHourlyPricePerCore(SiteRequest siteRequest_, String o) {
+    return Contract.staticSearchOpenshiftInfraHourlyPricePerCore(siteRequest_, Contract.staticSetOpenshiftInfraHourlyPricePerCore(siteRequest_, o)).toString();
   }
 
-  public BigDecimal sqlOpenshiftInfraHourlyPrice() {
-    return openshiftInfraHourlyPrice;
+  public BigDecimal sqlOpenshiftInfraHourlyPricePerCore() {
+    return openshiftInfraHourlyPricePerCore;
   }
 
-  public static String staticJsonOpenshiftInfraHourlyPrice(BigDecimal openshiftInfraHourlyPrice) {
-    return Optional.ofNullable(openshiftInfraHourlyPrice).map(v -> v.toString()).orElse(null);
+  public static String staticJsonOpenshiftInfraHourlyPricePerCore(BigDecimal openshiftInfraHourlyPricePerCore) {
+    return Optional.ofNullable(openshiftInfraHourlyPricePerCore).map(v -> v.toString()).orElse(null);
   }
 
 	//////////////////////////
@@ -3879,93 +3942,93 @@ public abstract class ContractGen<DEV> extends BaseModel {
     return Optional.ofNullable(totalOpenshiftWorkerCores).map(v -> v.toString()).orElse(null);
   }
 
-	////////////////////////////////
-  // openshiftWorkerHourlyPrice //
-	////////////////////////////////
+	///////////////////////////////////////
+  // openshiftWorkerHourlyPricePerCore //
+	///////////////////////////////////////
 
 
   /**
-   *  The entity openshiftWorkerHourlyPrice
+   *  The entity openshiftWorkerHourlyPricePerCore
    *	 is defined as null before being initialized. 
    */
   @JsonProperty
   @JsonSerialize(using = ToStringSerializer.class)
   @JsonInclude(Include.NON_NULL)
-  protected BigDecimal openshiftWorkerHourlyPrice;
+  protected BigDecimal openshiftWorkerHourlyPricePerCore;
 
   /**
-   * <br> The entity openshiftWorkerHourlyPrice
+   * <br> The entity openshiftWorkerHourlyPricePerCore
    *  is defined as null before being initialized. 
-   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftWorkerHourlyPrice">Find the entity openshiftWorkerHourlyPrice in Solr</a>
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftWorkerHourlyPricePerCore">Find the entity openshiftWorkerHourlyPricePerCore in Solr</a>
    * <br>
    * @param w is for wrapping a value to assign to this entity during initialization. 
    **/
-  protected abstract void _openshiftWorkerHourlyPrice(Wrap<BigDecimal> w);
+  protected abstract void _openshiftWorkerHourlyPricePerCore(Wrap<BigDecimal> w);
 
-  public BigDecimal getOpenshiftWorkerHourlyPrice() {
-    return openshiftWorkerHourlyPrice;
+  public BigDecimal getOpenshiftWorkerHourlyPricePerCore() {
+    return openshiftWorkerHourlyPricePerCore;
   }
 
-  public void setOpenshiftWorkerHourlyPrice(BigDecimal openshiftWorkerHourlyPrice) {
-    this.openshiftWorkerHourlyPrice = openshiftWorkerHourlyPrice;
+  public void setOpenshiftWorkerHourlyPricePerCore(BigDecimal openshiftWorkerHourlyPricePerCore) {
+    this.openshiftWorkerHourlyPricePerCore = openshiftWorkerHourlyPricePerCore;
   }
   @JsonIgnore
-  public void setOpenshiftWorkerHourlyPrice(String o) {
-    this.openshiftWorkerHourlyPrice = Contract.staticSetOpenshiftWorkerHourlyPrice(siteRequest_, o);
+  public void setOpenshiftWorkerHourlyPricePerCore(String o) {
+    this.openshiftWorkerHourlyPricePerCore = Contract.staticSetOpenshiftWorkerHourlyPricePerCore(siteRequest_, o);
   }
-  public static Integer staticScaleOpenshiftWorkerHourlyPrice() {
+  public static Integer staticScaleOpenshiftWorkerHourlyPricePerCore() {
     return 6;
   }
-  public static MathContext staticMathContextOpenshiftWorkerHourlyPrice() {
+  public static MathContext staticMathContextOpenshiftWorkerHourlyPricePerCore() {
     return new MathContext(0, RoundingMode.valueOf("HALF_UP"));
   }
-  public static BigDecimal staticSetOpenshiftWorkerHourlyPrice(SiteRequest siteRequest_, String o) {
+  public static BigDecimal staticSetOpenshiftWorkerHourlyPricePerCore(SiteRequest siteRequest_, String o) {
     o = StringUtils.removeAll(o, "[^\\d\\.-]");
     if(NumberUtils.isParsable(o))
-      return new BigDecimal(o, staticMathContextOpenshiftWorkerHourlyPrice()).setScale(staticScaleOpenshiftWorkerHourlyPrice(), RoundingMode.valueOf("HALF_UP"));
+      return new BigDecimal(o, staticMathContextOpenshiftWorkerHourlyPricePerCore()).setScale(staticScaleOpenshiftWorkerHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP"));
     return null;
   }
   @JsonIgnore
-  public void setOpenshiftWorkerHourlyPrice(Double o) {
-    setOpenshiftWorkerHourlyPrice(new BigDecimal(o, staticMathContextOpenshiftWorkerHourlyPrice()).setScale(staticScaleOpenshiftWorkerHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftWorkerHourlyPricePerCore(Double o) {
+    setOpenshiftWorkerHourlyPricePerCore(new BigDecimal(o, staticMathContextOpenshiftWorkerHourlyPricePerCore()).setScale(staticScaleOpenshiftWorkerHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
   @JsonIgnore
-  public void setOpenshiftWorkerHourlyPrice(Integer o) {
-    setOpenshiftWorkerHourlyPrice(new BigDecimal(o, staticMathContextOpenshiftWorkerHourlyPrice()).setScale(staticScaleOpenshiftWorkerHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftWorkerHourlyPricePerCore(Integer o) {
+    setOpenshiftWorkerHourlyPricePerCore(new BigDecimal(o, staticMathContextOpenshiftWorkerHourlyPricePerCore()).setScale(staticScaleOpenshiftWorkerHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
   @JsonIgnore
-  public void setOpenshiftWorkerHourlyPrice(Number o) {
-    setOpenshiftWorkerHourlyPrice(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftWorkerHourlyPrice()).setScale(staticScaleOpenshiftWorkerHourlyPrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftWorkerHourlyPricePerCore(Number o) {
+    setOpenshiftWorkerHourlyPricePerCore(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftWorkerHourlyPricePerCore()).setScale(staticScaleOpenshiftWorkerHourlyPricePerCore(), RoundingMode.valueOf("HALF_UP")));
   }
-  protected Contract openshiftWorkerHourlyPriceInit() {
-    Wrap<BigDecimal> openshiftWorkerHourlyPriceWrap = new Wrap<BigDecimal>().var("openshiftWorkerHourlyPrice");
-    if(openshiftWorkerHourlyPrice == null) {
-      _openshiftWorkerHourlyPrice(openshiftWorkerHourlyPriceWrap);
-      Optional.ofNullable(openshiftWorkerHourlyPriceWrap.getO()).ifPresent(o -> {
-        setOpenshiftWorkerHourlyPrice(o);
+  protected Contract openshiftWorkerHourlyPricePerCoreInit() {
+    Wrap<BigDecimal> openshiftWorkerHourlyPricePerCoreWrap = new Wrap<BigDecimal>().var("openshiftWorkerHourlyPricePerCore");
+    if(openshiftWorkerHourlyPricePerCore == null) {
+      _openshiftWorkerHourlyPricePerCore(openshiftWorkerHourlyPricePerCoreWrap);
+      Optional.ofNullable(openshiftWorkerHourlyPricePerCoreWrap.getO()).ifPresent(o -> {
+        setOpenshiftWorkerHourlyPricePerCore(o);
       });
     }
     return (Contract)this;
   }
 
-  public static String staticSearchOpenshiftWorkerHourlyPrice(SiteRequest siteRequest_, BigDecimal o) {
+  public static String staticSearchOpenshiftWorkerHourlyPricePerCore(SiteRequest siteRequest_, BigDecimal o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchStrOpenshiftWorkerHourlyPrice(SiteRequest siteRequest_, String o) {
+  public static String staticSearchStrOpenshiftWorkerHourlyPricePerCore(SiteRequest siteRequest_, String o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchFqOpenshiftWorkerHourlyPrice(SiteRequest siteRequest_, String o) {
-    return Contract.staticSearchOpenshiftWorkerHourlyPrice(siteRequest_, Contract.staticSetOpenshiftWorkerHourlyPrice(siteRequest_, o)).toString();
+  public static String staticSearchFqOpenshiftWorkerHourlyPricePerCore(SiteRequest siteRequest_, String o) {
+    return Contract.staticSearchOpenshiftWorkerHourlyPricePerCore(siteRequest_, Contract.staticSetOpenshiftWorkerHourlyPricePerCore(siteRequest_, o)).toString();
   }
 
-  public BigDecimal sqlOpenshiftWorkerHourlyPrice() {
-    return openshiftWorkerHourlyPrice;
+  public BigDecimal sqlOpenshiftWorkerHourlyPricePerCore() {
+    return openshiftWorkerHourlyPricePerCore;
   }
 
-  public static String staticJsonOpenshiftWorkerHourlyPrice(BigDecimal openshiftWorkerHourlyPrice) {
-    return Optional.ofNullable(openshiftWorkerHourlyPrice).map(v -> v.toString()).orElse(null);
+  public static String staticJsonOpenshiftWorkerHourlyPricePerCore(BigDecimal openshiftWorkerHourlyPricePerCore) {
+    return Optional.ofNullable(openshiftWorkerHourlyPricePerCore).map(v -> v.toString()).orElse(null);
   }
 
 	///////////////////////////////////
@@ -4085,273 +4148,227 @@ public abstract class ContractGen<DEV> extends BaseModel {
     return a;
   }
 
-	//////////////////////////////
-  // openshiftSSDStoragePrice //
-	//////////////////////////////
+	////////////////////////////////////
+  // openshiftSSDStoragePricePerGiB //
+	////////////////////////////////////
 
 
   /**
-   *  The entity openshiftSSDStoragePrice
+   *  The entity openshiftSSDStoragePricePerGiB
    *	 is defined as null before being initialized. 
    */
   @JsonProperty
   @JsonSerialize(using = ToStringSerializer.class)
   @JsonInclude(Include.NON_NULL)
-  protected BigDecimal openshiftSSDStoragePrice;
+  protected BigDecimal openshiftSSDStoragePricePerGiB;
 
   /**
-   * <br> The entity openshiftSSDStoragePrice
+   * <br> The entity openshiftSSDStoragePricePerGiB
    *  is defined as null before being initialized. 
-   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftSSDStoragePrice">Find the entity openshiftSSDStoragePrice in Solr</a>
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftSSDStoragePricePerGiB">Find the entity openshiftSSDStoragePricePerGiB in Solr</a>
    * <br>
    * @param w is for wrapping a value to assign to this entity during initialization. 
    **/
-  protected abstract void _openshiftSSDStoragePrice(Wrap<BigDecimal> w);
+  protected abstract void _openshiftSSDStoragePricePerGiB(Wrap<BigDecimal> w);
 
-  public BigDecimal getOpenshiftSSDStoragePrice() {
-    return openshiftSSDStoragePrice;
+  public BigDecimal getOpenshiftSSDStoragePricePerGiB() {
+    return openshiftSSDStoragePricePerGiB;
   }
 
-  public void setOpenshiftSSDStoragePrice(BigDecimal openshiftSSDStoragePrice) {
-    this.openshiftSSDStoragePrice = openshiftSSDStoragePrice;
+  public void setOpenshiftSSDStoragePricePerGiB(BigDecimal openshiftSSDStoragePricePerGiB) {
+    this.openshiftSSDStoragePricePerGiB = openshiftSSDStoragePricePerGiB;
   }
   @JsonIgnore
-  public void setOpenshiftSSDStoragePrice(String o) {
-    this.openshiftSSDStoragePrice = Contract.staticSetOpenshiftSSDStoragePrice(siteRequest_, o);
+  public void setOpenshiftSSDStoragePricePerGiB(String o) {
+    this.openshiftSSDStoragePricePerGiB = Contract.staticSetOpenshiftSSDStoragePricePerGiB(siteRequest_, o);
   }
-  public static Integer staticScaleOpenshiftSSDStoragePrice() {
+  public static Integer staticScaleOpenshiftSSDStoragePricePerGiB() {
     return 6;
   }
-  public static MathContext staticMathContextOpenshiftSSDStoragePrice() {
+  public static MathContext staticMathContextOpenshiftSSDStoragePricePerGiB() {
     return new MathContext(0, RoundingMode.valueOf("HALF_UP"));
   }
-  public static BigDecimal staticSetOpenshiftSSDStoragePrice(SiteRequest siteRequest_, String o) {
+  public static BigDecimal staticSetOpenshiftSSDStoragePricePerGiB(SiteRequest siteRequest_, String o) {
     o = StringUtils.removeAll(o, "[^\\d\\.-]");
     if(NumberUtils.isParsable(o))
-      return new BigDecimal(o, staticMathContextOpenshiftSSDStoragePrice()).setScale(staticScaleOpenshiftSSDStoragePrice(), RoundingMode.valueOf("HALF_UP"));
+      return new BigDecimal(o, staticMathContextOpenshiftSSDStoragePricePerGiB()).setScale(staticScaleOpenshiftSSDStoragePricePerGiB(), RoundingMode.valueOf("HALF_UP"));
     return null;
   }
   @JsonIgnore
-  public void setOpenshiftSSDStoragePrice(Double o) {
-    setOpenshiftSSDStoragePrice(new BigDecimal(o, staticMathContextOpenshiftSSDStoragePrice()).setScale(staticScaleOpenshiftSSDStoragePrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftSSDStoragePricePerGiB(Double o) {
+    setOpenshiftSSDStoragePricePerGiB(new BigDecimal(o, staticMathContextOpenshiftSSDStoragePricePerGiB()).setScale(staticScaleOpenshiftSSDStoragePricePerGiB(), RoundingMode.valueOf("HALF_UP")));
   }
   @JsonIgnore
-  public void setOpenshiftSSDStoragePrice(Integer o) {
-    setOpenshiftSSDStoragePrice(new BigDecimal(o, staticMathContextOpenshiftSSDStoragePrice()).setScale(staticScaleOpenshiftSSDStoragePrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftSSDStoragePricePerGiB(Integer o) {
+    setOpenshiftSSDStoragePricePerGiB(new BigDecimal(o, staticMathContextOpenshiftSSDStoragePricePerGiB()).setScale(staticScaleOpenshiftSSDStoragePricePerGiB(), RoundingMode.valueOf("HALF_UP")));
   }
   @JsonIgnore
-  public void setOpenshiftSSDStoragePrice(Number o) {
-    setOpenshiftSSDStoragePrice(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftSSDStoragePrice()).setScale(staticScaleOpenshiftSSDStoragePrice(), RoundingMode.valueOf("HALF_UP")));
+  public void setOpenshiftSSDStoragePricePerGiB(Number o) {
+    setOpenshiftSSDStoragePricePerGiB(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftSSDStoragePricePerGiB()).setScale(staticScaleOpenshiftSSDStoragePricePerGiB(), RoundingMode.valueOf("HALF_UP")));
   }
-  protected Contract openshiftSSDStoragePriceInit() {
-    Wrap<BigDecimal> openshiftSSDStoragePriceWrap = new Wrap<BigDecimal>().var("openshiftSSDStoragePrice");
-    if(openshiftSSDStoragePrice == null) {
-      _openshiftSSDStoragePrice(openshiftSSDStoragePriceWrap);
-      Optional.ofNullable(openshiftSSDStoragePriceWrap.getO()).ifPresent(o -> {
-        setOpenshiftSSDStoragePrice(o);
+  protected Contract openshiftSSDStoragePricePerGiBInit() {
+    Wrap<BigDecimal> openshiftSSDStoragePricePerGiBWrap = new Wrap<BigDecimal>().var("openshiftSSDStoragePricePerGiB");
+    if(openshiftSSDStoragePricePerGiB == null) {
+      _openshiftSSDStoragePricePerGiB(openshiftSSDStoragePricePerGiBWrap);
+      Optional.ofNullable(openshiftSSDStoragePricePerGiBWrap.getO()).ifPresent(o -> {
+        setOpenshiftSSDStoragePricePerGiB(o);
       });
     }
     return (Contract)this;
   }
 
-  public static String staticSearchOpenshiftSSDStoragePrice(SiteRequest siteRequest_, BigDecimal o) {
+  public static String staticSearchOpenshiftSSDStoragePricePerGiB(SiteRequest siteRequest_, BigDecimal o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchStrOpenshiftSSDStoragePrice(SiteRequest siteRequest_, String o) {
+  public static String staticSearchStrOpenshiftSSDStoragePricePerGiB(SiteRequest siteRequest_, String o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchFqOpenshiftSSDStoragePrice(SiteRequest siteRequest_, String o) {
-    return Contract.staticSearchOpenshiftSSDStoragePrice(siteRequest_, Contract.staticSetOpenshiftSSDStoragePrice(siteRequest_, o)).toString();
+  public static String staticSearchFqOpenshiftSSDStoragePricePerGiB(SiteRequest siteRequest_, String o) {
+    return Contract.staticSearchOpenshiftSSDStoragePricePerGiB(siteRequest_, Contract.staticSetOpenshiftSSDStoragePricePerGiB(siteRequest_, o)).toString();
   }
 
-  public BigDecimal sqlOpenshiftSSDStoragePrice() {
-    return openshiftSSDStoragePrice;
+  public BigDecimal sqlOpenshiftSSDStoragePricePerGiB() {
+    return openshiftSSDStoragePricePerGiB;
   }
 
-  public static String staticJsonOpenshiftSSDStoragePrice(BigDecimal openshiftSSDStoragePrice) {
-    return Optional.ofNullable(openshiftSSDStoragePrice).map(v -> v.toString()).orElse(null);
+  public static String staticJsonOpenshiftSSDStoragePricePerGiB(BigDecimal openshiftSSDStoragePricePerGiB) {
+    return Optional.ofNullable(openshiftSSDStoragePricePerGiB).map(v -> v.toString()).orElse(null);
   }
 
-	///////////////////////////
-  // openshiftCostsPerYear //
-	///////////////////////////
+	//////////////////////////////////
+  // openshiftCostsPerYearDataset //
+	//////////////////////////////////
 
 
   /**
-   *  The entity openshiftCostsPerYear
-   *	 It is constructed before being initialized with the constructor by default. 
+   *  The entity openshiftCostsPerYearDataset
+   *	 is defined as null before being initialized. 
    */
   @JsonProperty
-  @JsonDeserialize(contentUsing = ComputateBigDecimalDeserializer.class)
-  @JsonSerialize(contentUsing = ToStringSerializer.class)
-  @JsonFormat(shape = JsonFormat.Shape.ARRAY, pattern = "HALF_UP,0,2")
+  @JsonDeserialize(using = JsonArrayDeserializer.class)
   @JsonInclude(Include.NON_NULL)
-  protected List<BigDecimal> openshiftCostsPerYear = new ArrayList<BigDecimal>();
+  protected JsonArray openshiftCostsPerYearDataset;
 
   /**
-   * <br> The entity openshiftCostsPerYear
-   *  It is constructed before being initialized with the constructor by default. 
-   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftCostsPerYear">Find the entity openshiftCostsPerYear in Solr</a>
+   * <br> The entity openshiftCostsPerYearDataset
+   *  is defined as null before being initialized. 
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftCostsPerYearDataset">Find the entity openshiftCostsPerYearDataset in Solr</a>
    * <br>
-   * @param l is the entity already constructed. 
+   * @param w is for wrapping a value to assign to this entity during initialization. 
    **/
-  protected abstract void _openshiftCostsPerYear(List<BigDecimal> l);
+  protected abstract void _openshiftCostsPerYearDataset(Wrap<JsonArray> w);
 
-  public List<BigDecimal> getOpenshiftCostsPerYear() {
-    return openshiftCostsPerYear;
+  public JsonArray getOpenshiftCostsPerYearDataset() {
+    return openshiftCostsPerYearDataset;
   }
 
-  public void setOpenshiftCostsPerYear(List<BigDecimal> openshiftCostsPerYear) {
-    this.openshiftCostsPerYear = openshiftCostsPerYear;
+  public void setOpenshiftCostsPerYearDataset(JsonArray openshiftCostsPerYearDataset) {
+    this.openshiftCostsPerYearDataset = openshiftCostsPerYearDataset;
   }
   @JsonIgnore
-  public void setOpenshiftCostsPerYear(String o) {
-    BigDecimal l = Contract.staticSetOpenshiftCostsPerYear(siteRequest_, o);
-    if(l != null)
-      addOpenshiftCostsPerYear(l);
+  public void setOpenshiftCostsPerYearDataset(String o) {
+    this.openshiftCostsPerYearDataset = Contract.staticSetOpenshiftCostsPerYearDataset(siteRequest_, o);
   }
-  public static Integer staticScaleOpenshiftCostsPerYear() {
-    return 2;
-  }
-  public static MathContext staticMathContextOpenshiftCostsPerYear() {
-    return new MathContext(0, RoundingMode.valueOf("HALF_UP"));
-  }
-  public static BigDecimal staticSetOpenshiftCostsPerYear(SiteRequest siteRequest_, String o) {
-    o = StringUtils.removeAll(o, "[^\\d\\.-]");
-    if(NumberUtils.isParsable(o))
-      return new BigDecimal(o, staticMathContextOpenshiftCostsPerYear()).setScale(staticScaleOpenshiftCostsPerYear(), RoundingMode.valueOf("HALF_UP"));
+  public static JsonArray staticSetOpenshiftCostsPerYearDataset(SiteRequest siteRequest_, String o) {
+    if(o != null) {
+        return new JsonArray(o);
+    }
     return null;
   }
-  @JsonIgnore
-  public void setOpenshiftCostsPerYear(Double o) {
-    addOpenshiftCostsPerYear(new BigDecimal(o, staticMathContextOpenshiftCostsPerYear()).setScale(staticScaleOpenshiftCostsPerYear(), RoundingMode.valueOf("HALF_UP")));
-  }
-  @JsonIgnore
-  public void setOpenshiftCostsPerYear(Integer o) {
-    addOpenshiftCostsPerYear(new BigDecimal(o, staticMathContextOpenshiftCostsPerYear()).setScale(staticScaleOpenshiftCostsPerYear(), RoundingMode.valueOf("HALF_UP")));
-  }
-  @JsonIgnore
-  public void setOpenshiftCostsPerYear(Number o) {
-    addOpenshiftCostsPerYear(new BigDecimal(o.doubleValue(), staticMathContextOpenshiftCostsPerYear()).setScale(staticScaleOpenshiftCostsPerYear(), RoundingMode.valueOf("HALF_UP")));
-  }
-  public Contract addOpenshiftCostsPerYear(BigDecimal...objects) {
-    for(BigDecimal o : objects) {
-      addOpenshiftCostsPerYear(o);
+  protected Contract openshiftCostsPerYearDatasetInit() {
+    Wrap<JsonArray> openshiftCostsPerYearDatasetWrap = new Wrap<JsonArray>().var("openshiftCostsPerYearDataset");
+    if(openshiftCostsPerYearDataset == null) {
+      _openshiftCostsPerYearDataset(openshiftCostsPerYearDatasetWrap);
+      Optional.ofNullable(openshiftCostsPerYearDatasetWrap.getO()).ifPresent(o -> {
+        setOpenshiftCostsPerYearDataset(o);
+      });
     }
-    return (Contract)this;
-  }
-  public Contract addOpenshiftCostsPerYear(BigDecimal o) {
-    if(o != null)
-      this.openshiftCostsPerYear.add(o);
-    return (Contract)this;
-  }
-  @JsonIgnore
-  public void setOpenshiftCostsPerYear(JsonArray objects) {
-    openshiftCostsPerYear.clear();
-    if(objects == null)
-      return;
-    for(int i = 0; i < objects.size(); i++) {
-      String o = objects.getString(i);
-      addOpenshiftCostsPerYear(new BigDecimal(o, staticMathContextOpenshiftCostsPerYear()).setScale(staticScaleOpenshiftCostsPerYear(), RoundingMode.valueOf("HALF_UP")));
-    }
-  }
-  public Contract addOpenshiftCostsPerYear(String o) {
-    if(NumberUtils.isParsable(o)) {
-      BigDecimal p = new BigDecimal(o, staticMathContextOpenshiftCostsPerYear()).setScale(staticScaleOpenshiftCostsPerYear(), RoundingMode.valueOf("HALF_UP"));
-      addOpenshiftCostsPerYear(p);
-    }
-    return (Contract)this;
-  }
-  protected Contract openshiftCostsPerYearInit() {
-    _openshiftCostsPerYear(openshiftCostsPerYear);
     return (Contract)this;
   }
 
-  public static String staticSearchOpenshiftCostsPerYear(SiteRequest siteRequest_, BigDecimal o) {
+  public static String staticSearchOpenshiftCostsPerYearDataset(SiteRequest siteRequest_, JsonArray o) {
+    return o.toString();
+  }
+
+  public static String staticSearchStrOpenshiftCostsPerYearDataset(SiteRequest siteRequest_, String o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchStrOpenshiftCostsPerYear(SiteRequest siteRequest_, String o) {
-    return o == null ? null : o.toString();
+  public static String staticSearchFqOpenshiftCostsPerYearDataset(SiteRequest siteRequest_, String o) {
+    return Contract.staticSearchOpenshiftCostsPerYearDataset(siteRequest_, Contract.staticSetOpenshiftCostsPerYearDataset(siteRequest_, o)).toString();
   }
 
-  public static String staticSearchFqOpenshiftCostsPerYear(SiteRequest siteRequest_, String o) {
-    return Contract.staticSearchOpenshiftCostsPerYear(siteRequest_, Contract.staticSetOpenshiftCostsPerYear(siteRequest_, o)).toString();
+  public JsonArray sqlOpenshiftCostsPerYearDataset() {
+    return openshiftCostsPerYearDataset;
   }
 
-  public Number[] sqlOpenshiftCostsPerYear() {
-    return openshiftCostsPerYear.stream().map(v -> (Number)v).toArray(Number[]::new);
+  public static JsonArray staticJsonOpenshiftCostsPerYearDataset(JsonArray openshiftCostsPerYearDataset) {
+    return openshiftCostsPerYearDataset;
   }
 
-  public static JsonArray staticJsonOpenshiftCostsPerYear(List<BigDecimal> openshiftCostsPerYear) {
-    JsonArray a = new JsonArray();
-    openshiftCostsPerYear.stream().forEach(v -> a.add(v.toString()));
-    return a;
-  }
-
-	///////////////////////////
-  // employeesPerYearChart //
-	///////////////////////////
+	////////////////////////////////
+  // openshiftCostsPerYearChart //
+	////////////////////////////////
 
 
   /**
-   *  The entity employeesPerYearChart
+   *  The entity openshiftCostsPerYearChart
    *	 is defined as null before being initialized. 
    */
   @JsonProperty
   @JsonDeserialize(using = JsonObjectDeserializer.class)
   @JsonInclude(Include.NON_NULL)
-  protected JsonObject employeesPerYearChart;
+  protected JsonObject openshiftCostsPerYearChart;
 
   /**
-   * <br> The entity employeesPerYearChart
+   * <br> The entity openshiftCostsPerYearChart
    *  is defined as null before being initialized. 
-   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:employeesPerYearChart">Find the entity employeesPerYearChart in Solr</a>
+   * <br><a href="https://solr.apps-crc.testing/solr/#/computate/query?q=*:*&fq=partEstEntite_indexed_boolean:true&fq=classeNomCanonique_enUS_indexed_string:org.computate.smartaeronautics.model.contract.Contract&fq=entiteVar_enUS_indexed_string:openshiftCostsPerYearChart">Find the entity openshiftCostsPerYearChart in Solr</a>
    * <br>
    * @param w is for wrapping a value to assign to this entity during initialization. 
    **/
-  protected abstract void _employeesPerYearChart(Wrap<JsonObject> w);
+  protected abstract void _openshiftCostsPerYearChart(Wrap<JsonObject> w);
 
-  public JsonObject getEmployeesPerYearChart() {
-    return employeesPerYearChart;
+  public JsonObject getOpenshiftCostsPerYearChart() {
+    return openshiftCostsPerYearChart;
   }
 
-  public void setEmployeesPerYearChart(JsonObject employeesPerYearChart) {
-    this.employeesPerYearChart = employeesPerYearChart;
+  public void setOpenshiftCostsPerYearChart(JsonObject openshiftCostsPerYearChart) {
+    this.openshiftCostsPerYearChart = openshiftCostsPerYearChart;
   }
   @JsonIgnore
-  public void setEmployeesPerYearChart(String o) {
-    this.employeesPerYearChart = Contract.staticSetEmployeesPerYearChart(siteRequest_, o);
+  public void setOpenshiftCostsPerYearChart(String o) {
+    this.openshiftCostsPerYearChart = Contract.staticSetOpenshiftCostsPerYearChart(siteRequest_, o);
   }
-  public static JsonObject staticSetEmployeesPerYearChart(SiteRequest siteRequest_, String o) {
+  public static JsonObject staticSetOpenshiftCostsPerYearChart(SiteRequest siteRequest_, String o) {
     if(o != null) {
         return new JsonObject(o);
     }
     return null;
   }
-  protected Contract employeesPerYearChartInit() {
-    Wrap<JsonObject> employeesPerYearChartWrap = new Wrap<JsonObject>().var("employeesPerYearChart");
-    if(employeesPerYearChart == null) {
-      _employeesPerYearChart(employeesPerYearChartWrap);
-      Optional.ofNullable(employeesPerYearChartWrap.getO()).ifPresent(o -> {
-        setEmployeesPerYearChart(o);
+  protected Contract openshiftCostsPerYearChartInit() {
+    Wrap<JsonObject> openshiftCostsPerYearChartWrap = new Wrap<JsonObject>().var("openshiftCostsPerYearChart");
+    if(openshiftCostsPerYearChart == null) {
+      _openshiftCostsPerYearChart(openshiftCostsPerYearChartWrap);
+      Optional.ofNullable(openshiftCostsPerYearChartWrap.getO()).ifPresent(o -> {
+        setOpenshiftCostsPerYearChart(o);
       });
     }
     return (Contract)this;
   }
 
-  public static String staticSearchEmployeesPerYearChart(SiteRequest siteRequest_, JsonObject o) {
+  public static String staticSearchOpenshiftCostsPerYearChart(SiteRequest siteRequest_, JsonObject o) {
     return o.toString();
   }
 
-  public static String staticSearchStrEmployeesPerYearChart(SiteRequest siteRequest_, String o) {
+  public static String staticSearchStrOpenshiftCostsPerYearChart(SiteRequest siteRequest_, String o) {
     return o == null ? null : o.toString();
   }
 
-  public static String staticSearchFqEmployeesPerYearChart(SiteRequest siteRequest_, String o) {
-    return Contract.staticSearchEmployeesPerYearChart(siteRequest_, Contract.staticSetEmployeesPerYearChart(siteRequest_, o)).toString();
+  public static String staticSearchFqOpenshiftCostsPerYearChart(SiteRequest siteRequest_, String o) {
+    return Contract.staticSearchOpenshiftCostsPerYearChart(siteRequest_, Contract.staticSetOpenshiftCostsPerYearChart(siteRequest_, o)).toString();
   }
 
 	//////////////////////////
@@ -4541,22 +4558,23 @@ public abstract class ContractGen<DEV> extends BaseModel {
         employeeSubscriptionCostsPerYearInit();
         employeesPerYearDatasetInit();
         subscriptionCostsPerYearDatasetInit();
+        employeesPerYearChartInit();
         openshiftControlPlaneNodesInit();
         openshiftControlPlaneCoresInit();
         totalOpenshiftControlPlaneCoresInit();
-        openshiftControlPlaneHourlyPriceInit();
+        openshiftControlPlaneHourlyPricePerCoreInit();
         openshiftInfraNodesInit();
         openshiftInfraCoresInit();
         totalOpenshiftInfraCoresInit();
-        openshiftInfraHourlyPriceInit();
+        openshiftInfraHourlyPricePerCoreInit();
         openshiftWorkerNodesInit();
         openshiftWorkerCoresInit();
         totalOpenshiftWorkerCoresInit();
-        openshiftWorkerHourlyPriceInit();
+        openshiftWorkerHourlyPricePerCoreInit();
         openshiftSSDStorageTiBPerYearInit();
-        openshiftSSDStoragePriceInit();
-        openshiftCostsPerYearInit();
-        employeesPerYearChartInit();
+        openshiftSSDStoragePricePerGiBInit();
+        openshiftCostsPerYearDatasetInit();
+        openshiftCostsPerYearChartInit();
         projectExpensesChartInit();
         economicOutputChartInit();
         promise2.complete();
@@ -4674,38 +4692,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
         return oContract.employeesPerYearDataset;
       case "subscriptionCostsPerYearDataset":
         return oContract.subscriptionCostsPerYearDataset;
+      case "employeesPerYearChart":
+        return oContract.employeesPerYearChart;
       case "openshiftControlPlaneNodes":
         return oContract.openshiftControlPlaneNodes;
       case "openshiftControlPlaneCores":
         return oContract.openshiftControlPlaneCores;
       case "totalOpenshiftControlPlaneCores":
         return oContract.totalOpenshiftControlPlaneCores;
-      case "openshiftControlPlaneHourlyPrice":
-        return oContract.openshiftControlPlaneHourlyPrice;
+      case "openshiftControlPlaneHourlyPricePerCore":
+        return oContract.openshiftControlPlaneHourlyPricePerCore;
       case "openshiftInfraNodes":
         return oContract.openshiftInfraNodes;
       case "openshiftInfraCores":
         return oContract.openshiftInfraCores;
       case "totalOpenshiftInfraCores":
         return oContract.totalOpenshiftInfraCores;
-      case "openshiftInfraHourlyPrice":
-        return oContract.openshiftInfraHourlyPrice;
+      case "openshiftInfraHourlyPricePerCore":
+        return oContract.openshiftInfraHourlyPricePerCore;
       case "openshiftWorkerNodes":
         return oContract.openshiftWorkerNodes;
       case "openshiftWorkerCores":
         return oContract.openshiftWorkerCores;
       case "totalOpenshiftWorkerCores":
         return oContract.totalOpenshiftWorkerCores;
-      case "openshiftWorkerHourlyPrice":
-        return oContract.openshiftWorkerHourlyPrice;
+      case "openshiftWorkerHourlyPricePerCore":
+        return oContract.openshiftWorkerHourlyPricePerCore;
       case "openshiftSSDStorageTiBPerYear":
         return oContract.openshiftSSDStorageTiBPerYear;
-      case "openshiftSSDStoragePrice":
-        return oContract.openshiftSSDStoragePrice;
-      case "openshiftCostsPerYear":
-        return oContract.openshiftCostsPerYear;
-      case "employeesPerYearChart":
-        return oContract.employeesPerYearChart;
+      case "openshiftSSDStoragePricePerGiB":
+        return oContract.openshiftSSDStoragePricePerGiB;
+      case "openshiftCostsPerYearDataset":
+        return oContract.openshiftCostsPerYearDataset;
+      case "openshiftCostsPerYearChart":
+        return oContract.openshiftCostsPerYearChart;
       case "projectExpensesChart":
         return oContract.projectExpensesChart;
       case "economicOutputChart":
@@ -4810,38 +4830,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return Contract.staticSetEmployeesPerYearDataset(siteRequest_, v);
     case "subscriptionCostsPerYearDataset":
       return Contract.staticSetSubscriptionCostsPerYearDataset(siteRequest_, v);
+    case "employeesPerYearChart":
+      return Contract.staticSetEmployeesPerYearChart(siteRequest_, v);
     case "openshiftControlPlaneNodes":
       return Contract.staticSetOpenshiftControlPlaneNodes(siteRequest_, v);
     case "openshiftControlPlaneCores":
       return Contract.staticSetOpenshiftControlPlaneCores(siteRequest_, v);
     case "totalOpenshiftControlPlaneCores":
       return Contract.staticSetTotalOpenshiftControlPlaneCores(siteRequest_, v);
-    case "openshiftControlPlaneHourlyPrice":
-      return Contract.staticSetOpenshiftControlPlaneHourlyPrice(siteRequest_, v);
+    case "openshiftControlPlaneHourlyPricePerCore":
+      return Contract.staticSetOpenshiftControlPlaneHourlyPricePerCore(siteRequest_, v);
     case "openshiftInfraNodes":
       return Contract.staticSetOpenshiftInfraNodes(siteRequest_, v);
     case "openshiftInfraCores":
       return Contract.staticSetOpenshiftInfraCores(siteRequest_, v);
     case "totalOpenshiftInfraCores":
       return Contract.staticSetTotalOpenshiftInfraCores(siteRequest_, v);
-    case "openshiftInfraHourlyPrice":
-      return Contract.staticSetOpenshiftInfraHourlyPrice(siteRequest_, v);
+    case "openshiftInfraHourlyPricePerCore":
+      return Contract.staticSetOpenshiftInfraHourlyPricePerCore(siteRequest_, v);
     case "openshiftWorkerNodes":
       return Contract.staticSetOpenshiftWorkerNodes(siteRequest_, v);
     case "openshiftWorkerCores":
       return Contract.staticSetOpenshiftWorkerCores(siteRequest_, v);
     case "totalOpenshiftWorkerCores":
       return Contract.staticSetTotalOpenshiftWorkerCores(siteRequest_, v);
-    case "openshiftWorkerHourlyPrice":
-      return Contract.staticSetOpenshiftWorkerHourlyPrice(siteRequest_, v);
+    case "openshiftWorkerHourlyPricePerCore":
+      return Contract.staticSetOpenshiftWorkerHourlyPricePerCore(siteRequest_, v);
     case "openshiftSSDStorageTiBPerYear":
       return Contract.staticSetOpenshiftSSDStorageTiBPerYear(siteRequest_, v);
-    case "openshiftSSDStoragePrice":
-      return Contract.staticSetOpenshiftSSDStoragePrice(siteRequest_, v);
-    case "openshiftCostsPerYear":
-      return Contract.staticSetOpenshiftCostsPerYear(siteRequest_, v);
-    case "employeesPerYearChart":
-      return Contract.staticSetEmployeesPerYearChart(siteRequest_, v);
+    case "openshiftSSDStoragePricePerGiB":
+      return Contract.staticSetOpenshiftSSDStoragePricePerGiB(siteRequest_, v);
+    case "openshiftCostsPerYearDataset":
+      return Contract.staticSetOpenshiftCostsPerYearDataset(siteRequest_, v);
+    case "openshiftCostsPerYearChart":
+      return Contract.staticSetOpenshiftCostsPerYearChart(siteRequest_, v);
     case "projectExpensesChart":
       return Contract.staticSetProjectExpensesChart(siteRequest_, v);
     case "economicOutputChart":
@@ -4952,38 +4974,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return Contract.staticSearchEmployeesPerYearDataset(siteRequest_, (JsonArray)o);
     case "subscriptionCostsPerYearDataset":
       return Contract.staticSearchSubscriptionCostsPerYearDataset(siteRequest_, (JsonArray)o);
+    case "employeesPerYearChart":
+      return Contract.staticSearchEmployeesPerYearChart(siteRequest_, (JsonObject)o);
     case "openshiftControlPlaneNodes":
       return Contract.staticSearchOpenshiftControlPlaneNodes(siteRequest_, (Integer)o);
     case "openshiftControlPlaneCores":
       return Contract.staticSearchOpenshiftControlPlaneCores(siteRequest_, (Integer)o);
     case "totalOpenshiftControlPlaneCores":
       return Contract.staticSearchTotalOpenshiftControlPlaneCores(siteRequest_, (Integer)o);
-    case "openshiftControlPlaneHourlyPrice":
-      return Contract.staticSearchOpenshiftControlPlaneHourlyPrice(siteRequest_, (BigDecimal)o);
+    case "openshiftControlPlaneHourlyPricePerCore":
+      return Contract.staticSearchOpenshiftControlPlaneHourlyPricePerCore(siteRequest_, (BigDecimal)o);
     case "openshiftInfraNodes":
       return Contract.staticSearchOpenshiftInfraNodes(siteRequest_, (Integer)o);
     case "openshiftInfraCores":
       return Contract.staticSearchOpenshiftInfraCores(siteRequest_, (Integer)o);
     case "totalOpenshiftInfraCores":
       return Contract.staticSearchTotalOpenshiftInfraCores(siteRequest_, (Integer)o);
-    case "openshiftInfraHourlyPrice":
-      return Contract.staticSearchOpenshiftInfraHourlyPrice(siteRequest_, (BigDecimal)o);
+    case "openshiftInfraHourlyPricePerCore":
+      return Contract.staticSearchOpenshiftInfraHourlyPricePerCore(siteRequest_, (BigDecimal)o);
     case "openshiftWorkerNodes":
       return Contract.staticSearchOpenshiftWorkerNodes(siteRequest_, (Integer)o);
     case "openshiftWorkerCores":
       return Contract.staticSearchOpenshiftWorkerCores(siteRequest_, (Integer)o);
     case "totalOpenshiftWorkerCores":
       return Contract.staticSearchTotalOpenshiftWorkerCores(siteRequest_, (Integer)o);
-    case "openshiftWorkerHourlyPrice":
-      return Contract.staticSearchOpenshiftWorkerHourlyPrice(siteRequest_, (BigDecimal)o);
+    case "openshiftWorkerHourlyPricePerCore":
+      return Contract.staticSearchOpenshiftWorkerHourlyPricePerCore(siteRequest_, (BigDecimal)o);
     case "openshiftSSDStorageTiBPerYear":
       return Contract.staticSearchOpenshiftSSDStorageTiBPerYear(siteRequest_, (BigDecimal)o);
-    case "openshiftSSDStoragePrice":
-      return Contract.staticSearchOpenshiftSSDStoragePrice(siteRequest_, (BigDecimal)o);
-    case "openshiftCostsPerYear":
-      return Contract.staticSearchOpenshiftCostsPerYear(siteRequest_, (BigDecimal)o);
-    case "employeesPerYearChart":
-      return Contract.staticSearchEmployeesPerYearChart(siteRequest_, (JsonObject)o);
+    case "openshiftSSDStoragePricePerGiB":
+      return Contract.staticSearchOpenshiftSSDStoragePricePerGiB(siteRequest_, (BigDecimal)o);
+    case "openshiftCostsPerYearDataset":
+      return Contract.staticSearchOpenshiftCostsPerYearDataset(siteRequest_, (JsonArray)o);
+    case "openshiftCostsPerYearChart":
+      return Contract.staticSearchOpenshiftCostsPerYearChart(siteRequest_, (JsonObject)o);
     case "projectExpensesChart":
       return Contract.staticSearchProjectExpensesChart(siteRequest_, (JsonObject)o);
     case "economicOutputChart":
@@ -5064,38 +5088,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return Contract.staticSearchStrEmployeesPerYearDataset(siteRequest_, (String)o);
     case "subscriptionCostsPerYearDataset":
       return Contract.staticSearchStrSubscriptionCostsPerYearDataset(siteRequest_, (String)o);
+    case "employeesPerYearChart":
+      return Contract.staticSearchStrEmployeesPerYearChart(siteRequest_, (String)o);
     case "openshiftControlPlaneNodes":
       return Contract.staticSearchStrOpenshiftControlPlaneNodes(siteRequest_, (Integer)o);
     case "openshiftControlPlaneCores":
       return Contract.staticSearchStrOpenshiftControlPlaneCores(siteRequest_, (Integer)o);
     case "totalOpenshiftControlPlaneCores":
       return Contract.staticSearchStrTotalOpenshiftControlPlaneCores(siteRequest_, (Integer)o);
-    case "openshiftControlPlaneHourlyPrice":
-      return Contract.staticSearchStrOpenshiftControlPlaneHourlyPrice(siteRequest_, (String)o);
+    case "openshiftControlPlaneHourlyPricePerCore":
+      return Contract.staticSearchStrOpenshiftControlPlaneHourlyPricePerCore(siteRequest_, (String)o);
     case "openshiftInfraNodes":
       return Contract.staticSearchStrOpenshiftInfraNodes(siteRequest_, (Integer)o);
     case "openshiftInfraCores":
       return Contract.staticSearchStrOpenshiftInfraCores(siteRequest_, (Integer)o);
     case "totalOpenshiftInfraCores":
       return Contract.staticSearchStrTotalOpenshiftInfraCores(siteRequest_, (Integer)o);
-    case "openshiftInfraHourlyPrice":
-      return Contract.staticSearchStrOpenshiftInfraHourlyPrice(siteRequest_, (String)o);
+    case "openshiftInfraHourlyPricePerCore":
+      return Contract.staticSearchStrOpenshiftInfraHourlyPricePerCore(siteRequest_, (String)o);
     case "openshiftWorkerNodes":
       return Contract.staticSearchStrOpenshiftWorkerNodes(siteRequest_, (Integer)o);
     case "openshiftWorkerCores":
       return Contract.staticSearchStrOpenshiftWorkerCores(siteRequest_, (Integer)o);
     case "totalOpenshiftWorkerCores":
       return Contract.staticSearchStrTotalOpenshiftWorkerCores(siteRequest_, (Integer)o);
-    case "openshiftWorkerHourlyPrice":
-      return Contract.staticSearchStrOpenshiftWorkerHourlyPrice(siteRequest_, (String)o);
+    case "openshiftWorkerHourlyPricePerCore":
+      return Contract.staticSearchStrOpenshiftWorkerHourlyPricePerCore(siteRequest_, (String)o);
     case "openshiftSSDStorageTiBPerYear":
       return Contract.staticSearchStrOpenshiftSSDStorageTiBPerYear(siteRequest_, (String)o);
-    case "openshiftSSDStoragePrice":
-      return Contract.staticSearchStrOpenshiftSSDStoragePrice(siteRequest_, (String)o);
-    case "openshiftCostsPerYear":
-      return Contract.staticSearchStrOpenshiftCostsPerYear(siteRequest_, (String)o);
-    case "employeesPerYearChart":
-      return Contract.staticSearchStrEmployeesPerYearChart(siteRequest_, (String)o);
+    case "openshiftSSDStoragePricePerGiB":
+      return Contract.staticSearchStrOpenshiftSSDStoragePricePerGiB(siteRequest_, (String)o);
+    case "openshiftCostsPerYearDataset":
+      return Contract.staticSearchStrOpenshiftCostsPerYearDataset(siteRequest_, (String)o);
+    case "openshiftCostsPerYearChart":
+      return Contract.staticSearchStrOpenshiftCostsPerYearChart(siteRequest_, (String)o);
     case "projectExpensesChart":
       return Contract.staticSearchStrProjectExpensesChart(siteRequest_, (String)o);
     case "economicOutputChart":
@@ -5176,38 +5202,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return Contract.staticSearchFqEmployeesPerYearDataset(siteRequest_, o);
     case "subscriptionCostsPerYearDataset":
       return Contract.staticSearchFqSubscriptionCostsPerYearDataset(siteRequest_, o);
+    case "employeesPerYearChart":
+      return Contract.staticSearchFqEmployeesPerYearChart(siteRequest_, o);
     case "openshiftControlPlaneNodes":
       return Contract.staticSearchFqOpenshiftControlPlaneNodes(siteRequest_, o);
     case "openshiftControlPlaneCores":
       return Contract.staticSearchFqOpenshiftControlPlaneCores(siteRequest_, o);
     case "totalOpenshiftControlPlaneCores":
       return Contract.staticSearchFqTotalOpenshiftControlPlaneCores(siteRequest_, o);
-    case "openshiftControlPlaneHourlyPrice":
-      return Contract.staticSearchFqOpenshiftControlPlaneHourlyPrice(siteRequest_, o);
+    case "openshiftControlPlaneHourlyPricePerCore":
+      return Contract.staticSearchFqOpenshiftControlPlaneHourlyPricePerCore(siteRequest_, o);
     case "openshiftInfraNodes":
       return Contract.staticSearchFqOpenshiftInfraNodes(siteRequest_, o);
     case "openshiftInfraCores":
       return Contract.staticSearchFqOpenshiftInfraCores(siteRequest_, o);
     case "totalOpenshiftInfraCores":
       return Contract.staticSearchFqTotalOpenshiftInfraCores(siteRequest_, o);
-    case "openshiftInfraHourlyPrice":
-      return Contract.staticSearchFqOpenshiftInfraHourlyPrice(siteRequest_, o);
+    case "openshiftInfraHourlyPricePerCore":
+      return Contract.staticSearchFqOpenshiftInfraHourlyPricePerCore(siteRequest_, o);
     case "openshiftWorkerNodes":
       return Contract.staticSearchFqOpenshiftWorkerNodes(siteRequest_, o);
     case "openshiftWorkerCores":
       return Contract.staticSearchFqOpenshiftWorkerCores(siteRequest_, o);
     case "totalOpenshiftWorkerCores":
       return Contract.staticSearchFqTotalOpenshiftWorkerCores(siteRequest_, o);
-    case "openshiftWorkerHourlyPrice":
-      return Contract.staticSearchFqOpenshiftWorkerHourlyPrice(siteRequest_, o);
+    case "openshiftWorkerHourlyPricePerCore":
+      return Contract.staticSearchFqOpenshiftWorkerHourlyPricePerCore(siteRequest_, o);
     case "openshiftSSDStorageTiBPerYear":
       return Contract.staticSearchFqOpenshiftSSDStorageTiBPerYear(siteRequest_, o);
-    case "openshiftSSDStoragePrice":
-      return Contract.staticSearchFqOpenshiftSSDStoragePrice(siteRequest_, o);
-    case "openshiftCostsPerYear":
-      return Contract.staticSearchFqOpenshiftCostsPerYear(siteRequest_, o);
-    case "employeesPerYearChart":
-      return Contract.staticSearchFqEmployeesPerYearChart(siteRequest_, o);
+    case "openshiftSSDStoragePricePerGiB":
+      return Contract.staticSearchFqOpenshiftSSDStoragePricePerGiB(siteRequest_, o);
+    case "openshiftCostsPerYearDataset":
+      return Contract.staticSearchFqOpenshiftCostsPerYearDataset(siteRequest_, o);
+    case "openshiftCostsPerYearChart":
+      return Contract.staticSearchFqOpenshiftCostsPerYearChart(siteRequest_, o);
     case "projectExpensesChart":
       return Contract.staticSearchFqProjectExpensesChart(siteRequest_, o);
     case "economicOutputChart":
@@ -5590,15 +5618,15 @@ public abstract class ContractGen<DEV> extends BaseModel {
         }
         saves.add("totalOpenshiftControlPlaneCores");
         return val;
-      } else if("openshiftcontrolplanehourlyprice".equals(varLower)) {
+      } else if("openshiftcontrolplanehourlypricepercore".equals(varLower)) {
         if(val instanceof String) {
-          setOpenshiftControlPlaneHourlyPrice((String)val);
+          setOpenshiftControlPlaneHourlyPricePerCore((String)val);
         } else if(val instanceof Number) {
-          setOpenshiftControlPlaneHourlyPrice(new BigDecimal(((Number)val).doubleValue()));
+          setOpenshiftControlPlaneHourlyPricePerCore(new BigDecimal(((Number)val).doubleValue()));
         } else if(val instanceof BigDecimal) {
-          setOpenshiftControlPlaneHourlyPrice((BigDecimal)val);
+          setOpenshiftControlPlaneHourlyPricePerCore((BigDecimal)val);
         }
-        saves.add("openshiftControlPlaneHourlyPrice");
+        saves.add("openshiftControlPlaneHourlyPricePerCore");
         return val;
       } else if("openshiftinfranodes".equals(varLower)) {
         if(val instanceof Integer) {
@@ -5624,15 +5652,15 @@ public abstract class ContractGen<DEV> extends BaseModel {
         }
         saves.add("totalOpenshiftInfraCores");
         return val;
-      } else if("openshiftinfrahourlyprice".equals(varLower)) {
+      } else if("openshiftinfrahourlypricepercore".equals(varLower)) {
         if(val instanceof String) {
-          setOpenshiftInfraHourlyPrice((String)val);
+          setOpenshiftInfraHourlyPricePerCore((String)val);
         } else if(val instanceof Number) {
-          setOpenshiftInfraHourlyPrice(new BigDecimal(((Number)val).doubleValue()));
+          setOpenshiftInfraHourlyPricePerCore(new BigDecimal(((Number)val).doubleValue()));
         } else if(val instanceof BigDecimal) {
-          setOpenshiftInfraHourlyPrice((BigDecimal)val);
+          setOpenshiftInfraHourlyPricePerCore((BigDecimal)val);
         }
-        saves.add("openshiftInfraHourlyPrice");
+        saves.add("openshiftInfraHourlyPricePerCore");
         return val;
       } else if("openshiftworkernodes".equals(varLower)) {
         if(val instanceof Integer) {
@@ -5658,15 +5686,15 @@ public abstract class ContractGen<DEV> extends BaseModel {
         }
         saves.add("totalOpenshiftWorkerCores");
         return val;
-      } else if("openshiftworkerhourlyprice".equals(varLower)) {
+      } else if("openshiftworkerhourlypricepercore".equals(varLower)) {
         if(val instanceof String) {
-          setOpenshiftWorkerHourlyPrice((String)val);
+          setOpenshiftWorkerHourlyPricePerCore((String)val);
         } else if(val instanceof Number) {
-          setOpenshiftWorkerHourlyPrice(new BigDecimal(((Number)val).doubleValue()));
+          setOpenshiftWorkerHourlyPricePerCore(new BigDecimal(((Number)val).doubleValue()));
         } else if(val instanceof BigDecimal) {
-          setOpenshiftWorkerHourlyPrice((BigDecimal)val);
+          setOpenshiftWorkerHourlyPricePerCore((BigDecimal)val);
         }
-        saves.add("openshiftWorkerHourlyPrice");
+        saves.add("openshiftWorkerHourlyPricePerCore");
         return val;
       } else if("openshiftssdstoragetibperyear".equals(varLower)) {
         if(val instanceof List<?>) {
@@ -5682,29 +5710,25 @@ public abstract class ContractGen<DEV> extends BaseModel {
           saves.add("openshiftSSDStorageTiBPerYear");
         }
         return val;
-      } else if("openshiftssdstorageprice".equals(varLower)) {
+      } else if("openshiftssdstoragepricepergib".equals(varLower)) {
         if(val instanceof String) {
-          setOpenshiftSSDStoragePrice((String)val);
+          setOpenshiftSSDStoragePricePerGiB((String)val);
         } else if(val instanceof Number) {
-          setOpenshiftSSDStoragePrice(new BigDecimal(((Number)val).doubleValue()));
+          setOpenshiftSSDStoragePricePerGiB(new BigDecimal(((Number)val).doubleValue()));
         } else if(val instanceof BigDecimal) {
-          setOpenshiftSSDStoragePrice((BigDecimal)val);
+          setOpenshiftSSDStoragePricePerGiB((BigDecimal)val);
         }
-        saves.add("openshiftSSDStoragePrice");
+        saves.add("openshiftSSDStoragePricePerGiB");
         return val;
-      } else if("openshiftcostsperyear".equals(varLower)) {
-        if(val instanceof List<?>) {
-          ((List<BigDecimal>)val).stream().forEach(v -> addOpenshiftCostsPerYear(v));
-        } else if(val instanceof BigDecimal[]) {
-          Arrays.asList((BigDecimal[])val).stream().forEach(v -> addOpenshiftCostsPerYear((BigDecimal)v));
-        } else if(val instanceof Number[]) {
-          Arrays.asList((Number[])val).stream().forEach(v -> addOpenshiftCostsPerYear(((Number)v).toString()));
+      } else if("openshiftcostsperyeardataset".equals(varLower)) {
+        if(val instanceof String) {
+          setOpenshiftCostsPerYearDataset((String)val);
         } else if(val instanceof JsonArray) {
-          ((JsonArray)val).stream().forEach(v -> addOpenshiftCostsPerYear(staticSetOpenshiftCostsPerYear(siteRequest_, v.toString())));
+          setOpenshiftCostsPerYearDataset((JsonArray)val);
+        } else if(val instanceof JsonArray) {
+          setOpenshiftCostsPerYearDataset((JsonArray)val);
         }
-        if(!saves.contains("openshiftCostsPerYear")) {
-          saves.add("openshiftCostsPerYear");
-        }
+        saves.add("openshiftCostsPerYearDataset");
         return val;
     } else {
       return super.persistBaseModel(var, val);
@@ -5951,6 +5975,12 @@ public abstract class ContractGen<DEV> extends BaseModel {
           oContract.setSubscriptionCostsPerYearDataset(subscriptionCostsPerYearDataset);
       }
 
+      if(saves.contains("employeesPerYearChart")) {
+        String employeesPerYearChart = (String)doc.get("employeesPerYearChart_stored_string");
+        if(employeesPerYearChart != null)
+          oContract.setEmployeesPerYearChart(employeesPerYearChart);
+      }
+
       if(saves.contains("openshiftControlPlaneNodes")) {
         Integer openshiftControlPlaneNodes = (Integer)doc.get("openshiftControlPlaneNodes_docvalues_int");
         if(openshiftControlPlaneNodes != null)
@@ -5969,10 +5999,10 @@ public abstract class ContractGen<DEV> extends BaseModel {
           oContract.setTotalOpenshiftControlPlaneCores(totalOpenshiftControlPlaneCores);
       }
 
-      if(saves.contains("openshiftControlPlaneHourlyPrice")) {
-        String openshiftControlPlaneHourlyPrice = (String)doc.get("openshiftControlPlaneHourlyPrice_docvalues_string");
-        if(openshiftControlPlaneHourlyPrice != null)
-          oContract.setOpenshiftControlPlaneHourlyPrice(openshiftControlPlaneHourlyPrice);
+      if(saves.contains("openshiftControlPlaneHourlyPricePerCore")) {
+        String openshiftControlPlaneHourlyPricePerCore = (String)doc.get("openshiftControlPlaneHourlyPricePerCore_docvalues_string");
+        if(openshiftControlPlaneHourlyPricePerCore != null)
+          oContract.setOpenshiftControlPlaneHourlyPricePerCore(openshiftControlPlaneHourlyPricePerCore);
       }
 
       if(saves.contains("openshiftInfraNodes")) {
@@ -5993,10 +6023,10 @@ public abstract class ContractGen<DEV> extends BaseModel {
           oContract.setTotalOpenshiftInfraCores(totalOpenshiftInfraCores);
       }
 
-      if(saves.contains("openshiftInfraHourlyPrice")) {
-        String openshiftInfraHourlyPrice = (String)doc.get("openshiftInfraHourlyPrice_docvalues_string");
-        if(openshiftInfraHourlyPrice != null)
-          oContract.setOpenshiftInfraHourlyPrice(openshiftInfraHourlyPrice);
+      if(saves.contains("openshiftInfraHourlyPricePerCore")) {
+        String openshiftInfraHourlyPricePerCore = (String)doc.get("openshiftInfraHourlyPricePerCore_docvalues_string");
+        if(openshiftInfraHourlyPricePerCore != null)
+          oContract.setOpenshiftInfraHourlyPricePerCore(openshiftInfraHourlyPricePerCore);
       }
 
       if(saves.contains("openshiftWorkerNodes")) {
@@ -6017,10 +6047,10 @@ public abstract class ContractGen<DEV> extends BaseModel {
           oContract.setTotalOpenshiftWorkerCores(totalOpenshiftWorkerCores);
       }
 
-      if(saves.contains("openshiftWorkerHourlyPrice")) {
-        String openshiftWorkerHourlyPrice = (String)doc.get("openshiftWorkerHourlyPrice_docvalues_string");
-        if(openshiftWorkerHourlyPrice != null)
-          oContract.setOpenshiftWorkerHourlyPrice(openshiftWorkerHourlyPrice);
+      if(saves.contains("openshiftWorkerHourlyPricePerCore")) {
+        String openshiftWorkerHourlyPricePerCore = (String)doc.get("openshiftWorkerHourlyPricePerCore_docvalues_string");
+        if(openshiftWorkerHourlyPricePerCore != null)
+          oContract.setOpenshiftWorkerHourlyPricePerCore(openshiftWorkerHourlyPricePerCore);
       }
 
       if(saves.contains("openshiftSSDStorageTiBPerYear")) {
@@ -6032,25 +6062,22 @@ public abstract class ContractGen<DEV> extends BaseModel {
         }
       }
 
-      if(saves.contains("openshiftSSDStoragePrice")) {
-        String openshiftSSDStoragePrice = (String)doc.get("openshiftSSDStoragePrice_docvalues_string");
-        if(openshiftSSDStoragePrice != null)
-          oContract.setOpenshiftSSDStoragePrice(openshiftSSDStoragePrice);
+      if(saves.contains("openshiftSSDStoragePricePerGiB")) {
+        String openshiftSSDStoragePricePerGiB = (String)doc.get("openshiftSSDStoragePricePerGiB_docvalues_string");
+        if(openshiftSSDStoragePricePerGiB != null)
+          oContract.setOpenshiftSSDStoragePricePerGiB(openshiftSSDStoragePricePerGiB);
       }
 
-      if(saves.contains("openshiftCostsPerYear")) {
-        List<String> openshiftCostsPerYear = (List<String>)doc.get("openshiftCostsPerYear_docvalues_strings");
-        if(openshiftCostsPerYear != null) {
-          openshiftCostsPerYear.stream().forEach( v -> {
-            oContract.openshiftCostsPerYear.add(Contract.staticSetOpenshiftCostsPerYear(siteRequest_, v));
-          });
-        }
+      if(saves.contains("openshiftCostsPerYearDataset")) {
+        String openshiftCostsPerYearDataset = (String)doc.get("openshiftCostsPerYearDataset_docvalues_string");
+        if(openshiftCostsPerYearDataset != null)
+          oContract.setOpenshiftCostsPerYearDataset(openshiftCostsPerYearDataset);
       }
 
-      if(saves.contains("employeesPerYearChart")) {
-        String employeesPerYearChart = (String)doc.get("employeesPerYearChart_stored_string");
-        if(employeesPerYearChart != null)
-          oContract.setEmployeesPerYearChart(employeesPerYearChart);
+      if(saves.contains("openshiftCostsPerYearChart")) {
+        String openshiftCostsPerYearChart = (String)doc.get("openshiftCostsPerYearChart_stored_string");
+        if(openshiftCostsPerYearChart != null)
+          oContract.setOpenshiftCostsPerYearChart(openshiftCostsPerYearChart);
       }
 
       if(saves.contains("projectExpensesChart")) {
@@ -6225,6 +6252,9 @@ public abstract class ContractGen<DEV> extends BaseModel {
     if(subscriptionCostsPerYearDataset != null) {
       doc.put("subscriptionCostsPerYearDataset_docvalues_string", subscriptionCostsPerYearDataset.encode());
     }
+    if(employeesPerYearChart != null) {
+      doc.put("employeesPerYearChart_stored_string", employeesPerYearChart.toString());
+    }
     if(openshiftControlPlaneNodes != null) {
       doc.put("openshiftControlPlaneNodes_docvalues_int", openshiftControlPlaneNodes);
     }
@@ -6234,9 +6264,9 @@ public abstract class ContractGen<DEV> extends BaseModel {
     if(totalOpenshiftControlPlaneCores != null) {
       doc.put("totalOpenshiftControlPlaneCores_docvalues_int", totalOpenshiftControlPlaneCores);
     }
-    if(openshiftControlPlaneHourlyPrice != null) {
-      doc.put("openshiftControlPlaneHourlyPrice_docvalues_string", openshiftControlPlaneHourlyPrice.toPlainString());
-      doc.put("openshiftControlPlaneHourlyPrice_docvalues_double", openshiftControlPlaneHourlyPrice.doubleValue());
+    if(openshiftControlPlaneHourlyPricePerCore != null) {
+      doc.put("openshiftControlPlaneHourlyPricePerCore_docvalues_string", openshiftControlPlaneHourlyPricePerCore.toPlainString());
+      doc.put("openshiftControlPlaneHourlyPricePerCore_docvalues_double", openshiftControlPlaneHourlyPricePerCore.doubleValue());
     }
     if(openshiftInfraNodes != null) {
       doc.put("openshiftInfraNodes_docvalues_int", openshiftInfraNodes);
@@ -6247,9 +6277,9 @@ public abstract class ContractGen<DEV> extends BaseModel {
     if(totalOpenshiftInfraCores != null) {
       doc.put("totalOpenshiftInfraCores_docvalues_int", totalOpenshiftInfraCores);
     }
-    if(openshiftInfraHourlyPrice != null) {
-      doc.put("openshiftInfraHourlyPrice_docvalues_string", openshiftInfraHourlyPrice.toPlainString());
-      doc.put("openshiftInfraHourlyPrice_docvalues_double", openshiftInfraHourlyPrice.doubleValue());
+    if(openshiftInfraHourlyPricePerCore != null) {
+      doc.put("openshiftInfraHourlyPricePerCore_docvalues_string", openshiftInfraHourlyPricePerCore.toPlainString());
+      doc.put("openshiftInfraHourlyPricePerCore_docvalues_double", openshiftInfraHourlyPricePerCore.doubleValue());
     }
     if(openshiftWorkerNodes != null) {
       doc.put("openshiftWorkerNodes_docvalues_int", openshiftWorkerNodes);
@@ -6260,9 +6290,9 @@ public abstract class ContractGen<DEV> extends BaseModel {
     if(totalOpenshiftWorkerCores != null) {
       doc.put("totalOpenshiftWorkerCores_docvalues_int", totalOpenshiftWorkerCores);
     }
-    if(openshiftWorkerHourlyPrice != null) {
-      doc.put("openshiftWorkerHourlyPrice_docvalues_string", openshiftWorkerHourlyPrice.toPlainString());
-      doc.put("openshiftWorkerHourlyPrice_docvalues_double", openshiftWorkerHourlyPrice.doubleValue());
+    if(openshiftWorkerHourlyPricePerCore != null) {
+      doc.put("openshiftWorkerHourlyPricePerCore_docvalues_string", openshiftWorkerHourlyPricePerCore.toPlainString());
+      doc.put("openshiftWorkerHourlyPricePerCore_docvalues_double", openshiftWorkerHourlyPricePerCore.doubleValue());
     }
     if(openshiftSSDStorageTiBPerYear != null) {
       JsonArray l = new JsonArray();
@@ -6271,19 +6301,15 @@ public abstract class ContractGen<DEV> extends BaseModel {
         l.add(Contract.staticSearchOpenshiftSSDStorageTiBPerYear(siteRequest_, o));
       }
     }
-    if(openshiftSSDStoragePrice != null) {
-      doc.put("openshiftSSDStoragePrice_docvalues_string", openshiftSSDStoragePrice.toPlainString());
-      doc.put("openshiftSSDStoragePrice_docvalues_double", openshiftSSDStoragePrice.doubleValue());
+    if(openshiftSSDStoragePricePerGiB != null) {
+      doc.put("openshiftSSDStoragePricePerGiB_docvalues_string", openshiftSSDStoragePricePerGiB.toPlainString());
+      doc.put("openshiftSSDStoragePricePerGiB_docvalues_double", openshiftSSDStoragePricePerGiB.doubleValue());
     }
-    if(openshiftCostsPerYear != null) {
-      JsonArray l = new JsonArray();
-      doc.put("openshiftCostsPerYear_docvalues_strings", l);
-      for(BigDecimal o : openshiftCostsPerYear) {
-        l.add(Contract.staticSearchOpenshiftCostsPerYear(siteRequest_, o));
-      }
+    if(openshiftCostsPerYearDataset != null) {
+      doc.put("openshiftCostsPerYearDataset_docvalues_string", openshiftCostsPerYearDataset.encode());
     }
-    if(employeesPerYearChart != null) {
-      doc.put("employeesPerYearChart_stored_string", employeesPerYearChart.toString());
+    if(openshiftCostsPerYearChart != null) {
+      doc.put("openshiftCostsPerYearChart_stored_string", openshiftCostsPerYearChart.toString());
     }
     if(projectExpensesChart != null) {
       doc.put("projectExpensesChart_stored_string", projectExpensesChart.toString());
@@ -6359,38 +6385,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
         return "employeesPerYearDataset_docvalues_string";
       case "subscriptionCostsPerYearDataset":
         return "subscriptionCostsPerYearDataset_docvalues_string";
+      case "employeesPerYearChart":
+        return "employeesPerYearChart_stored_string";
       case "openshiftControlPlaneNodes":
         return "openshiftControlPlaneNodes_docvalues_int";
       case "openshiftControlPlaneCores":
         return "openshiftControlPlaneCores_docvalues_int";
       case "totalOpenshiftControlPlaneCores":
         return "totalOpenshiftControlPlaneCores_docvalues_int";
-      case "openshiftControlPlaneHourlyPrice":
-        return "openshiftControlPlaneHourlyPrice_docvalues_string";
+      case "openshiftControlPlaneHourlyPricePerCore":
+        return "openshiftControlPlaneHourlyPricePerCore_docvalues_string";
       case "openshiftInfraNodes":
         return "openshiftInfraNodes_docvalues_int";
       case "openshiftInfraCores":
         return "openshiftInfraCores_docvalues_int";
       case "totalOpenshiftInfraCores":
         return "totalOpenshiftInfraCores_docvalues_int";
-      case "openshiftInfraHourlyPrice":
-        return "openshiftInfraHourlyPrice_docvalues_string";
+      case "openshiftInfraHourlyPricePerCore":
+        return "openshiftInfraHourlyPricePerCore_docvalues_string";
       case "openshiftWorkerNodes":
         return "openshiftWorkerNodes_docvalues_int";
       case "openshiftWorkerCores":
         return "openshiftWorkerCores_docvalues_int";
       case "totalOpenshiftWorkerCores":
         return "totalOpenshiftWorkerCores_docvalues_int";
-      case "openshiftWorkerHourlyPrice":
-        return "openshiftWorkerHourlyPrice_docvalues_string";
+      case "openshiftWorkerHourlyPricePerCore":
+        return "openshiftWorkerHourlyPricePerCore_docvalues_string";
       case "openshiftSSDStorageTiBPerYear":
         return "openshiftSSDStorageTiBPerYear_docvalues_strings";
-      case "openshiftSSDStoragePrice":
-        return "openshiftSSDStoragePrice_docvalues_string";
-      case "openshiftCostsPerYear":
-        return "openshiftCostsPerYear_docvalues_strings";
-      case "employeesPerYearChart":
-        return "employeesPerYearChart_stored_string";
+      case "openshiftSSDStoragePricePerGiB":
+        return "openshiftSSDStoragePricePerGiB_docvalues_string";
+      case "openshiftCostsPerYearDataset":
+        return "openshiftCostsPerYearDataset_docvalues_string";
+      case "openshiftCostsPerYearChart":
+        return "openshiftCostsPerYearChart_stored_string";
       case "projectExpensesChart":
         return "projectExpensesChart_stored_string";
       case "economicOutputChart":
@@ -6468,30 +6496,30 @@ public abstract class ContractGen<DEV> extends BaseModel {
         return "openshiftControlPlaneCores_docvalues_int";
       case "totalOpenshiftControlPlaneCores":
         return "totalOpenshiftControlPlaneCores_docvalues_int";
-      case "openshiftControlPlaneHourlyPrice":
-        return "openshiftControlPlaneHourlyPrice_docvalues_string";
+      case "openshiftControlPlaneHourlyPricePerCore":
+        return "openshiftControlPlaneHourlyPricePerCore_docvalues_string";
       case "openshiftInfraNodes":
         return "openshiftInfraNodes_docvalues_int";
       case "openshiftInfraCores":
         return "openshiftInfraCores_docvalues_int";
       case "totalOpenshiftInfraCores":
         return "totalOpenshiftInfraCores_docvalues_int";
-      case "openshiftInfraHourlyPrice":
-        return "openshiftInfraHourlyPrice_docvalues_string";
+      case "openshiftInfraHourlyPricePerCore":
+        return "openshiftInfraHourlyPricePerCore_docvalues_string";
       case "openshiftWorkerNodes":
         return "openshiftWorkerNodes_docvalues_int";
       case "openshiftWorkerCores":
         return "openshiftWorkerCores_docvalues_int";
       case "totalOpenshiftWorkerCores":
         return "totalOpenshiftWorkerCores_docvalues_int";
-      case "openshiftWorkerHourlyPrice":
-        return "openshiftWorkerHourlyPrice_docvalues_string";
+      case "openshiftWorkerHourlyPricePerCore":
+        return "openshiftWorkerHourlyPricePerCore_docvalues_string";
       case "openshiftSSDStorageTiBPerYear":
         return "openshiftSSDStorageTiBPerYear_docvalues_strings";
-      case "openshiftSSDStoragePrice":
-        return "openshiftSSDStoragePrice_docvalues_string";
-      case "openshiftCostsPerYear":
-        return "openshiftCostsPerYear_docvalues_strings";
+      case "openshiftSSDStoragePricePerGiB":
+        return "openshiftSSDStoragePricePerGiB_docvalues_string";
+      case "openshiftCostsPerYearDataset":
+        return "openshiftCostsPerYearDataset_docvalues_string";
       default:
         return BaseModel.varIndexedBaseModel(entityVar);
     }
@@ -6565,30 +6593,30 @@ public abstract class ContractGen<DEV> extends BaseModel {
         return "openshiftControlPlaneCores";
       case "totalOpenshiftControlPlaneCores_docvalues_int":
         return "totalOpenshiftControlPlaneCores";
-      case "openshiftControlPlaneHourlyPrice_docvalues_string":
-        return "openshiftControlPlaneHourlyPrice";
+      case "openshiftControlPlaneHourlyPricePerCore_docvalues_string":
+        return "openshiftControlPlaneHourlyPricePerCore";
       case "openshiftInfraNodes_docvalues_int":
         return "openshiftInfraNodes";
       case "openshiftInfraCores_docvalues_int":
         return "openshiftInfraCores";
       case "totalOpenshiftInfraCores_docvalues_int":
         return "totalOpenshiftInfraCores";
-      case "openshiftInfraHourlyPrice_docvalues_string":
-        return "openshiftInfraHourlyPrice";
+      case "openshiftInfraHourlyPricePerCore_docvalues_string":
+        return "openshiftInfraHourlyPricePerCore";
       case "openshiftWorkerNodes_docvalues_int":
         return "openshiftWorkerNodes";
       case "openshiftWorkerCores_docvalues_int":
         return "openshiftWorkerCores";
       case "totalOpenshiftWorkerCores_docvalues_int":
         return "totalOpenshiftWorkerCores";
-      case "openshiftWorkerHourlyPrice_docvalues_string":
-        return "openshiftWorkerHourlyPrice";
+      case "openshiftWorkerHourlyPricePerCore_docvalues_string":
+        return "openshiftWorkerHourlyPricePerCore";
       case "openshiftSSDStorageTiBPerYear_docvalues_strings":
         return "openshiftSSDStorageTiBPerYear";
-      case "openshiftSSDStoragePrice_docvalues_string":
-        return "openshiftSSDStoragePrice";
-      case "openshiftCostsPerYear_docvalues_strings":
-        return "openshiftCostsPerYear";
+      case "openshiftSSDStoragePricePerGiB_docvalues_string":
+        return "openshiftSSDStoragePricePerGiB";
+      case "openshiftCostsPerYearDataset_docvalues_string":
+        return "openshiftCostsPerYearDataset";
       default:
         return BaseModel.searchVarBaseModel(searchVar);
     }
@@ -6678,26 +6706,25 @@ public abstract class ContractGen<DEV> extends BaseModel {
     });
     oContract.setEmployeesPerYearDataset(Optional.ofNullable(doc.get("employeesPerYearDataset_docvalues_string")).map(v -> v.toString()).orElse(null));
     oContract.setSubscriptionCostsPerYearDataset(Optional.ofNullable(doc.get("subscriptionCostsPerYearDataset_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oContract.setEmployeesPerYearChart(Optional.ofNullable(doc.get("employeesPerYearChart_stored_string")).map(v -> v.toString()).orElse(null));
     oContract.setOpenshiftControlPlaneNodes(Optional.ofNullable(doc.get("openshiftControlPlaneNodes_docvalues_int")).map(v -> v.toString()).orElse(null));
     oContract.setOpenshiftControlPlaneCores(Optional.ofNullable(doc.get("openshiftControlPlaneCores_docvalues_int")).map(v -> v.toString()).orElse(null));
     oContract.setTotalOpenshiftControlPlaneCores(Optional.ofNullable(doc.get("totalOpenshiftControlPlaneCores_docvalues_int")).map(v -> v.toString()).orElse(null));
-    oContract.setOpenshiftControlPlaneHourlyPrice(Optional.ofNullable(doc.get("openshiftControlPlaneHourlyPrice_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oContract.setOpenshiftControlPlaneHourlyPricePerCore(Optional.ofNullable(doc.get("openshiftControlPlaneHourlyPricePerCore_docvalues_string")).map(v -> v.toString()).orElse(null));
     oContract.setOpenshiftInfraNodes(Optional.ofNullable(doc.get("openshiftInfraNodes_docvalues_int")).map(v -> v.toString()).orElse(null));
     oContract.setOpenshiftInfraCores(Optional.ofNullable(doc.get("openshiftInfraCores_docvalues_int")).map(v -> v.toString()).orElse(null));
     oContract.setTotalOpenshiftInfraCores(Optional.ofNullable(doc.get("totalOpenshiftInfraCores_docvalues_int")).map(v -> v.toString()).orElse(null));
-    oContract.setOpenshiftInfraHourlyPrice(Optional.ofNullable(doc.get("openshiftInfraHourlyPrice_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oContract.setOpenshiftInfraHourlyPricePerCore(Optional.ofNullable(doc.get("openshiftInfraHourlyPricePerCore_docvalues_string")).map(v -> v.toString()).orElse(null));
     oContract.setOpenshiftWorkerNodes(Optional.ofNullable(doc.get("openshiftWorkerNodes_docvalues_int")).map(v -> v.toString()).orElse(null));
     oContract.setOpenshiftWorkerCores(Optional.ofNullable(doc.get("openshiftWorkerCores_docvalues_int")).map(v -> v.toString()).orElse(null));
     oContract.setTotalOpenshiftWorkerCores(Optional.ofNullable(doc.get("totalOpenshiftWorkerCores_docvalues_int")).map(v -> v.toString()).orElse(null));
-    oContract.setOpenshiftWorkerHourlyPrice(Optional.ofNullable(doc.get("openshiftWorkerHourlyPrice_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oContract.setOpenshiftWorkerHourlyPricePerCore(Optional.ofNullable(doc.get("openshiftWorkerHourlyPricePerCore_docvalues_string")).map(v -> v.toString()).orElse(null));
     Optional.ofNullable((List<?>)doc.get("openshiftSSDStorageTiBPerYear_docvalues_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
       oContract.addOpenshiftSSDStorageTiBPerYear(Contract.staticSetOpenshiftSSDStorageTiBPerYear(siteRequest, v.toString()));
     });
-    oContract.setOpenshiftSSDStoragePrice(Optional.ofNullable(doc.get("openshiftSSDStoragePrice_docvalues_string")).map(v -> v.toString()).orElse(null));
-    Optional.ofNullable((List<?>)doc.get("openshiftCostsPerYear_docvalues_strings")).orElse(Arrays.asList()).stream().filter(v -> v != null).forEach(v -> {
-      oContract.addOpenshiftCostsPerYear(Contract.staticSetOpenshiftCostsPerYear(siteRequest, v.toString()));
-    });
-    oContract.setEmployeesPerYearChart(Optional.ofNullable(doc.get("employeesPerYearChart_stored_string")).map(v -> v.toString()).orElse(null));
+    oContract.setOpenshiftSSDStoragePricePerGiB(Optional.ofNullable(doc.get("openshiftSSDStoragePricePerGiB_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oContract.setOpenshiftCostsPerYearDataset(Optional.ofNullable(doc.get("openshiftCostsPerYearDataset_docvalues_string")).map(v -> v.toString()).orElse(null));
+    oContract.setOpenshiftCostsPerYearChart(Optional.ofNullable(doc.get("openshiftCostsPerYearChart_stored_string")).map(v -> v.toString()).orElse(null));
     oContract.setProjectExpensesChart(Optional.ofNullable(doc.get("projectExpensesChart_stored_string")).map(v -> v.toString()).orElse(null));
     oContract.setEconomicOutputChart(Optional.ofNullable(doc.get("economicOutputChart_stored_string")).map(v -> v.toString()).orElse(null));
 
@@ -6775,38 +6802,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
         apiRequest.addVars("employeesPerYearDataset");
       if(!Objects.equals(subscriptionCostsPerYearDataset, original.getSubscriptionCostsPerYearDataset()))
         apiRequest.addVars("subscriptionCostsPerYearDataset");
+      if(!Objects.equals(employeesPerYearChart, original.getEmployeesPerYearChart()))
+        apiRequest.addVars("employeesPerYearChart");
       if(!Objects.equals(openshiftControlPlaneNodes, original.getOpenshiftControlPlaneNodes()))
         apiRequest.addVars("openshiftControlPlaneNodes");
       if(!Objects.equals(openshiftControlPlaneCores, original.getOpenshiftControlPlaneCores()))
         apiRequest.addVars("openshiftControlPlaneCores");
       if(!Objects.equals(totalOpenshiftControlPlaneCores, original.getTotalOpenshiftControlPlaneCores()))
         apiRequest.addVars("totalOpenshiftControlPlaneCores");
-      if(!Objects.equals(openshiftControlPlaneHourlyPrice, original.getOpenshiftControlPlaneHourlyPrice()) && openshiftControlPlaneHourlyPrice != null && original.getOpenshiftControlPlaneHourlyPrice() != null && openshiftControlPlaneHourlyPrice.compareTo(original.getOpenshiftControlPlaneHourlyPrice()) != 0)
-        apiRequest.addVars("openshiftControlPlaneHourlyPrice");
+      if(!Objects.equals(openshiftControlPlaneHourlyPricePerCore, original.getOpenshiftControlPlaneHourlyPricePerCore()) && openshiftControlPlaneHourlyPricePerCore != null && original.getOpenshiftControlPlaneHourlyPricePerCore() != null && openshiftControlPlaneHourlyPricePerCore.compareTo(original.getOpenshiftControlPlaneHourlyPricePerCore()) != 0)
+        apiRequest.addVars("openshiftControlPlaneHourlyPricePerCore");
       if(!Objects.equals(openshiftInfraNodes, original.getOpenshiftInfraNodes()))
         apiRequest.addVars("openshiftInfraNodes");
       if(!Objects.equals(openshiftInfraCores, original.getOpenshiftInfraCores()))
         apiRequest.addVars("openshiftInfraCores");
       if(!Objects.equals(totalOpenshiftInfraCores, original.getTotalOpenshiftInfraCores()))
         apiRequest.addVars("totalOpenshiftInfraCores");
-      if(!Objects.equals(openshiftInfraHourlyPrice, original.getOpenshiftInfraHourlyPrice()) && openshiftInfraHourlyPrice != null && original.getOpenshiftInfraHourlyPrice() != null && openshiftInfraHourlyPrice.compareTo(original.getOpenshiftInfraHourlyPrice()) != 0)
-        apiRequest.addVars("openshiftInfraHourlyPrice");
+      if(!Objects.equals(openshiftInfraHourlyPricePerCore, original.getOpenshiftInfraHourlyPricePerCore()) && openshiftInfraHourlyPricePerCore != null && original.getOpenshiftInfraHourlyPricePerCore() != null && openshiftInfraHourlyPricePerCore.compareTo(original.getOpenshiftInfraHourlyPricePerCore()) != 0)
+        apiRequest.addVars("openshiftInfraHourlyPricePerCore");
       if(!Objects.equals(openshiftWorkerNodes, original.getOpenshiftWorkerNodes()))
         apiRequest.addVars("openshiftWorkerNodes");
       if(!Objects.equals(openshiftWorkerCores, original.getOpenshiftWorkerCores()))
         apiRequest.addVars("openshiftWorkerCores");
       if(!Objects.equals(totalOpenshiftWorkerCores, original.getTotalOpenshiftWorkerCores()))
         apiRequest.addVars("totalOpenshiftWorkerCores");
-      if(!Objects.equals(openshiftWorkerHourlyPrice, original.getOpenshiftWorkerHourlyPrice()) && openshiftWorkerHourlyPrice != null && original.getOpenshiftWorkerHourlyPrice() != null && openshiftWorkerHourlyPrice.compareTo(original.getOpenshiftWorkerHourlyPrice()) != 0)
-        apiRequest.addVars("openshiftWorkerHourlyPrice");
+      if(!Objects.equals(openshiftWorkerHourlyPricePerCore, original.getOpenshiftWorkerHourlyPricePerCore()) && openshiftWorkerHourlyPricePerCore != null && original.getOpenshiftWorkerHourlyPricePerCore() != null && openshiftWorkerHourlyPricePerCore.compareTo(original.getOpenshiftWorkerHourlyPricePerCore()) != 0)
+        apiRequest.addVars("openshiftWorkerHourlyPricePerCore");
       if(!Objects.equals(openshiftSSDStorageTiBPerYear, original.getOpenshiftSSDStorageTiBPerYear()))
         apiRequest.addVars("openshiftSSDStorageTiBPerYear");
-      if(!Objects.equals(openshiftSSDStoragePrice, original.getOpenshiftSSDStoragePrice()) && openshiftSSDStoragePrice != null && original.getOpenshiftSSDStoragePrice() != null && openshiftSSDStoragePrice.compareTo(original.getOpenshiftSSDStoragePrice()) != 0)
-        apiRequest.addVars("openshiftSSDStoragePrice");
-      if(!Objects.equals(openshiftCostsPerYear, original.getOpenshiftCostsPerYear()))
-        apiRequest.addVars("openshiftCostsPerYear");
-      if(!Objects.equals(employeesPerYearChart, original.getEmployeesPerYearChart()))
-        apiRequest.addVars("employeesPerYearChart");
+      if(!Objects.equals(openshiftSSDStoragePricePerGiB, original.getOpenshiftSSDStoragePricePerGiB()) && openshiftSSDStoragePricePerGiB != null && original.getOpenshiftSSDStoragePricePerGiB() != null && openshiftSSDStoragePricePerGiB.compareTo(original.getOpenshiftSSDStoragePricePerGiB()) != 0)
+        apiRequest.addVars("openshiftSSDStoragePricePerGiB");
+      if(!Objects.equals(openshiftCostsPerYearDataset, original.getOpenshiftCostsPerYearDataset()))
+        apiRequest.addVars("openshiftCostsPerYearDataset");
+      if(!Objects.equals(openshiftCostsPerYearChart, original.getOpenshiftCostsPerYearChart()))
+        apiRequest.addVars("openshiftCostsPerYearChart");
       if(!Objects.equals(projectExpensesChart, original.getProjectExpensesChart()))
         apiRequest.addVars("projectExpensesChart");
       if(!Objects.equals(economicOutputChart, original.getEconomicOutputChart()))
@@ -6853,22 +6882,23 @@ public abstract class ContractGen<DEV> extends BaseModel {
     sb.append(Optional.ofNullable(employeeSubscriptionCostsPerYear).map(v -> "employeeSubscriptionCostsPerYear: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(employeesPerYearDataset).map(v -> "employeesPerYearDataset: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(subscriptionCostsPerYearDataset).map(v -> "subscriptionCostsPerYearDataset: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(employeesPerYearChart).map(v -> "employeesPerYearChart: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(openshiftControlPlaneNodes).map(v -> "openshiftControlPlaneNodes: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(openshiftControlPlaneCores).map(v -> "openshiftControlPlaneCores: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(totalOpenshiftControlPlaneCores).map(v -> "totalOpenshiftControlPlaneCores: " + v + "\n").orElse(""));
-    sb.append(Optional.ofNullable(openshiftControlPlaneHourlyPrice).map(v -> "openshiftControlPlaneHourlyPrice: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(openshiftControlPlaneHourlyPricePerCore).map(v -> "openshiftControlPlaneHourlyPricePerCore: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(openshiftInfraNodes).map(v -> "openshiftInfraNodes: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(openshiftInfraCores).map(v -> "openshiftInfraCores: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(totalOpenshiftInfraCores).map(v -> "totalOpenshiftInfraCores: " + v + "\n").orElse(""));
-    sb.append(Optional.ofNullable(openshiftInfraHourlyPrice).map(v -> "openshiftInfraHourlyPrice: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(openshiftInfraHourlyPricePerCore).map(v -> "openshiftInfraHourlyPricePerCore: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(openshiftWorkerNodes).map(v -> "openshiftWorkerNodes: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(openshiftWorkerCores).map(v -> "openshiftWorkerCores: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(totalOpenshiftWorkerCores).map(v -> "totalOpenshiftWorkerCores: " + v + "\n").orElse(""));
-    sb.append(Optional.ofNullable(openshiftWorkerHourlyPrice).map(v -> "openshiftWorkerHourlyPrice: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(openshiftWorkerHourlyPricePerCore).map(v -> "openshiftWorkerHourlyPricePerCore: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(openshiftSSDStorageTiBPerYear).map(v -> "openshiftSSDStorageTiBPerYear: " + v + "\n").orElse(""));
-    sb.append(Optional.ofNullable(openshiftSSDStoragePrice).map(v -> "openshiftSSDStoragePrice: " + v + "\n").orElse(""));
-    sb.append(Optional.ofNullable(openshiftCostsPerYear).map(v -> "openshiftCostsPerYear: " + v + "\n").orElse(""));
-    sb.append(Optional.ofNullable(employeesPerYearChart).map(v -> "employeesPerYearChart: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(openshiftSSDStoragePricePerGiB).map(v -> "openshiftSSDStoragePricePerGiB: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(openshiftCostsPerYearDataset).map(v -> "openshiftCostsPerYearDataset: " + v + "\n").orElse(""));
+    sb.append(Optional.ofNullable(openshiftCostsPerYearChart).map(v -> "openshiftCostsPerYearChart: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(projectExpensesChart).map(v -> "projectExpensesChart: " + v + "\n").orElse(""));
     sb.append(Optional.ofNullable(economicOutputChart).map(v -> "economicOutputChart: " + v + "\n").orElse(""));
     return sb.toString();
@@ -6943,38 +6973,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
   public static final String SET_employeesPerYearDataset = "setEmployeesPerYearDataset";
   public static final String VAR_subscriptionCostsPerYearDataset = "subscriptionCostsPerYearDataset";
   public static final String SET_subscriptionCostsPerYearDataset = "setSubscriptionCostsPerYearDataset";
+  public static final String VAR_employeesPerYearChart = "employeesPerYearChart";
+  public static final String SET_employeesPerYearChart = "setEmployeesPerYearChart";
   public static final String VAR_openshiftControlPlaneNodes = "openshiftControlPlaneNodes";
   public static final String SET_openshiftControlPlaneNodes = "setOpenshiftControlPlaneNodes";
   public static final String VAR_openshiftControlPlaneCores = "openshiftControlPlaneCores";
   public static final String SET_openshiftControlPlaneCores = "setOpenshiftControlPlaneCores";
   public static final String VAR_totalOpenshiftControlPlaneCores = "totalOpenshiftControlPlaneCores";
   public static final String SET_totalOpenshiftControlPlaneCores = "setTotalOpenshiftControlPlaneCores";
-  public static final String VAR_openshiftControlPlaneHourlyPrice = "openshiftControlPlaneHourlyPrice";
-  public static final String SET_openshiftControlPlaneHourlyPrice = "setOpenshiftControlPlaneHourlyPrice";
+  public static final String VAR_openshiftControlPlaneHourlyPricePerCore = "openshiftControlPlaneHourlyPricePerCore";
+  public static final String SET_openshiftControlPlaneHourlyPricePerCore = "setOpenshiftControlPlaneHourlyPricePerCore";
   public static final String VAR_openshiftInfraNodes = "openshiftInfraNodes";
   public static final String SET_openshiftInfraNodes = "setOpenshiftInfraNodes";
   public static final String VAR_openshiftInfraCores = "openshiftInfraCores";
   public static final String SET_openshiftInfraCores = "setOpenshiftInfraCores";
   public static final String VAR_totalOpenshiftInfraCores = "totalOpenshiftInfraCores";
   public static final String SET_totalOpenshiftInfraCores = "setTotalOpenshiftInfraCores";
-  public static final String VAR_openshiftInfraHourlyPrice = "openshiftInfraHourlyPrice";
-  public static final String SET_openshiftInfraHourlyPrice = "setOpenshiftInfraHourlyPrice";
+  public static final String VAR_openshiftInfraHourlyPricePerCore = "openshiftInfraHourlyPricePerCore";
+  public static final String SET_openshiftInfraHourlyPricePerCore = "setOpenshiftInfraHourlyPricePerCore";
   public static final String VAR_openshiftWorkerNodes = "openshiftWorkerNodes";
   public static final String SET_openshiftWorkerNodes = "setOpenshiftWorkerNodes";
   public static final String VAR_openshiftWorkerCores = "openshiftWorkerCores";
   public static final String SET_openshiftWorkerCores = "setOpenshiftWorkerCores";
   public static final String VAR_totalOpenshiftWorkerCores = "totalOpenshiftWorkerCores";
   public static final String SET_totalOpenshiftWorkerCores = "setTotalOpenshiftWorkerCores";
-  public static final String VAR_openshiftWorkerHourlyPrice = "openshiftWorkerHourlyPrice";
-  public static final String SET_openshiftWorkerHourlyPrice = "setOpenshiftWorkerHourlyPrice";
+  public static final String VAR_openshiftWorkerHourlyPricePerCore = "openshiftWorkerHourlyPricePerCore";
+  public static final String SET_openshiftWorkerHourlyPricePerCore = "setOpenshiftWorkerHourlyPricePerCore";
   public static final String VAR_openshiftSSDStorageTiBPerYear = "openshiftSSDStorageTiBPerYear";
   public static final String SET_openshiftSSDStorageTiBPerYear = "setOpenshiftSSDStorageTiBPerYear";
-  public static final String VAR_openshiftSSDStoragePrice = "openshiftSSDStoragePrice";
-  public static final String SET_openshiftSSDStoragePrice = "setOpenshiftSSDStoragePrice";
-  public static final String VAR_openshiftCostsPerYear = "openshiftCostsPerYear";
-  public static final String SET_openshiftCostsPerYear = "setOpenshiftCostsPerYear";
-  public static final String VAR_employeesPerYearChart = "employeesPerYearChart";
-  public static final String SET_employeesPerYearChart = "setEmployeesPerYearChart";
+  public static final String VAR_openshiftSSDStoragePricePerGiB = "openshiftSSDStoragePricePerGiB";
+  public static final String SET_openshiftSSDStoragePricePerGiB = "setOpenshiftSSDStoragePricePerGiB";
+  public static final String VAR_openshiftCostsPerYearDataset = "openshiftCostsPerYearDataset";
+  public static final String SET_openshiftCostsPerYearDataset = "setOpenshiftCostsPerYearDataset";
+  public static final String VAR_openshiftCostsPerYearChart = "openshiftCostsPerYearChart";
+  public static final String SET_openshiftCostsPerYearChart = "setOpenshiftCostsPerYearChart";
   public static final String VAR_projectExpensesChart = "projectExpensesChart";
   public static final String SET_projectExpensesChart = "setProjectExpensesChart";
   public static final String VAR_economicOutputChart = "economicOutputChart";
@@ -7039,22 +7071,23 @@ public abstract class ContractGen<DEV> extends BaseModel {
   public static final String DISPLAY_NAME_employeeSubscriptionCostsPerYear = "subscription costs per year";
   public static final String DISPLAY_NAME_employeesPerYearDataset = "employees per year dataset";
   public static final String DISPLAY_NAME_subscriptionCostsPerYearDataset = "subscription costs per year dataset";
+  public static final String DISPLAY_NAME_employeesPerYearChart = "employees per year";
   public static final String DISPLAY_NAME_openshiftControlPlaneNodes = "OpenShift control plane nodes";
   public static final String DISPLAY_NAME_openshiftControlPlaneCores = "OpenShift control plane cores";
   public static final String DISPLAY_NAME_totalOpenshiftControlPlaneCores = "OpenShift control plane cores";
-  public static final String DISPLAY_NAME_openshiftControlPlaneHourlyPrice = "OpenShift control plane hourly price";
+  public static final String DISPLAY_NAME_openshiftControlPlaneHourlyPricePerCore = "OpenShift control plane hourly price";
   public static final String DISPLAY_NAME_openshiftInfraNodes = "OpenShift infra nodes";
   public static final String DISPLAY_NAME_openshiftInfraCores = "OpenShift infra cores";
   public static final String DISPLAY_NAME_totalOpenshiftInfraCores = "Total OpenShift infra cores";
-  public static final String DISPLAY_NAME_openshiftInfraHourlyPrice = "OpenShift infra node hourly price";
+  public static final String DISPLAY_NAME_openshiftInfraHourlyPricePerCore = "OpenShift infra node hourly price";
   public static final String DISPLAY_NAME_openshiftWorkerNodes = "OpenShift worker nodes";
   public static final String DISPLAY_NAME_openshiftWorkerCores = "OpenShift worker cores";
   public static final String DISPLAY_NAME_totalOpenshiftWorkerCores = "OpenShift worker cores";
-  public static final String DISPLAY_NAME_openshiftWorkerHourlyPrice = "OpenShift worker node hourly price";
+  public static final String DISPLAY_NAME_openshiftWorkerHourlyPricePerCore = "OpenShift worker node hourly price";
   public static final String DISPLAY_NAME_openshiftSSDStorageTiBPerYear = "OpenShift storage per year";
-  public static final String DISPLAY_NAME_openshiftSSDStoragePrice = "OpenShift SSD storage price";
-  public static final String DISPLAY_NAME_openshiftCostsPerYear = "subscription costs per year";
-  public static final String DISPLAY_NAME_employeesPerYearChart = "employees per year";
+  public static final String DISPLAY_NAME_openshiftSSDStoragePricePerGiB = "OpenShift SSD storage price";
+  public static final String DISPLAY_NAME_openshiftCostsPerYearDataset = "OpenShift costs per year dataset";
+  public static final String DISPLAY_NAME_openshiftCostsPerYearChart = "OpenShift costs per year";
   public static final String DISPLAY_NAME_projectExpensesChart = "project expenses";
   public static final String DISPLAY_NAME_economicOutputChart = "economic output projections";
 
@@ -7150,38 +7183,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return patch ? SET_employeesPerYearDataset : VAR_employeesPerYearDataset;
     case VAR_subscriptionCostsPerYearDataset:
       return patch ? SET_subscriptionCostsPerYearDataset : VAR_subscriptionCostsPerYearDataset;
+    case VAR_employeesPerYearChart:
+      return patch ? SET_employeesPerYearChart : VAR_employeesPerYearChart;
     case VAR_openshiftControlPlaneNodes:
       return patch ? SET_openshiftControlPlaneNodes : VAR_openshiftControlPlaneNodes;
     case VAR_openshiftControlPlaneCores:
       return patch ? SET_openshiftControlPlaneCores : VAR_openshiftControlPlaneCores;
     case VAR_totalOpenshiftControlPlaneCores:
       return patch ? SET_totalOpenshiftControlPlaneCores : VAR_totalOpenshiftControlPlaneCores;
-    case VAR_openshiftControlPlaneHourlyPrice:
-      return patch ? SET_openshiftControlPlaneHourlyPrice : VAR_openshiftControlPlaneHourlyPrice;
+    case VAR_openshiftControlPlaneHourlyPricePerCore:
+      return patch ? SET_openshiftControlPlaneHourlyPricePerCore : VAR_openshiftControlPlaneHourlyPricePerCore;
     case VAR_openshiftInfraNodes:
       return patch ? SET_openshiftInfraNodes : VAR_openshiftInfraNodes;
     case VAR_openshiftInfraCores:
       return patch ? SET_openshiftInfraCores : VAR_openshiftInfraCores;
     case VAR_totalOpenshiftInfraCores:
       return patch ? SET_totalOpenshiftInfraCores : VAR_totalOpenshiftInfraCores;
-    case VAR_openshiftInfraHourlyPrice:
-      return patch ? SET_openshiftInfraHourlyPrice : VAR_openshiftInfraHourlyPrice;
+    case VAR_openshiftInfraHourlyPricePerCore:
+      return patch ? SET_openshiftInfraHourlyPricePerCore : VAR_openshiftInfraHourlyPricePerCore;
     case VAR_openshiftWorkerNodes:
       return patch ? SET_openshiftWorkerNodes : VAR_openshiftWorkerNodes;
     case VAR_openshiftWorkerCores:
       return patch ? SET_openshiftWorkerCores : VAR_openshiftWorkerCores;
     case VAR_totalOpenshiftWorkerCores:
       return patch ? SET_totalOpenshiftWorkerCores : VAR_totalOpenshiftWorkerCores;
-    case VAR_openshiftWorkerHourlyPrice:
-      return patch ? SET_openshiftWorkerHourlyPrice : VAR_openshiftWorkerHourlyPrice;
+    case VAR_openshiftWorkerHourlyPricePerCore:
+      return patch ? SET_openshiftWorkerHourlyPricePerCore : VAR_openshiftWorkerHourlyPricePerCore;
     case VAR_openshiftSSDStorageTiBPerYear:
       return patch ? SET_openshiftSSDStorageTiBPerYear : VAR_openshiftSSDStorageTiBPerYear;
-    case VAR_openshiftSSDStoragePrice:
-      return patch ? SET_openshiftSSDStoragePrice : VAR_openshiftSSDStoragePrice;
-    case VAR_openshiftCostsPerYear:
-      return patch ? SET_openshiftCostsPerYear : VAR_openshiftCostsPerYear;
-    case VAR_employeesPerYearChart:
-      return patch ? SET_employeesPerYearChart : VAR_employeesPerYearChart;
+    case VAR_openshiftSSDStoragePricePerGiB:
+      return patch ? SET_openshiftSSDStoragePricePerGiB : VAR_openshiftSSDStoragePricePerGiB;
+    case VAR_openshiftCostsPerYearDataset:
+      return patch ? SET_openshiftCostsPerYearDataset : VAR_openshiftCostsPerYearDataset;
+    case VAR_openshiftCostsPerYearChart:
+      return patch ? SET_openshiftCostsPerYearChart : VAR_openshiftCostsPerYearChart;
     case VAR_projectExpensesChart:
       return patch ? SET_projectExpensesChart : VAR_projectExpensesChart;
     case VAR_economicOutputChart:
@@ -7258,38 +7293,40 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return DISPLAY_NAME_employeesPerYearDataset;
     case VAR_subscriptionCostsPerYearDataset:
       return DISPLAY_NAME_subscriptionCostsPerYearDataset;
+    case VAR_employeesPerYearChart:
+      return DISPLAY_NAME_employeesPerYearChart;
     case VAR_openshiftControlPlaneNodes:
       return DISPLAY_NAME_openshiftControlPlaneNodes;
     case VAR_openshiftControlPlaneCores:
       return DISPLAY_NAME_openshiftControlPlaneCores;
     case VAR_totalOpenshiftControlPlaneCores:
       return DISPLAY_NAME_totalOpenshiftControlPlaneCores;
-    case VAR_openshiftControlPlaneHourlyPrice:
-      return DISPLAY_NAME_openshiftControlPlaneHourlyPrice;
+    case VAR_openshiftControlPlaneHourlyPricePerCore:
+      return DISPLAY_NAME_openshiftControlPlaneHourlyPricePerCore;
     case VAR_openshiftInfraNodes:
       return DISPLAY_NAME_openshiftInfraNodes;
     case VAR_openshiftInfraCores:
       return DISPLAY_NAME_openshiftInfraCores;
     case VAR_totalOpenshiftInfraCores:
       return DISPLAY_NAME_totalOpenshiftInfraCores;
-    case VAR_openshiftInfraHourlyPrice:
-      return DISPLAY_NAME_openshiftInfraHourlyPrice;
+    case VAR_openshiftInfraHourlyPricePerCore:
+      return DISPLAY_NAME_openshiftInfraHourlyPricePerCore;
     case VAR_openshiftWorkerNodes:
       return DISPLAY_NAME_openshiftWorkerNodes;
     case VAR_openshiftWorkerCores:
       return DISPLAY_NAME_openshiftWorkerCores;
     case VAR_totalOpenshiftWorkerCores:
       return DISPLAY_NAME_totalOpenshiftWorkerCores;
-    case VAR_openshiftWorkerHourlyPrice:
-      return DISPLAY_NAME_openshiftWorkerHourlyPrice;
+    case VAR_openshiftWorkerHourlyPricePerCore:
+      return DISPLAY_NAME_openshiftWorkerHourlyPricePerCore;
     case VAR_openshiftSSDStorageTiBPerYear:
       return DISPLAY_NAME_openshiftSSDStorageTiBPerYear;
-    case VAR_openshiftSSDStoragePrice:
-      return DISPLAY_NAME_openshiftSSDStoragePrice;
-    case VAR_openshiftCostsPerYear:
-      return DISPLAY_NAME_openshiftCostsPerYear;
-    case VAR_employeesPerYearChart:
-      return DISPLAY_NAME_employeesPerYearChart;
+    case VAR_openshiftSSDStoragePricePerGiB:
+      return DISPLAY_NAME_openshiftSSDStoragePricePerGiB;
+    case VAR_openshiftCostsPerYearDataset:
+      return DISPLAY_NAME_openshiftCostsPerYearDataset;
+    case VAR_openshiftCostsPerYearChart:
+      return DISPLAY_NAME_openshiftCostsPerYearChart;
     case VAR_projectExpensesChart:
       return DISPLAY_NAME_projectExpensesChart;
     case VAR_economicOutputChart:
@@ -7365,13 +7402,15 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return "The chart data for employees per year. ";
     case VAR_subscriptionCostsPerYearDataset:
       return "The chart data for subscription costs per year. ";
+    case VAR_employeesPerYearChart:
+      return "A chart of the number of employees per year. ";
     case VAR_openshiftControlPlaneNodes:
       return "The total OpenShift control plane nodes";
     case VAR_openshiftControlPlaneCores:
       return "The number of OpenShift control plane cores per node";
     case VAR_totalOpenshiftControlPlaneCores:
       return "The total OpenShift control plane cores for all nodes";
-    case VAR_openshiftControlPlaneHourlyPrice:
+    case VAR_openshiftControlPlaneHourlyPricePerCore:
       return "The hourly price of OpenShift control plane cores";
     case VAR_openshiftInfraNodes:
       return "The total OpenShift infra nodes";
@@ -7379,7 +7418,7 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return "The number of OpenShift infra cores per node";
     case VAR_totalOpenshiftInfraCores:
       return "The total OpenShift infra cores for all nodes";
-    case VAR_openshiftInfraHourlyPrice:
+    case VAR_openshiftInfraHourlyPricePerCore:
       return "The hourly price of OpenShift infra node cores";
     case VAR_openshiftWorkerNodes:
       return "The total OpenShift worker nodes";
@@ -7387,16 +7426,16 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return "The number of OpenShift worker cores per node";
     case VAR_totalOpenshiftWorkerCores:
       return "The total OpenShift worker cores for all nodes";
-    case VAR_openshiftWorkerHourlyPrice:
+    case VAR_openshiftWorkerHourlyPricePerCore:
       return "The hourly price of OpenShift worker node cores";
     case VAR_openshiftSSDStorageTiBPerYear:
       return "The amount of storage required for the OpenShift cluster in TiB. ";
-    case VAR_openshiftSSDStoragePrice:
+    case VAR_openshiftSSDStoragePricePerGiB:
       return "The OpenShift SSD storage price per GiB. ";
-    case VAR_openshiftCostsPerYear:
-      return "The individual software subscription costs per year. ";
-    case VAR_employeesPerYearChart:
-      return "A chart of the number of employees per year. ";
+    case VAR_openshiftCostsPerYearDataset:
+      return "The chart data for OpenShift costs per year. ";
+    case VAR_openshiftCostsPerYearChart:
+      return "A chart of the OpenShift costs per year. ";
     case VAR_projectExpensesChart:
       return "A chart of the project expenses per year. ";
     case VAR_economicOutputChart:
@@ -7470,13 +7509,15 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return "JsonArray";
     case VAR_subscriptionCostsPerYearDataset:
       return "JsonArray";
+    case VAR_employeesPerYearChart:
+      return "JsonObject";
     case VAR_openshiftControlPlaneNodes:
       return "Integer";
     case VAR_openshiftControlPlaneCores:
       return "Integer";
     case VAR_totalOpenshiftControlPlaneCores:
       return "Integer";
-    case VAR_openshiftControlPlaneHourlyPrice:
+    case VAR_openshiftControlPlaneHourlyPricePerCore:
       return "BigDecimal";
     case VAR_openshiftInfraNodes:
       return "Integer";
@@ -7484,7 +7525,7 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return "Integer";
     case VAR_totalOpenshiftInfraCores:
       return "Integer";
-    case VAR_openshiftInfraHourlyPrice:
+    case VAR_openshiftInfraHourlyPricePerCore:
       return "BigDecimal";
     case VAR_openshiftWorkerNodes:
       return "Integer";
@@ -7492,15 +7533,15 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return "Integer";
     case VAR_totalOpenshiftWorkerCores:
       return "Integer";
-    case VAR_openshiftWorkerHourlyPrice:
+    case VAR_openshiftWorkerHourlyPricePerCore:
       return "BigDecimal";
     case VAR_openshiftSSDStorageTiBPerYear:
       return "List";
-    case VAR_openshiftSSDStoragePrice:
+    case VAR_openshiftSSDStoragePricePerGiB:
       return "BigDecimal";
-    case VAR_openshiftCostsPerYear:
-      return "List";
-    case VAR_employeesPerYearChart:
+    case VAR_openshiftCostsPerYearDataset:
+      return "JsonArray";
+    case VAR_openshiftCostsPerYearChart:
       return "JsonObject";
     case VAR_projectExpensesChart:
       return "JsonObject";
@@ -7557,61 +7598,61 @@ public abstract class ContractGen<DEV> extends BaseModel {
     case VAR_economicOutputProjectionsDataset:
       return 4;
     case VAR_cumulativeInvestmentChart:
-      return 4;
+      return 5;
     case VAR_architectsPerYear:
-      return 5;
+      return 6;
     case VAR_remoteDevelopersPerYear:
-      return 5;
+      return 6;
     case VAR_onsiteDevelopersPerYear:
-      return 5;
+      return 6;
     case VAR_instructorsPerYear:
-      return 5;
+      return 6;
     case VAR_remoteDeveloperPayPerYear:
-      return 5;
+      return 6;
     case VAR_onsiteDeveloperPayPerYear:
-      return 5;
+      return 6;
     case VAR_architectPayPerYear:
-      return 5;
+      return 6;
     case VAR_instructorPayPerYear:
-      return 5;
+      return 6;
     case VAR_subscriptionsPerYear:
-      return 5;
+      return 6;
     case VAR_subscriptionCostsPerYear:
-      return 5;
+      return 6;
     case VAR_totalSubscriptionCostPerYear:
-      return 5;
+      return 6;
     case VAR_employeeSubscriptionCostsPerYear:
-      return 5;
-    case VAR_openshiftControlPlaneNodes:
-      return 6;
-    case VAR_openshiftControlPlaneCores:
-      return 6;
-    case VAR_openshiftControlPlaneHourlyPrice:
-      return 6;
-    case VAR_openshiftInfraNodes:
-      return 6;
-    case VAR_openshiftInfraCores:
-      return 6;
-    case VAR_openshiftInfraHourlyPrice:
-      return 6;
-    case VAR_openshiftWorkerNodes:
-      return 6;
-    case VAR_openshiftWorkerCores:
-      return 6;
-    case VAR_openshiftWorkerHourlyPrice:
-      return 6;
-    case VAR_openshiftSSDStorageTiBPerYear:
-      return 5;
-    case VAR_openshiftSSDStoragePrice:
-      return 6;
-    case VAR_openshiftCostsPerYear:
       return 6;
     case VAR_employeesPerYearChart:
-      return 6;
-    case VAR_projectExpensesChart:
-      return 6;
-    case VAR_economicOutputChart:
       return 7;
+    case VAR_openshiftControlPlaneNodes:
+      return 8;
+    case VAR_openshiftControlPlaneCores:
+      return 8;
+    case VAR_openshiftControlPlaneHourlyPricePerCore:
+      return 8;
+    case VAR_openshiftInfraNodes:
+      return 8;
+    case VAR_openshiftInfraCores:
+      return 8;
+    case VAR_openshiftInfraHourlyPricePerCore:
+      return 8;
+    case VAR_openshiftWorkerNodes:
+      return 8;
+    case VAR_openshiftWorkerCores:
+      return 8;
+    case VAR_openshiftWorkerHourlyPricePerCore:
+      return 8;
+    case VAR_openshiftSSDStorageTiBPerYear:
+      return 8;
+    case VAR_openshiftSSDStoragePricePerGiB:
+      return 8;
+    case VAR_openshiftCostsPerYearChart:
+      return 9;
+    case VAR_projectExpensesChart:
+      return 10;
+    case VAR_economicOutputChart:
+      return 11;
       default:
         return BaseModel.htmRowBaseModel(var);
     }
@@ -7673,31 +7714,31 @@ public abstract class ContractGen<DEV> extends BaseModel {
       return 0;
     case VAR_employeeSubscriptionCostsPerYear:
       return 0;
+    case VAR_employeesPerYearChart:
+      return 0;
     case VAR_openshiftControlPlaneNodes:
       return 0;
     case VAR_openshiftControlPlaneCores:
       return 0;
-    case VAR_openshiftControlPlaneHourlyPrice:
+    case VAR_openshiftControlPlaneHourlyPricePerCore:
       return 0;
     case VAR_openshiftInfraNodes:
       return 0;
     case VAR_openshiftInfraCores:
       return 0;
-    case VAR_openshiftInfraHourlyPrice:
+    case VAR_openshiftInfraHourlyPricePerCore:
       return 0;
     case VAR_openshiftWorkerNodes:
       return 0;
     case VAR_openshiftWorkerCores:
       return 0;
-    case VAR_openshiftWorkerHourlyPrice:
+    case VAR_openshiftWorkerHourlyPricePerCore:
       return 0;
     case VAR_openshiftSSDStorageTiBPerYear:
       return 0;
-    case VAR_openshiftSSDStoragePrice:
+    case VAR_openshiftSSDStoragePricePerGiB:
       return 0;
-    case VAR_openshiftCostsPerYear:
-      return 0;
-    case VAR_employeesPerYearChart:
+    case VAR_openshiftCostsPerYearChart:
       return 0;
     case VAR_projectExpensesChart:
       return 0;

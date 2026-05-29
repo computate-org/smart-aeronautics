@@ -220,17 +220,17 @@ ALTER TABLE Contract ADD COLUMN IF NOT EXISTS subscriptionCostsPerYearDataset js
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftControlPlaneNodes integer;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftControlPlaneCores integer;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS totalOpenshiftControlPlaneCores integer;
-ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftControlPlaneHourlyPrice decimal;
+ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftControlPlaneHourlyPricePerCore decimal;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftInfraNodes integer;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftInfraCores integer;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS totalOpenshiftInfraCores integer;
-ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftInfraHourlyPrice decimal;
+ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftInfraHourlyPricePerCore decimal;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftWorkerNodes integer;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftWorkerCores integer;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS totalOpenshiftWorkerCores integer;
-ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftWorkerHourlyPrice decimal;
+ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftWorkerHourlyPricePerCore decimal;
 ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftSSDStorageTiBPerYear decimal[];
-ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftSSDStoragePrice decimal;
-ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftCostsPerYear decimal[];
+ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftSSDStoragePricePerGiB decimal;
+ALTER TABLE Contract ADD COLUMN IF NOT EXISTS openshiftCostsPerYearDataset jsonb;
 
 DO $$ BEGIN IF NOT EXISTS (SELECT constraint_name FROM information_schema.constraint_column_usage WHERE table_schema = 'public' AND constraint_name = 'aircraft_airportid_airport_fkey') THEN ALTER TABLE Aircraft ADD CONSTRAINT aircraft_airportid_airport_fkey FOREIGN KEY(airportId) REFERENCES Airport(entityShortId); END IF; END $$;

@@ -51,9 +51,9 @@ SITE_ZONE: "{{ lookup('env', 'SITE_ZONE') | default('America/New_York', true) }}
 # The domain name of the site. 
 DOMAIN_NAME: computate.org
 # The GitHub organization for this project. 
-GITHUB_ORG: computate-org
+GIT_ORG: computate-org
 # The main git repository for the project. 
-SITE_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_NAME }}.git"
+SITE_REPO: "git@github.com:{{ GIT_ORG }}/{{ SITE_NAME }}.git"
 # The main git repository for the project via ssh. 
 SITE_REPO_HTTPS: "{{ SITE_REPO | replace('git@github.com:', 'https://github.com/') }}"
 # The port of the site. 
@@ -70,6 +70,8 @@ CLUSTER_PORT: "{{ lookup('env', 'CLUSTER_PORT') | default(((SITE_PORT | int) + 1
 CLUSTER_PUBLIC_PORT: "{{ lookup('env', 'CLUSTER_PUBLIC_PORT') | default(((SITE_PORT | int) + 1), true) }}"
 # Zookeeper root path to avoid conflicts with other apps using Zookeeper for clustering. 
 ZOOKEEPER_ROOT_PATH: "{{ lookup('env', 'ZOOKEEPER_ROOT_PATH') | default(SITE_NAME + '-local', true) }}"
+# Zookeeper root path to avoid conflicts with other apps using Zookeeper for clustering. 
+ZOOKEEPER_RETRY_POLICY: "{{ lookup('env', 'ZOOKEEPER_RETRY_POLICY') | default('exponential_backoff', true) }}"
 # Verify SSL connections. 
 SSL_VERIFY: "{{ lookup('env', 'SSL_VERIFY') | default('false', true) | bool }}"
 # The public search endpoint for searching public items in the site. 
@@ -220,7 +222,7 @@ SITE_LOGO_URI: "/png/logo-{{ SITE_THEME }}.png"
 # The name of the repository containing the web static content. 
 SITE_STATIC_NAME: "{{ SITE_NAME }}-static"
 # The static files git repository for the project. 
-SITE_STATIC_REPO: "git@github.com:{{ GITHUB_ORG }}/{{ SITE_STATIC_NAME }}.git"
+SITE_STATIC_REPO: "git@github.com:{{ GIT_ORG }}/{{ SITE_STATIC_NAME }}.git"
 # The base URL to the static files. 
 STATIC_BASE_URL: "{{ SITE_BASE_URL }}/static"
 # The path to the static files. 
@@ -233,7 +235,7 @@ TEMPLATE_PATH: "{{ STATIC_PATH }}/templates"
 ######################
 
 # The developer tools repo for this site. 
-DEVELOPER_REPO: "https://github.com/{{ GITHUB_ORG }}/{{ DEVELOPER_PROJECT_NAME }}.git"
+DEVELOPER_REPO: "https://github.com/{{ GIT_ORG }}/{{ DEVELOPER_PROJECT_NAME }}.git"
 # The software developer name. 
 DEVELOPER_NAME: ''
 # The software organization name. 

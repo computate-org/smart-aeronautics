@@ -166,7 +166,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: investment years total
    * Description: The number of years of investment in the contract. 
-   * HtmRowTitleOpen: contract projections
+   * HtmRowTitle: contract parameters
    * HtmRow: 4
    * HtmCell: 0
    **/
@@ -320,7 +320,7 @@ public class Contract extends ContractGen<BaseModel> {
       JsonArray data = new JsonArray();
       String revenueStream = revenueStreams.get(i);
       BigDecimal projection = economicOutputProjections.get(i).divide(new BigDecimal(numYears), new MathContext(16, RoundingMode.HALF_UP));
-      BigDecimal cumulativeProjection = new BigDecimal(0, new MathContext(16, RoundingMode.HALF_UP)).setScale(2);
+      BigDecimal cumulativeProjection = new BigDecimal(0, new MathContext(16, RoundingMode.HALF_UP)).setScale(2, RoundingMode.HALF_UP);
       for(Integer j = 0; j < investmentYears.size(); j++) {
         cumulativeProjection = cumulativeProjection.add(projection, new MathContext(16, RoundingMode.HALF_UP));
         data.add(cumulativeProjection);
@@ -339,7 +339,8 @@ public class Contract extends ContractGen<BaseModel> {
    * Stored: true
    * DisplayName: cumulative investment per year
    * Description: A chart of the cumulative investment per year. 
-   * HtmRow: 4
+   * HtmRowTitleOpen: contract projections
+   * HtmRow: 5
    * HtmCell: 0
    * wa-line-chart:
    * div:
@@ -366,8 +367,8 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: architects per year
    * Description: The number of architects on the project per year. 
-   * HtmRowTitleOpen: project expenses
-   * HtmRow: 5
+   * HtmRowTitle: project expenses
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 1
    **/
@@ -385,7 +386,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: remote developers per year
    * Description: The number of remote developers on the project per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 1
    **/
@@ -403,7 +404,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: onsite developers per year
    * Description: The number of onsite developers on the project per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 1
    **/
@@ -421,7 +422,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: instructors per year
    * Description: The number of instructors on the project per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 1
    **/
@@ -439,7 +440,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: remote developer pay per year
    * Description: The total costs for paying a SPINE software developer on the project per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 2
    **/
@@ -453,7 +454,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: onsite developer pay per year
    * Description: The total costs for paying a SPINE software developer on the project per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 2
    **/
@@ -467,7 +468,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: architect pay per year
    * Description: The total costs for paying a SPINE software architect on the project per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 2
    **/
@@ -481,7 +482,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: instructor pay per year
    * Description: The total costs for paying a SPINE instructor on the project per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 2
    **/
@@ -495,7 +496,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: employee subscriptions per year
    * Description: The software subscriptions for each employee per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    **/
   protected void _subscriptionsPerYear(List<String> l) {
@@ -507,7 +508,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: subscription costs per year
    * Description: The individual software subscription costs per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    **/
   protected void _subscriptionCostsPerYear(List<BigDecimal> l) {
@@ -524,7 +525,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: subscription costs per year
    * Description: The individual software subscription costs per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    **/
   protected void _totalSubscriptionCostPerYear(Wrap<BigDecimal> w) {
@@ -542,7 +543,7 @@ public class Contract extends ContractGen<BaseModel> {
    * Persist: true
    * DisplayName: subscription costs per year
    * Description: The individual software subscription costs per year. 
-   * HtmRow: 5
+   * HtmRow: 6
    * HtmCell: 0
    * Scale: 2
    **/
@@ -616,7 +617,7 @@ public class Contract extends ContractGen<BaseModel> {
         BigDecimal architectsCount = architectsPerYear.get(j);
         BigDecimal instructorsCount = instructorsPerYear.get(j);
         BigDecimal employeeCount = remoteDevelopersCount.add(onsiteDevelopersCount).add(architectsCount).add(instructorsCount);
-        BigDecimal cost = subscriptionCost.multiply(employeeCount.round(mathContext).setScale(0), mathContext).setScale(2);
+        BigDecimal cost = subscriptionCost.multiply(employeeCount.round(mathContext).setScale(0), mathContext).setScale(2, RoundingMode.HALF_UP);
         data.add(cost);
       }
       datasets.add(new JsonObject()
@@ -630,213 +631,11 @@ public class Contract extends ContractGen<BaseModel> {
 
   /**
    * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift control plane nodes
-   * Description: The total OpenShift control plane nodes
-   * HtmRow: 6
-   * HtmCell: 0
-   **/
-  protected void _openshiftControlPlaneNodes(Wrap<Integer> w) {
-    w.o(0);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift control plane cores
-   * Description: The number of OpenShift control plane cores per node
-   * HtmRow: 6
-   * HtmCell: 0
-   **/
-  protected void _openshiftControlPlaneCores(Wrap<Integer> w) {
-    w.o(0);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift control plane cores
-   * Description: The total OpenShift control plane cores for all nodes
-   **/
-  protected void _totalOpenshiftControlPlaneCores(Wrap<Integer> w) {
-    w.o(openshiftControlPlaneNodes * openshiftControlPlaneCores);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift control plane hourly price
-   * Description: The hourly price of OpenShift control plane cores
-   * HtmRow: 6
-   * HtmCell: 0
-   * Scale: 6
-   **/
-  protected void _openshiftControlPlaneHourlyPrice(Wrap<BigDecimal> w) {
-    w.o(BigDecimal.ZERO);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift infra nodes
-   * Description: The total OpenShift infra nodes
-   * HtmRow: 6
-   * HtmCell: 0
-   **/
-  protected void _openshiftInfraNodes(Wrap<Integer> w) {
-    w.o(0);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift infra cores
-   * Description: The number of OpenShift infra cores per node
-   * HtmRow: 6
-   * HtmCell: 0
-   **/
-  protected void _openshiftInfraCores(Wrap<Integer> w) {
-    w.o(0);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: Total OpenShift infra cores
-   * Description: The total OpenShift infra cores for all nodes
-   **/
-  protected void _totalOpenshiftInfraCores(Wrap<Integer> w) {
-    w.o(openshiftInfraNodes * openshiftInfraCores);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift infra node hourly price
-   * Description: The hourly price of OpenShift infra node cores
-   * HtmRow: 6
-   * HtmCell: 0
-   * Scale: 6
-   **/
-  protected void _openshiftInfraHourlyPrice(Wrap<BigDecimal> w) {
-    w.o(BigDecimal.ZERO);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift worker nodes
-   * Description: The total OpenShift worker nodes
-   * HtmRow: 6
-   * HtmCell: 0
-   **/
-  protected void _openshiftWorkerNodes(Wrap<Integer> w) {
-    w.o(0);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift worker cores
-   * Description: The number of OpenShift worker cores per node
-   * HtmRow: 6
-   * HtmCell: 0
-   **/
-  protected void _openshiftWorkerCores(Wrap<Integer> w) {
-    w.o(0);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift worker cores
-   * Description: The total OpenShift worker cores for all nodes
-   **/
-  protected void _totalOpenshiftWorkerCores(Wrap<Integer> w) {
-    w.o(openshiftWorkerNodes * openshiftWorkerCores);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift worker node hourly price
-   * Description: The hourly price of OpenShift worker node cores
-   * HtmRow: 6
-   * HtmCell: 0
-   * Scale: 6
-   **/
-  protected void _openshiftWorkerHourlyPrice(Wrap<BigDecimal> w) {
-    w.o(BigDecimal.ZERO);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift storage per year
-   * Description: The amount of storage required for the OpenShift cluster in TiB. 
-   * HtmRow: 5
-   * HtmCell: 0
-   * Scale: 2
-   **/
-  protected void _openshiftSSDStorageTiBPerYear(List<BigDecimal> l) {
-    if(l.size() == 0) {
-      for(Integer i = 0; i < investmentYearsTotal; i++) {
-        l.add(BigDecimal.ZERO);
-      }
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: OpenShift SSD storage price
-   * Description: The OpenShift SSD storage price per GiB. 
-   * HtmRow: 6
-   * HtmCell: 0
-   * Scale: 6
-   **/
-  protected void _openshiftSSDStoragePrice(Wrap<BigDecimal> w) {
-    w.o(BigDecimal.ZERO);
-  }
-
-  /**
-   * {@inheritDoc}
-   * DocValues: true
-   * Persist: true
-   * DisplayName: subscription costs per year
-   * Description: The individual software subscription costs per year. 
-   * HtmRow: 6
-   * HtmCell: 0
-   * Scale: 2
-   **/
-  protected void _openshiftCostsPerYear(List<BigDecimal> l) {
-    BigDecimal hoursInYear = new BigDecimal(24).multiply(new BigDecimal(365));
-    l.add(openshiftControlPlaneHourlyPrice.multiply(hoursInYear).multiply(new BigDecimal(totalOpenshiftControlPlaneCores), staticMathContextOpenshiftCostsPerYear()));
-    l.add(openshiftInfraHourlyPrice.multiply(hoursInYear).multiply(new BigDecimal(totalOpenshiftInfraCores), staticMathContextOpenshiftCostsPerYear()));
-    l.add(openshiftWorkerHourlyPrice.multiply(hoursInYear).multiply(new BigDecimal(totalOpenshiftWorkerCores), staticMathContextOpenshiftCostsPerYear()));
-  }
-
-  /**
-   * {@inheritDoc}
    * Stored: true
    * DisplayName: employees per year
    * Description: A chart of the number of employees per year. 
    * HtmRowTitleOpen: employees and expenses
-   * HtmRow: 6
+   * HtmRow: 7
    * HtmCell: 0
    * wa-line-chart:
    * div:
@@ -860,10 +659,264 @@ public class Contract extends ContractGen<BaseModel> {
 
   /**
    * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift control plane nodes
+   * Description: The total OpenShift control plane nodes
+   * HtmRowTitle: OpenShift parameters
+   * HtmRow: 8
+   * HtmCell: 0
+   **/
+  protected void _openshiftControlPlaneNodes(Wrap<Integer> w) {
+    w.o(3);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift control plane cores
+   * Description: The number of OpenShift control plane cores per node
+   * HtmRow: 8
+   * HtmCell: 0
+   **/
+  protected void _openshiftControlPlaneCores(Wrap<Integer> w) {
+    w.o(8);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift control plane cores
+   * Description: The total OpenShift control plane cores for all nodes
+   **/
+  protected void _totalOpenshiftControlPlaneCores(Wrap<Integer> w) {
+    w.o(openshiftControlPlaneNodes * openshiftControlPlaneCores);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift control plane hourly price
+   * Description: The hourly price of OpenShift control plane cores
+   * HtmRow: 8
+   * HtmCell: 0
+   * Scale: 6
+   **/
+  protected void _openshiftControlPlaneHourlyPricePerCore(Wrap<BigDecimal> w) {
+    w.o(new BigDecimal(0.031611).setScale(8, RoundingMode.HALF_UP));
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift infra nodes
+   * Description: The total OpenShift infra nodes
+   * HtmRow: 8
+   * HtmCell: 0
+   **/
+  protected void _openshiftInfraNodes(Wrap<Integer> w) {
+    w.o(2);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift infra cores
+   * Description: The number of OpenShift infra cores per node
+   * HtmRow: 8
+   * HtmCell: 0
+   **/
+  protected void _openshiftInfraCores(Wrap<Integer> w) {
+    w.o(4);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: Total OpenShift infra cores
+   * Description: The total OpenShift infra cores for all nodes
+   **/
+  protected void _totalOpenshiftInfraCores(Wrap<Integer> w) {
+    w.o(openshiftInfraNodes * openshiftInfraCores);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift infra node hourly price
+   * Description: The hourly price of OpenShift infra node cores
+   * HtmRow: 8
+   * HtmCell: 0
+   * Scale: 6
+   **/
+  protected void _openshiftInfraHourlyPricePerCore(Wrap<BigDecimal> w) {
+    w.o(new BigDecimal(0.031611).setScale(8, RoundingMode.HALF_UP));
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift worker nodes
+   * Description: The total OpenShift worker nodes
+   * HtmRow: 8
+   * HtmCell: 0
+   **/
+  protected void _openshiftWorkerNodes(Wrap<Integer> w) {
+    w.o(5);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift worker cores
+   * Description: The number of OpenShift worker cores per node
+   * HtmRow: 8
+   * HtmCell: 0
+   **/
+  protected void _openshiftWorkerCores(Wrap<Integer> w) {
+    w.o(8);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift worker cores
+   * Description: The total OpenShift worker cores for all nodes
+   **/
+  protected void _totalOpenshiftWorkerCores(Wrap<Integer> w) {
+    w.o(openshiftWorkerNodes * openshiftWorkerCores);
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift worker node hourly price
+   * Description: The hourly price of OpenShift worker node cores
+   * HtmRow: 8
+   * HtmCell: 0
+   * Scale: 6
+   **/
+  protected void _openshiftWorkerHourlyPricePerCore(Wrap<BigDecimal> w) {
+    w.o(new BigDecimal(0.02181159).setScale(8, RoundingMode.HALF_UP));
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift storage per year
+   * Description: The amount of storage required for the OpenShift cluster in TiB. 
+   * HtmRow: 8
+   * HtmCell: 0
+   * Scale: 2
+   **/
+  protected void _openshiftSSDStorageTiBPerYear(List<BigDecimal> l) {
+    if(l.size() == 0) {
+      for(Integer i = 0; i < investmentYearsTotal; i++) {
+        l.add(new BigDecimal(i + 1));
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift SSD storage price
+   * Description: The OpenShift SSD storage price per GiB. 
+   * HtmRow: 8
+   * HtmCell: 0
+   * Scale: 6
+   **/
+  protected void _openshiftSSDStoragePricePerGiB(Wrap<BigDecimal> w) {
+    w.o(new BigDecimal(0.17).setScale(8, RoundingMode.HALF_UP));
+  }
+
+  /**
+   * {@inheritDoc}
+   * DocValues: true
+   * Persist: true
+   * DisplayName: OpenShift costs per year dataset
+   * Description: The chart data for OpenShift costs per year. 
+   **/
+  protected void _openshiftCostsPerYearDataset(Wrap<JsonArray> w) {
+    JsonArray datasets = new JsonArray();
+    List<String> costGroups = Arrays.asList("control plane infrastructure", "worker nodes", "storage");
+    BigDecimal hoursInYear = new BigDecimal(24).multiply(new BigDecimal(365));
+    MathContext mathContext = new MathContext(16, RoundingMode.HALF_UP);
+    for(Integer i = 0; i < costGroups.size(); i++) {
+      JsonArray data = new JsonArray();
+      String costGroup = costGroups.get(i);
+      for(Integer j = 0; j < investmentYears.size(); j++) {
+        if("control plane infrastructure".equals(costGroup)) {
+          data.add(
+              openshiftControlPlaneHourlyPricePerCore.multiply(hoursInYear).multiply(new BigDecimal(totalOpenshiftControlPlaneCores), mathContext)
+              .add(openshiftInfraHourlyPricePerCore.multiply(hoursInYear).multiply(new BigDecimal(totalOpenshiftInfraCores), mathContext))
+              .setScale(2, RoundingMode.HALF_UP));
+        } else if("worker nodes".equals(costGroup)) {
+          data.add(
+              openshiftWorkerHourlyPricePerCore.multiply(hoursInYear).multiply(new BigDecimal(totalOpenshiftWorkerCores), mathContext).setScale(2, RoundingMode.HALF_UP)
+              );
+        } else if("storage".equals(costGroup)) {
+          data.add(
+              openshiftSSDStoragePricePerGiB.multiply(new BigDecimal(12)).multiply(new BigDecimal(1000)).multiply(openshiftSSDStorageTiBPerYear.get(j), mathContext).setScale(2, RoundingMode.HALF_UP)
+              );
+        }
+      }
+      datasets.add(new JsonObject()
+          .put("label", costGroup)
+          .put("data", data)
+          .put("fill", true)
+          );
+    }
+    w.o(datasets);
+  }
+
+  /**
+   * {@inheritDoc}
+   * Stored: true
+   * DisplayName: OpenShift costs per year
+   * Description: A chart of the OpenShift costs per year. 
+   * HtmRowTitleOpen: OpenShift costs
+   * HtmRow: 9
+   * HtmCell: 0
+   * wa-line-chart:
+   * div:
+   *   class: wa-stack
+   **/
+  protected void _openshiftCostsPerYearChart(Wrap<JsonObject> w) {
+    w.o(new JsonObject()
+      .put("data", new JsonObject()
+        .put("labels", new JsonArray(investmentYears.stream().map(year -> year.toString()).collect(Collectors.toList())))
+        .put("datasets", openshiftCostsPerYearDataset)
+      )
+      .put("options", new JsonObject()
+        .put("scales", new JsonObject()
+          .put("y", new JsonObject()
+            .put("stacked", true)
+          )
+        )
+      )
+    );
+  }
+
+  /**
+   * {@inheritDoc}
    * Stored: true
    * DisplayName: project expenses
    * Description: A chart of the project expenses per year. 
-   * HtmRow: 6
+   * HtmRow: 10
    * HtmCell: 0
    * wa-line-chart:
    **/
@@ -889,7 +942,7 @@ public class Contract extends ContractGen<BaseModel> {
    * DisplayName: economic output projections
    * Description: A chart of the economic output projections per year. 
    * HtmRowTitleOpen: project economic output
-   * HtmRow: 7
+   * HtmRow: 11
    * HtmCell: 0
    * wa-line-chart:
    * div:
